@@ -441,14 +441,31 @@
                     </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
-                            <i class="ti-settings menu-icon"></i>
+                            <i class="ti-agenda menu-icon"></i>
                             <span class="menu-title">Resumen General</span>
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
+                            aria-controls="users">
+                            <i class="icon-head menu-icon"></i>
+                            <span class="menu-title">Usuarios</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="users">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'account_signup' %}">
+                                        Nuevo usuario
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
-                            <i class="icon-head menu-icon"></i>
+                            <i class="ti-truck menu-icon"></i>
                             <span class="menu-title">Transacciones</span>
                             <i class="menu-arrow"></i>
                         </a>
@@ -464,19 +481,19 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
-                            <i class="ti-settings menu-icon"></i>
+                            <i class="ti-package menu-icon"></i>
                             <span class="menu-title">Bodegas</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
-                            <i class="ti-settings menu-icon"></i>
+                            <i class="ti-archive menu-icon"></i>
                             <span class="menu-title">Productos</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
-                            <i class="ti-settings menu-icon"></i>
+                            <i class="ti-user menu-icon"></i>
                             <span class="menu-title">Clientes</span>
                         </a>
                     </li>
