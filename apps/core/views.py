@@ -7,4 +7,4 @@ class Index(LoginRequiredMixin,TemplateView):
     template_name = 'index.html'
 
 class Developing(LoginRequiredMixin,TemplateView):
-    template_name = 'Developing.html'
+    template_name = 'developing.html'
