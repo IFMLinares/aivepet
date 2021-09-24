@@ -30,7 +30,8 @@
               <div class="brand-logo">
                 <img src="{% static 'images/logo.png' %}" alt="logo">
               </div>
-              <h4>Inicia sesión para continuar</h4>
+              <h4>Bievenido: <br> Al sistema de control de despacho.</h4>
+              <!-- <h5>Inicia sesión para continuar</h5> -->
               <form class="pt-3" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 {% if form.errors %}
