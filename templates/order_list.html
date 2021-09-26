@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Lista de ordenes
+{% endblock %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title">Lista de órdenes</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="order-datatable" class="display expandable-table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for orden in ordenes %}
+                                    <tr>
+                                        <td>{{ orden.order_number }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.id }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+    $('#order-datatable').DataTable();
+} );
+</script>
+{% endblock %}

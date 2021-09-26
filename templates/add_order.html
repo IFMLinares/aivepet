@@ -27,15 +27,16 @@ Dashboard
                 </div>
                 {% endfor %}
                 {% endif %}
+                <!-- {{ form.as_p }} -->
                 <div class="row">
+                    <input type="hidden" class="form-control add-order" readonly placeholder="00001" name="user" id="id_user" value="{{ user.id }}">
                     <div class="col-md-12">
                         <h3 class="mb-xl-4">Tipo de orden:</h3>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group form-check form-check-success">
                             <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="tipe_order" id="carga"
-                                    checked>
+                                <input required type="radio" class="form-check-input" name="order_type" id="carga" value="carga">
                                 Carga
                             </label>
                         </div>
@@ -43,8 +44,7 @@ Dashboard
                     <div class="col-md-6">
                         <div class="form-group form-check form-check-success">
                             <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="tipe_order" id="descarga"
-                                    checked>
+                                <input required type="radio" class="form-check-input" name="order_type" id="descarga" value="descarga">
                                 Descarga
                             </label>
                         </div>
@@ -61,7 +61,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Número de Factura:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="number" name="number_invoice" min="0" required id="id_number_invoice">
                             </div>
                         </div>
                     </div>
@@ -69,8 +69,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Unidad de medida:</label>
                             <div class="col-sm-8">
-                                <select class="form-control add-order">
-                                    <option selected>Toneladas Métricas</option>
+                                <select class="form-control add-order" name="unit_measurement" required id="id_unit_measurement">
+                                    <option selected value="toneladas métricas">Toneladas Métricas</option>
                                 </select>
                             </div>
                         </div>
@@ -79,7 +79,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del Cliente</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="text" name="customer_name" maxlength="150" required id="id_customer_name">
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Cliente quien recibe</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="text" name="receiving_customer" maxlength="150" required id="id_receiving_customer">
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Producto</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="text" name="product" maxlength="150" required id="id_product">
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del buque</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="text" name="buque_name" maxlength="150" required id="id_buque_name">
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del puerto</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input class="form-control add-order" type="text" name="port_name" maxlength="150" required id="id_port_name">
                             </div>
                         </div>
                     </div>
@@ -119,215 +119,23 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Número del muelle</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="mb-xl-4">Pesada: </h3>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso Bruto</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order"
-                                    placeholder="Peso de la gandola sin la carga">
+                                <input class="form-control add-order" type="number" name="Número_muelle" min="0" required id="id_Número_muelle">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso de tara</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order"
-                                    placeholder="pesada en la tara en toneladas métricas">
+                        <div class="form-group row float-right mr-xl-1">
+                            {% if redirect_field_value %}
+                            <input required type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            {% endif %}
+                            <div class="text-right mr-xl-4">
+                                <button type="submit" class="btn btn-dark">Ver lista de órdenes</button>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-success">Guardar carga de orden</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso Neto</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Pesada</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Condición</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <!-- <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Condición</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 1</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 2</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 3</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 4</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="mb-xl-4">Transporte: </h3>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Vehículo</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Placa</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del Chofer</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Ficha</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">T.Muelle</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Dirección</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Barco/ALM</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Puerto</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Balanza</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Flete pagado por</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Sindicato</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Comentario</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {% if redirect_field_value %}
-                <input required type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                {% endif %}
-                <div class="text-right">
-                    <button type="submit" class="btn btn-success">Guardar carga de orden</button>
                 </div>
             </form>
         </div>
