@@ -17,6 +17,7 @@ class Transaction(models.Model):
     buque_name = models.CharField(max_length=150, verbose_name='Nombre del buque')
     port_name = models.CharField(max_length=150, verbose_name='Nombre del puerto')
     numero_muelle =  models.PositiveIntegerField(verbose_name='Número del muelle')
+    Número_muelle =  models.PositiveIntegerField(verbose_name='Número del muelle')
 
     def save(self, *args, **kwargs):
         id_orden = self.pk
