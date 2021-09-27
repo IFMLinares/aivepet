@@ -34,8 +34,7 @@ Dashboard
                     <div class="col-md-6">
                         <div class="form-group form-check form-check-success">
                             <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="tipe_order" id="carga"
-                                    checked>
+                                <input required type="radio" class="form-check-input" name="order_type" id="order_type"  value="carga" {% if orden.order_type == 'carga' %}checked{% endif %} disabled>
                                 Carga
                             </label>
                         </div>
@@ -43,17 +42,16 @@ Dashboard
                     <div class="col-md-6">
                         <div class="form-group form-check form-check-success">
                             <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="tipe_order" id="descarga"
-                                    checked>
+                                <input required type="radio" class="form-check-input" name="order_type" id="order_type" value="descarga" {% if orden.order_type == 'descarga' %}checked{% endif %} disabled>
                                 Descarga
                             </label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número de Orden:</label>
+                            <label class="col-sm-4 col-form-label">Número de Orden:  </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" readonly placeholder="00001">
+                                <input type="text" class="form-control add-order" readonly placeholder="00001" value="{{ orden.id }}">
                             </div>
                         </div>
                     </div>
@@ -61,7 +59,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Número de Factura:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.number_invoice }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -69,7 +67,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Unidad de medida:</label>
                             <div class="col-sm-8">
-                                <select class="form-control add-order">
+                                <select class="form-control add-order" disabled>
                                     <option selected>Toneladas Métricas</option>
                                 </select>
                             </div>
@@ -79,7 +77,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del Cliente</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.customer_name }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -87,7 +85,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Cliente quien recibe</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.receiving_customer }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -95,7 +93,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Producto</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.product }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -103,7 +101,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del buque</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.buque_name }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -111,7 +109,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del puerto</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.port_name }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -119,7 +117,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Número del muelle</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input required type="text" class="form-control add-order" value="{{ orden.numero_muelle }}" readonly>
                             </div>
                         </div>
                     </div>

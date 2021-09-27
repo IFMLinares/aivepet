@@ -15,27 +15,33 @@ Lista de ordenes
                             <table id="order-datatable" class="display expandable-table" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Orden</th>
+                                        <th>Tipo</th>
+                                        <th>Factura</th>
+                                        <th>Cliente</th>
+                                        <th>Recibidor</th>
+                                        <th>Producto</th>
+                                        <th>Buque</th>
+                                        <th>Puerto</th>
+                                        <th>Muelle</th>
+                                        <th>Usuario</th>
+                                        <th>Acciónes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for orden in ordenes %}
                                     <tr>
-                                        <td>{{ orden.order_number }}</td>
                                         <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
-                                        <td>{{ orden.id }}</td>
+                                        <td>{{ orden.order_type }}</td>
+                                        <td>{{ orden.number_invoice }}</td>
+                                        <td>{{ orden.customer_name }}</td>
+                                        <td>{{ orden.receiving_customer }}</td>
+                                        <td>{{ orden.product }}</td>
+                                        <td>{{ orden.buque_name }}</td>
+                                        <td>{{ orden.port_name }}</td>
+                                        <td>{{ orden.Número_muelle }}</td>
+                                        <td>{{ orden.user }}</td>
+                                        <td><a class="btn btn-outline-dark" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

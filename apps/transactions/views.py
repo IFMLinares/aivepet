@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.transactions.models import Transaction
 
@@ -17,5 +17,12 @@ class OrderList(LoginRequiredMixin,ListView):
     # fields = '__all__'
     template_name = 'order_list.html'
     context_object_name = 'ordenes'
+
+class OrderUpdate(LoginRequiredMixin, UpdateView):
+    model = Transaction
+    fields = '__all__'
+    template_name = 'update_order.html'
+    success_url = reverse_lazy('transactions:update_order')
+    context_object_name = 'orden'
 
 
