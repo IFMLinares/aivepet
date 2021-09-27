@@ -29,6 +29,7 @@ Lista de ordenes
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr>
                                         <td>{{ orden.id }}</td>
@@ -44,6 +45,7 @@ Lista de ordenes
                                         <td><a class="btn btn-outline-dark" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a></td>
                                     </tr>
                                     {% endfor %}
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div>

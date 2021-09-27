@@ -147,6 +147,7 @@ SITE_ID = 1
 ACCOUNT_SIGNUP_FORM_CLASS = 'apps.core.forms.signupForm.SignupForm'
 
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
