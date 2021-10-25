@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    {% block extra_css %}
+    {% endblock %}
 </head>
 
 <body>
@@ -446,7 +448,7 @@
                             <span class="menu-title">Resumen General</span>
                         </a>
                     </li> -->
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
                             <i class="ti-truck menu-icon"></i>
@@ -461,8 +463,36 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'transactions:order_list' %}">
+                                    <a class="nav-link" href="">
                                         Lista de <br> transacciones
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:add_order' %}">
+                            <i class="ti-plus menu-icon"></i>
+                            <span class="menu-title">Crear nueva orden</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
+                            aria-controls="auth">
+                            <i class="ti-truck menu-icon"></i>
+                            <span class="menu-title">Órdenes</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="auth">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'transactions:order_list_load' %}">
+                                       Carga
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'transactions:order_list_download' %}">
+                                       Descarga
                                     </a>
                                 </li>
                             </ul>
@@ -471,7 +501,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
                             <i class="ti-package menu-icon"></i>
-                            <span class="menu-title">Bodegas</span>
+                            <span class="menu-title">Almacenes</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -484,12 +514,6 @@
                         <a class="nav-link" href="{% url 'core:dev' %}">
                             <i class="ti-user menu-icon"></i>
                             <span class="menu-title">Clientes</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:dev' %}">
-                            <i class="icon-head menu-icon"></i>
-                            <span class="menu-title">Sindicato</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -567,6 +591,7 @@
     <!-- Custom js for this page-->
     <script src="{% static 'js/dashboard.js' %}"></script>
     <script src="{% static 'js/Chart.roundedBarCharts.js' %}"></script>
+    
     <!-- End custom js for this page-->
     {% block extra_js %}
     {% endblock %}

@@ -3,6 +3,10 @@
 Dashboard
 {% endblock %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
 <div class="col-12 grid-margin">
     <div class="card">
@@ -29,195 +33,286 @@ Dashboard
                 {% endif %}
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="mb-xl-4">Tipo de orden:</h3>
+                        <h3 class="mb-xl-4">Tipo de orden: {{ orden.order_type|title }}</h3>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-check form-check-success">
-                            <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="order_type" id="order_type"  value="carga" {% if orden.order_type == 'carga' %}checked{% endif %} disabled>
-                                Carga
-                            </label>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de Orden: {{ orden.id }}</div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-check form-check-success">
-                            <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="order_type" id="order_type" value="descarga" {% if orden.order_type == 'descarga' %}checked{% endif %} disabled>
-                                Descarga
-                            </label>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de Factura:
+                                {{ orden.number_invoice }}</div>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Unidad de medida:
+                                {{ orden.unit_measurement }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Nombre del Cliente:
+                                {{ orden.customer_name }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Producto:
+                                {% for product in orden.product.all %}
+                                {{ product.name }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Nombre del buque: {{ orden.buque_name }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Nombre del puerto: {{ orden.port_name }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-sm-12 col-form-label">Número del muelle: {{ orden.numero_muelle }}</label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="mt-xl-2 text-center mb-xl-4">Detalles de la operación</h2>
+                        <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número de Orden:  </label>
+                            <label class="col-sm-4 col-form-label">Clientes recibidores:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" readonly placeholder="00001" value="{{ orden.id }}">
+                                {{ form.receiving_customer }}
+                                <ul id="customer_list">
+                                    {% if orden.receiving_customer.all %}
+                                    {% for customer in orden.receiving_customer.all %}
+                                    <li>
+                                        <span>{{ customer.name }}
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li id="not_customer">
+                                        No hay clientes registrados
+                                    </li>
+                                    {% endif %}
+                                </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número de Factura:</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.number_invoice }}" readonly>
+                            <label class="col-sm-3 col-form-label">Bodegas:</label>
+                            <div class="col-sm-9">
+                                {{ form.Wineries }}
+                                <ul id="wineries_list">
+                                    {% if orden.Wineries.all %}
+                                    {% for winerie in orden.Wineries.all %}
+                                    <li>
+                                        <span>{{ winerie.number }}: {{ winerie.product.name }}; {{ winerie.weight }}
+                                            Toneladas
+                                            Métricas
+                                        </span>
+
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li id="not_winerie">
+                                        No hay bodegas registradas
+                                    </li>
+                                    {% endif %}
+                                </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Unidad de medida:</label>
-                            <div class="col-sm-8">
-                                <select class="form-control add-order" disabled>
-                                    <option selected>Toneladas Métricas</option>
+                            <label class="col-md-5 col-form-label">Nuevo cliente recibidor:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control add-order" placeholder="Cliente recibidor"
+                                    id="cliente_recibidor_input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-sm btn-primary" type="button"
+                                    id="cliente_recibidor_button">Añadir
+                                    Cliente recibidor</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group row">
+                            <label class="col-md-6 col-form-label">Producto:</label>
+                            <div class="col-sm-6">
+                                <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
+                                <select class="form-control add-order mt-xl-2" id="bodega_product">
+                                    {% for product in orden.product.all %}
+                                    <option value="{{ product.pk }}">{{ product.name }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del Cliente</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.customer_name }}" readonly>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control mt-xl-2" placeholder="Bodega Nueva"
+                                    id="bodega_nueva" style="padding-left:  10%; height: 68%;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control mt-xl-2" placeholder="Peso en bodega"
+                                    id="bodega_peso" style="padding-left:  10%; height: 68%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group row">
+                            <div class="col-sm-12 pt-xl-2">
+                                <button class="btn btn-sm btn-primary" type="button" id="bodega_nueva_button">Añadir
+                                    Bodega</button>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Cliente quien recibe</label>
+                            <label class="col-sm-4 col-form-label">Peso Bruto:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.receiving_customer }}" readonly>
+                                <input type="text" class="form-control add-order"
+                                    placeholder="Peso que trae el producto en el barco" name="gross_weight"
+                                    id="id_gross_weight" {% if orden.gross_weight %} value="{{ orden.gross_weight }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Producto</label>
+                            <label class="col-sm-4 col-form-label">Peso Neto:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.product }}" readonly>
+                                <input type="text" class="form-control add-order" name="net_weight" id="id_net_weight" {% if orden.net_weight %} value="{{ orden.net_weight }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del buque</label>
+                            <label class="col-sm-4 col-form-label">Peso de tara:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.buque_name }}" readonly>
+                                <input type="text" class="form-control add-order"
+                                    placeholder="pesada en la tara en toneladas métricas" name="tare_weight"
+                                    id="id_tare_weight" {% if orden.tare_weight %} value="{{ orden.tare_weight }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del puerto</label>
+                            <label class="col-sm-4 col-form-label">Pesada:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.port_name }}" readonly>
+                                <input type="text" class="form-control add-order" name="heavy" id="id_heavy" {% if orden.heavy %} value="{{ orden.heavy }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número del muelle</label>
+                            <label class="col-sm-4 col-form-label">Total de la pesada:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" value="{{ orden.numero_muelle }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="mb-xl-4">Pesada: </h3>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso Bruto</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order"
-                                    placeholder="Peso de la gandola sin la carga">
+                                <input type="text" class="form-control add-order" name="total_weighing"
+                                    id="id_total_weighing" {% if orden.total_weighing %} value="{{ orden.total_weighing }}" {% endif %} >
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso de tara</label>
+                            <label class="col-sm-4 col-form-label">Condición:</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order"
-                                    placeholder="pesada en la tara en toneladas métricas">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso Neto</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Pesada</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Condición</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Bodega</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order" placeholder="almacen donde se guardará la carga">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 1</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 2</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 3</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Destino 4</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="condition" id="id_condition" {% if orden.condition %} value="{{ orden.condition }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-md-12">
-                        <h3 class="mb-xl-4">Transporte: </h3>
+                        <h2 class="mt-xl-2 text-center mb-xl-4">Destino</h2>
+                        <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                <li>Añadir destinos</li>
+                            </label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control add-order" id="destino_input">
+                            </div>
+                            <div class="col-sm-5">
+                                <button class="btn btn-sm btn-primary mt-xl-1" type="button" id="destino_button">Añadir
+                                    Destino</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">
+                                <li>Lista de Destinos</li>
+                            </label>
+                            <div class="col-sm-8">
+                                {{ form.destinations }}
+                                <ul id="destinations_list" class="col-md-12">
+                                {% if orden.destinations.all %}
+                                    {% for destiny in orden.destinations.all %}
+                                    <li class="col-md-6" style="display: inline;">
+                                        <span class="ti-control-record"></span>{{ destiny.destiny }}
+                                    </li>
+                                    {% endfor %}
+                                    {% else %}
+                                    <li id="not_destiny">
+                                        No hay destinos registrados
+                                    </li>
+                                {% endif %}
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="mt-xl-2 text-center mb-xl-4">Transporte</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Peso:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control add-order" name="transport_weight"
+                                    id="id_transport_weight" {% if orden.transport_wight %} value="{{ orden.transport_wight }}" {% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Pesada:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control add-order" name="transport_heavy"
+                                    id="id_transport_heavy" {% if orden.transport_heavy %} value="{{ orden.transport_heavy }}" {% endif %} >
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Vehículo</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="vehicle" id="id_vehicle">
                             </div>
                         </div>
                     </div>
@@ -225,7 +320,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Placa</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="license_plate"
+                                    id="id_license_plate">
                             </div>
                         </div>
                     </div>
@@ -233,7 +329,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nombre del Chofer</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="driver_name"
+                                    id="id_driver_name">
                             </div>
                         </div>
                     </div>
@@ -243,7 +340,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Ficha</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="ficha" id="id_ficha">
                             </div>
                         </div>
                     </div>
@@ -251,7 +348,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">T.Muelle</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order">
                             </div>
                         </div>
                     </div>
@@ -259,7 +356,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Dirección</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                <textarea class="form-control" id="exampleTextarea1" rows="4" name="direction"
+                                    itemid="id_direction"></textarea>
                             </div>
                         </div>
                     </div>
@@ -267,7 +365,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Barco/ALM</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="boat_alm" id="id_boat_alm">
                             </div>
                         </div>
                     </div>
@@ -275,7 +373,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Puerto</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order">
                             </div>
                         </div>
                     </div>
@@ -283,7 +381,7 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Balanza</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="balance" id="id_balance">
                             </div>
                         </div>
                     </div>
@@ -291,23 +389,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Flete pagado por</label>
                             <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Sindicato</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso</label>
-                            <div class="col-sm-8">
-                                <input required type="text" class="form-control add-order">
+                                <input type="text" class="form-control add-order" name="freight_paid_by"
+                                    id="id_freight_paid_by">
                             </div>
                         </div>
                     </div>
@@ -315,20 +398,221 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Comentario</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                <textarea class="form-control" id="exampleTextarea1" rows="4" name="comment"
+                                    id="id_comment"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {% if redirect_field_value %}
-                <input required type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
                 <div class="text-right">
                     <button type="submit" class="btn btn-success">Guardar carga de orden</button>
                 </div>
+                <input type="hidden" name="user" id="id_user" value="{{ orden.user.id }}">
+                <input type="hidden" name="order_type" id="id_order_type" value="{{ orden.order_type }}">
+                <input type="hidden" name="order_number" id="id_order_number" value="{{ orden.order_number }}">
+                <input type="hidden" name="number_invoice" id="id_number_invoice" value="{{ orden.number_invoice }}">
+                <input type="hidden" name="unit_measurement" id="id_unit_measurement"
+                    value="{{ orden.unit_measurement }}">
+                <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}">
+                {{ form.product }}
+                <input type="hidden" name="buque_name" id="id_buque_name" value="{{ orden.buque_name }}">
+                <input type="hidden" name="port_name" id="id_port_name" value="{{ orden.port_name }}">
+                <input type="hidden" name="numero_muelle" id="id_numero_muelle" value="{{ orden.numero_muelle }}">
+                <input type="hidden" name="start_date" id="id_start_date" value="{{ orden.start_date }}">
             </form>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('#id_Wineries').css('display', 'none')
+    $('#id_product').css('display', 'none')
+    $('#id_destinations').css('display', 'none')
+    $('#id_receiving_customer').css('display', 'none')
+
+    $('#bodega_nueva').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            $.ajax({
+                data: {
+                    'transaccion': $('#id_order_number').val(),
+                    'bodega_nueva': $("#bodega_nueva").val(),
+                    'producto': $('#bodega_product').val(),
+                    'peso': $('#bodega_peso').val(),
+                },
+                url: "{% url 'transactions:add_wineries' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    $('#bodega_nueva').val('')
+                    $('#bodega_peso').val('')
+                    var val = data[0].pk
+                    var name = data[0].fields.number
+                    var product = data[1].fields.name
+                    var weight = data[0].fields.weight
+                    $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
+                    $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
+                    $('#not_winerie').css('display', 'none');
+                },
+            });
+        }
+    })
+
+    $('#bodega_peso').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            $.ajax({
+                data: {
+                    'transaccion': $('#id_order_number').val(),
+                    'bodega_nueva': $("#bodega_nueva").val(),
+                    'producto': $('#bodega_product').val(),
+                    'peso': $('#bodega_peso').val(),
+                },
+                url: "{% url 'transactions:add_wineries' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    $('#bodega_nueva').val('')
+                    $('#bodega_peso').val('')
+                    var val = data[0].pk
+                    var name = data[0].fields.number
+                    var product = data[1].fields.name
+                    var weight = data[0].fields.weight
+                    $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
+                    $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
+                    $('#not_winerie').css('display', 'none');
+                },
+            });
+        }
+    })
+
+    $('#bodega_nueva_button').on('click', function () {
+        event.preventDefault();
+        $.ajax({
+            data: {
+                'transaccion': $('#id_order_number').val(),
+                'bodega_nueva': $("#bodega_nueva").val(),
+                'producto': $('#bodega_product').val(),
+                'peso': $('#bodega_peso').val(),
+            },
+            url: "{% url 'transactions:add_wineries' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                $('#bodega_nueva').val('')
+                $('#bodega_peso').val('')
+                var val = data[0].pk
+                var name = data[0].fields.number
+                var product = data[1].fields.name
+                var weight = data[0].fields.weight
+                $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
+                $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
+                $('#not_winerie').css('display', 'none');
+            },
+        });
+    })
+
+    $('#destino_button').on('click', function () {
+        event.preventDefault();
+        $.ajax({
+            data: {
+                'destino': $('#destino_input').val(),
+            },
+            url: "{% url 'transactions:add_destinations' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                console.log(data)
+                $('#destino_input').val('')
+                var val = data[0].pk
+                var destiny = data[0].fields.destiny
+                $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
+                $("#destinations_list").append('<li  class="col-md-6" style="display: inline;"> <span class="ti-control-record"></span>' + destiny + '</li>');
+                $('#not_destiny').css('display', 'none');
+            },
+        });
+    })
+
+    $('#destino_input').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            $.ajax({
+                data: {
+                    'destino': $('#destino_input').val(),
+                },
+                url: "{% url 'transactions:add_destinations' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    console.log(data)
+                    $('#destino_input').val('')
+                    var val = data[0].pk
+                    var destiny = data[0].fields.destiny
+                    $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
+                    $("#destinations_list").append('<li><span>' + destiny + '</span></li>');
+                    $('#not_destiny').css('display', 'none');
+                },
+            });
+        }
+    })
+
+    $('#cliente_recibidor_button').on('click', function () {
+        event.preventDefault();
+        $.ajax({
+            data: {
+                'cliente': $('#cliente_recibidor_input').val(),
+            },
+            url: "{% url 'transactions:add_reciving_customers' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                console.log(data)
+                $('#cliente_recibidor_input').val('')
+                var val = data[0].pk
+                var name = data[0].fields.name
+                $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                $("#customer_list").append('<li>' + name + '</li>');
+                $('#not_customer').css('display', 'none');
+            },
+        });
+    })
+
+    $('#cliente_recibidor_input').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            $.ajax({
+                data: {
+                    'cliente': $('#cliente_recibidor_input').val(),
+                },
+                url: "{% url 'transactions:add_reciving_customers' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    console.log(data)
+                    $('#cliente_recibidor_input').val('')
+                    var val = data[0].pk
+                    var name = data[0].fields.name
+                    $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                    $("#customer_list").append('<li>' + name + '</li>');
+                    $('#not_customer').css('display', 'none');
+                },
+            });
+        }
+    })
+
+
+</script>
+<script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
+<script src="{% static 'vendors/select2/select2.min.js' %}"></script>
+
+<script src="{% static 'js/typeahead.js' %}"></script>
+<script src="{% static 'js/select2.js' %}"></script>
+
+
 {% endblock %}

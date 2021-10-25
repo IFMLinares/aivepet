@@ -3,13 +3,17 @@
 Dashboard
 {% endblock %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+{% endblock %}
 {% block content %}
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
             <h2 class="text-center">Registrar nueva orden de carga</h2>
             <p class="card-description text-center">
-                Información de carga:
+                Información de la operación:
             </p>
             <form class="form-sample" id="" method="post" action="">
                 {% csrf_token %}
@@ -29,110 +33,155 @@ Dashboard
                 {% endif %}
                 <!-- {{ form.as_p }} -->
                 <div class="row">
-                    <input type="hidden" class="form-control add-order" readonly placeholder="00001" name="user" id="id_user" value="{{ user.id }}">
+                    <input type="hidden" class="form-control add-order" readonly placeholder="00001" name="user"
+                        id="id_user" value="{{ user.id }}">
                     <div class="col-md-12">
-                        <h3 class="mb-xl-4">Tipo de orden:</h3>
+                        <h3 class="mb-xl-4">Por favor seleccione el tipo de orden:</h3>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-check form-check-success">
-                            <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="order_type" id="id_order_type" value="carga">
-                                Carga
-                            </label>
+                    <div class="row col-md-12" id="type_load">
+                        <div class="col-md-6">
+                            <div class="form-group form-check form-check-success ml-xl-3">
+                                <label class="form-check-label fs-35">
+                                    <span class="ti-upload"></span><input required type="radio" class="form-check-inpu"
+                                        name="order_type" id="id_order_type" value="carga">
+                                    Carga
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group form-check form-check-success">
-                            <label class="form-check-label">
-                                <input required type="radio" class="form-check-input" name="order_type" id="id_order_type" value="descarga">
-                                Descarga
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número de Orden:</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" readonly placeholder="00001">
+                        <div class="col-md-6">
+                            <div class="form-group form-check form-check-success ml-xl-3">
+                                <label class="form-check-label fs-35">
+                                    <span class="ti-download"></span><input required type="radio"
+                                        class="form-check-input" name="order_type" id="id_order_type" value="descarga">
+                                    Descarga
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número de Factura:</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="number" name="number_invoice" min="0" required id="id_number_invoice">
+                    <div class="col-md-7 d-none" id="info-load">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li> Nro de Orden:</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control add-order" readonly placeholder="00001">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Nro factura/Guía campo:</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input class="form-control add-order" type="number" name="number_invoice" min="0"
+                                        required id="id_number_invoice"
+                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        maxlength="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Nombre del Cliente</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input class="form-control add-order" type="text" name="customer_name"
+                                        maxlength="150" required id="id_customer_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Nombre del buque</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input class="form-control add-order" type="text" name="buque_name" maxlength="150"
+                                        required id="id_buque_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Nombre/Nro del puerto</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input class="form-control add-order" type="text" name="port_name" maxlength="150"
+                                        required id="id_port_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Nro/Color del muelle</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <input class="form-control add-order" type="number" name="numero_muelle" min="0"
+                                        required id="id_numero_muelle">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Producto</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <select class="add-order js-example-basic-multiple w-100" multiple
+                                        style="width: 100%;" name="product" id="id_product" required>
+                                        <option disabled>Ingrese Nuevos productos</option>
+                                    </select>
+                                    <div>
+                                        <input class="form-control add-order mt-xl-4" type="text" maxlength="150"
+                                            style="width:  50%; height: 38%!important; display: inline;" id="add_product">
+                                        <button class="btn btn-sm btn-primary" type="button" id="button_add_product">Añadir Producto</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-5 col-form-label">
+                                    <li>Unidad de volumen:</li>
+                                </label>
+                                <div class="col-sm-7">
+                                    <select class="form-control add-order" name="unit_measurement" required
+                                        id="id_unit_measurement">
+                                        <option selected value="toneladas métricas">Toneladas Métricas</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Unidad de medida:</label>
-                            <div class="col-sm-8">
-                                <select class="form-control add-order" name="unit_measurement" required id="id_unit_measurement">
-                                    <option selected value="toneladas métricas">Toneladas Métricas</option>
-                                </select>
+                    <div class="col-md-5 d-none" id="leyend-info-load">
+                        <div class="col-md-12 rounded border border-info h-75 d-inline-block mt-xl-5 leyend">
+                            <div class="text-center mt-xl-3">
+                                <h3>Leyenda de Información:</h3>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del Cliente</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="text" name="customer_name" maxlength="150" required id="id_customer_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Cliente quien recibe</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="text" name="receiving_customer" maxlength="150" required id="id_receiving_customer">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Producto</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="text" name="product" maxlength="150" required id="id_product">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del buque</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="text" name="buque_name" maxlength="150" required id="id_buque_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del puerto</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="text" name="port_name" maxlength="150" required id="id_port_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Número del muelle</label>
-                            <div class="col-sm-8">
-                                <input class="form-control add-order" type="number" name="numero_muelle" min="0" required id="id_numero_muelle">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group row float-right mr-xl-1">
                             {% if redirect_field_value %}
-                            <input required type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            <input required type="hidden" name="{{ redirect_field_name }}"
+                                value="{{ redirect_field_value }}" />
                             {% endif %}
-                            <div class="text-right mr-xl-4">
+                            <!-- <div class="text-right mr-xl-4">
                                 <button type="submit" class="btn btn-dark">Ver lista de órdenes</button>
-                            </div>
+                            </div> -->
                             <div class="text-right">
-                                <button type="submit" class="btn btn-success">Guardar carga de orden</button>
+                                <button type="submit" class="btn btn-success d-none" id="save-info">Guardar carga de
+                                    orden</button>
+                                <!-- <button type="button" class="btn btn-success" id="sig-info">Siguiente</button> -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#exampleModal" id="modal-button" disabled>
+                                    Confirmar orden
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -141,4 +190,77 @@ Dashboard
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmar Registro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-body"></h3>
+                <h4 class="text-center mt-3">¿Está usted seguro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="sig-info">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
+<script src="{% static 'vendors/select2/select2.min.js' %}"></script>
+
+<script src="{% static 'js/typeahead.js' %}"></script>
+<script src="{% static 'js/select2.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+    $('#add_product').keypress(function (e){
+        if(e.keyCode == 13){
+        event.preventDefault()
+            $.ajax({
+            data: {
+                'product': $("#add_product").val(),
+            },
+            url: "{% url 'transactions:add_product' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                $('#add_product').val('');
+                var val = data[0].pk;
+                var name = data[0].fields.name;
+                $('#id_product').append('<option selected value='+ val +'>'+ name +'</option>');
+            },
+        });
+        }
+    })
+
+    $('#button_add_product').on('click', function () {
+        event.preventDefault();
+        $.ajax({
+            data: {
+                'product': $("#add_product").val(),
+            },
+            url: "{% url 'transactions:add_product' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                console.log(data)
+                $('#add_product').val('');
+                var val = data[0].pk;
+                var name = data[0].fields.name;
+                $('#id_product').append('<option selected value='+ val +'>'+ name +'</option>');
+            },
+        });
+    })
+</script>
+
+
 {% endblock %}
