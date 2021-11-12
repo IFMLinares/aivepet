@@ -32,7 +32,7 @@ class ReceivingCustomer(models.Model):
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
     order_number = models.SlugField(max_length=200, blank=True, null=True)
-    order_type = models.CharField(max_length=150, verbose_name='unidad de medida', blank=True, null=True)
+    order_type = models.CharField(max_length=150, verbose_name='Tipo de orden', blank=True, null=True)
     number_invoice = models.PositiveIntegerField(verbose_name='Número de factura', unique=True , blank=True, null=True)
     unit_measurement = models.CharField(max_length=150, verbose_name='unidad de medida', blank=True, null=True)
     customer_name = models.CharField(max_length=150, verbose_name='Nombre del cliente', blank=True, null=True)
@@ -78,10 +78,8 @@ class NominalTransaccion(models.Model):
     buque_name = models.CharField(max_length=150, verbose_name='Nombre del buque', blank=True, null=True)
     product = models.ManyToManyField(Product, blank=True)
     state = models.CharField(max_length=150, verbose_name='Estado de la transaccion', blank=True, null=True)
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.order_number = slugify('{}'.format(self.pk))
         super(NominalTransaccion, self).save(*args,**kwargs)
-
-    def __str__ (self):
-        return self.pk
