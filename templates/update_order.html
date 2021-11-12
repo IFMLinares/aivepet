@@ -11,7 +11,7 @@ Dashboard
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h2 class="text-center">Registrar nueva orden de carga</h2>
+            <h2 class="text-center">Seguimiento de la orden de {{ orden.order_type }}</h2>
             <p class="card-description text-center">
                 Información de carga:
             </p>
@@ -31,34 +31,43 @@ Dashboard
                 </div>
                 {% endfor %}
                 {% endif %}
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-6 mt-xl-3">
                         <h3 class="mb-xl-4">Tipo de orden: {{ orden.order_type|title }}</h3>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Número de Orden: {{ orden.id }}</div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row" style="float: right;">
+                            <select class="form-control add-order mt-xl-2 mr-xl-3" id="id_state" name="state">
+                                <option value="Aceptado" {% if orden.state == 'Aceptado' %} selected {% endif %}>Aceptado</option>
+                                <option value="Nominado" {% if orden.state == Nominado %} selected {% endif %} disabled>Nominado</option>
+                                <option value="En operación" {% if orden.state == 'En operación' %} selected {% endif %}>En operación</option>
+                                <option value="Finalizado"  {% if orden.state == 'Finalizado' %} selected {% endif %}>Finalizado</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de Orden: 000{{ orden.id }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Número de Factura:
                                 {{ orden.number_invoice }}</div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Unidad de medida:
-                                {{ orden.unit_measurement }}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <label class="col-sm-12 col-form-label">Nombre del Cliente:
                                 {{ orden.customer_name }}</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Nombre del buque: {{ orden.buque_name }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Producto:
                                 {% for product in orden.product.all %}
@@ -67,31 +76,32 @@ Dashboard
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Nombre del buque: {{ orden.buque_name }}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del puerto: {{ orden.port_name }}</div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <label class="col-sm-12 col-form-label">Número del muelle: {{ orden.numero_muelle }}</label>
                         </div>
                     </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Unidad de medida:
+                                {{ orden.unit_measurement }}</div>
+                        </div>
+                    </div>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="row border border-secondary rounded ml-xl-1 mr-xl-1">
                     <div class="col-md-12">
-                        <h2 class="mt-xl-2 text-center mb-xl-4">Detalles de la operación</h2>
+                        <h2 class="mt-xl-2 text-center mb-xl-4">Actualización de la operación</h2>
                         <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Clientes recibidores:</label>
+                            <label class="col-sm-4 col-form-label">Clientes compradores:</label>
                             <div class="col-sm-8">
                                 {{ form.receiving_customer }}
                                 <ul id="customer_list">
@@ -138,9 +148,9 @@ Dashboard
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-md-5 col-form-label">Nuevo cliente recibidor:</label>
+                            <label class="col-md-5 col-form-label">Nuevo cliente comprador:</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control add-order" placeholder="Cliente recibidor"
+                                <input type="text" class="form-control add-order" placeholder="Cliente comprador"
                                     id="cliente_recibidor_input">
                             </div>
                         </div>
@@ -149,8 +159,7 @@ Dashboard
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <button class="btn btn-sm btn-primary" type="button"
-                                    id="cliente_recibidor_button">Añadir
-                                    Cliente recibidor</button>
+                                    id="cliente_recibidor_button">Añadir</button>
                             </div>
                         </div>
                     </div>
@@ -174,16 +183,28 @@ Dashboard
                                     id="bodega_nueva" style="padding-left:  10%; height: 68%;">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control mt-xl-2" placeholder="Peso en bodega"
-                                    id="bodega_peso" style="padding-left:  10%; height: 68%;">
+                                <input type="text" class="form-control mt-xl-2" placeholder="Peso" id="bodega_peso"
+                                    style="padding-left:  10%; height: 68%;">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group row">
                             <div class="col-sm-12 pt-xl-2">
-                                <button class="btn btn-sm btn-primary" type="button" id="bodega_nueva_button">Añadir
-                                    Bodega</button>
+                                <button class="btn btn-sm btn-primary" type="button"
+                                    id="bodega_nueva_button">Añadir</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Peso Neto:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control add-order" name="net_weight" id="id_net_weight"
+                                    {% if orden.net_weight %} value="{{ orden.net_weight }}" {% endif %} readonly>
+                            </div>
+                            <div class="col-sm-3 text-center">
+                                Toneladas Métricas
                             </div>
                         </div>
                     </div>
@@ -193,15 +214,8 @@ Dashboard
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order"
                                     placeholder="Peso que trae el producto en el barco" name="gross_weight"
-                                    id="id_gross_weight" {% if orden.gross_weight %} value="{{ orden.gross_weight }}" {% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso Neto:</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="net_weight" id="id_net_weight" {% if orden.net_weight %} value="{{ orden.net_weight }}" {% endif %}>
+                                    id="id_gross_weight" {% if orden.gross_weight %} value="{{ orden.gross_weight }}" {%
+                                    endif %}>
                             </div>
                         </div>
                     </div>
@@ -211,7 +225,8 @@ Dashboard
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order"
                                     placeholder="pesada en la tara en toneladas métricas" name="tare_weight"
-                                    id="id_tare_weight" {% if orden.tare_weight %} value="{{ orden.tare_weight }}" {% endif %}>
+                                    id="id_tare_weight" {% if orden.tare_weight %} value="{{ orden.tare_weight }}" {%
+                                    endif %}>
                             </div>
                         </div>
                     </div>
@@ -219,7 +234,8 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Pesada:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="heavy" id="id_heavy" {% if orden.heavy %} value="{{ orden.heavy }}" {% endif %}>
+                                <input type="text" class="form-control add-order" name="heavy" id="id_heavy" {% if
+                                    orden.heavy %} value="{{ orden.heavy }}" {% endif %}>
                             </div>
                         </div>
                     </div>
@@ -228,7 +244,8 @@ Dashboard
                             <label class="col-sm-4 col-form-label">Total de la pesada:</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order" name="total_weighing"
-                                    id="id_total_weighing" {% if orden.total_weighing %} value="{{ orden.total_weighing }}" {% endif %} >
+                                    id="id_total_weighing" {% if orden.total_weighing %}
+                                    value="{{ orden.total_weighing }}" {% endif %}>
                             </div>
                         </div>
                     </div>
@@ -236,28 +253,29 @@ Dashboard
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Condición:</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="condition" id="id_condition" {% if orden.condition %} value="{{ orden.condition }}" {% endif %}>
+                                <input type="text" class="form-control add-order" name="condition" id="id_condition" {%
+                                    if orden.condition %} value="{{ orden.condition }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="row border border-secondary rounded ml-xl-1 mr-xl-1">
                     <div class="col-md-12">
                         <h2 class="mt-xl-2 text-center mb-xl-4">Destino</h2>
                         <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                     </div>
                     <div class="col-md-12">
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">
-                                <li>Añadir destinos</li>
+                            <label class="col-sm-3 col-form-label">
+                                <li>Registrar destinos</li>
                             </label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control add-order" id="destino_input">
                             </div>
                             <div class="col-sm-5">
                                 <button class="btn btn-sm btn-primary mt-xl-1" type="button" id="destino_button">Añadir
-                                    Destino</button>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -269,7 +287,7 @@ Dashboard
                             <div class="col-sm-8">
                                 {{ form.destinations }}
                                 <ul id="destinations_list" class="col-md-12">
-                                {% if orden.destinations.all %}
+                                    {% if orden.destinations.all %}
                                     {% for destiny in orden.destinations.all %}
                                     <li class="col-md-6" style="display: inline;">
                                         <span class="ti-control-record"></span>{{ destiny.destiny }}
@@ -279,14 +297,14 @@ Dashboard
                                     <li id="not_destiny">
                                         No hay destinos registrados
                                     </li>
-                                {% endif %}
-                            </ul>
+                                    {% endif %}
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div class="row">
+                <div class="row border border-secondary rounded ml-xl-1 mr-xl-1">
                     <div class="col-md-12">
                         <h2 class="mt-xl-2 text-center mb-xl-4">Transporte</h2>
                     </div>
@@ -295,7 +313,8 @@ Dashboard
                             <label class="col-sm-4 col-form-label">Peso:</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order" name="transport_weight"
-                                    id="id_transport_weight" {% if orden.transport_wight %} value="{{ orden.transport_wight }}" {% endif %}>
+                                    id="id_transport_weight" {% if orden.transport_wight %}
+                                    value="{{ orden.transport_wight }}" {% endif %}>
                             </div>
                         </div>
                     </div>
@@ -304,13 +323,14 @@ Dashboard
                             <label class="col-sm-4 col-form-label">Pesada:</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order" name="transport_heavy"
-                                    id="id_transport_heavy" {% if orden.transport_heavy %} value="{{ orden.transport_heavy }}" {% endif %} >
+                                    id="id_transport_heavy" {% if orden.transport_heavy %}
+                                    value="{{ orden.transport_heavy }}" {% endif %}>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Vehículo</label>
+                            <label class="col-sm-4 col-form-label">Tipo de vehículo</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control add-order" name="vehicle" id="id_vehicle">
                             </div>
@@ -334,13 +354,12 @@ Dashboard
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Ficha</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="ficha" id="id_ficha">
+                                <input type="text" class="form-control add-order" name="ficha" id="id_ficha"
+                                    placeholder="orden que tiene el transportista">
                             </div>
                         </div>
                     </div>
@@ -408,8 +427,8 @@ Dashboard
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-                <div class="text-right">
-                    <button type="submit" class="btn btn-success">Guardar carga de orden</button>
+                <div class="text-right pt-xl-2">
+                    <button type="submit" class="btn btn-success">Actualizar orden</button>
                 </div>
                 <input type="hidden" name="user" id="id_user" value="{{ orden.user.id }}">
                 <input type="hidden" name="order_type" id="id_order_type" value="{{ orden.order_type }}">
@@ -431,6 +450,7 @@ Dashboard
 
 {% block extra_js %}
 <script>
+
     $('#id_Wineries').css('display', 'none')
     $('#id_product').css('display', 'none')
     $('#id_destinations').css('display', 'none')
@@ -514,6 +534,9 @@ Dashboard
                 $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
                 $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
                 $('#not_winerie').css('display', 'none');
+
+                var weight_act = Number($('#id_net_weight').val());
+                $('#id_net_weight').val(weight_act + Number(weight));
             },
         });
     })

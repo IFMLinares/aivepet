@@ -476,7 +476,7 @@
                             <span class="menu-title">Crear nueva orden</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
                             aria-controls="auth">
                             <i class="ti-truck menu-icon"></i>
@@ -497,6 +497,36 @@
                                 </li>
                             </ul>
                         </div>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:order_list_load' %}">
+                            <i class="ti-truck menu-icon"></i>
+                            <span class="menu-title">Órdenes de carga</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:order_list_download' %}">
+                            <i class="ti-truck menu-icon"></i>
+                            <span class="menu-title">Órdenes de descarga</span>
+                        </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:add_order_nominal' %}">
+                            <i class="ti-plus menu-icon"></i>
+                            <span class="menu-title text-center">Registrar barco <br> nominado</span>
+                        </a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:add_order_nominal' %}">
+                            <i class="ti-list menu-icon"></i>
+                            <span class="menu-title text-center">Registrar barco <br> nominado</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:order_list_nominal' %}">
+                            <i class="ti-list menu-icon"></i>
+                            <span class="menu-title">Barcos nominados</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
@@ -505,13 +535,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:dev' %}">
+                        <a class="nav-link" href="{% url 'transactions:product_list' %}">
                             <i class="ti-archive menu-icon"></i>
                             <span class="menu-title">Productos</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:dev' %}">
+                        <a class="nav-link" href="{% url 'transactions:customers_list' %}">
                             <i class="ti-user menu-icon"></i>
                             <span class="menu-title">Clientes</span>
                         </a>
@@ -534,6 +564,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{% url 'account_signup' %}">
                                         Nuevo usuario
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="collapse" id="users">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        Listado de usuarios
                                     </a>
                                 </li>
                             </ul>

@@ -1,0 +1,46 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Lista de ordenes
+{% endblock %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title">Lista de Clientes
+                </p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table id="order-datatable" class="display expandable-table" style="width:100%">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Clientes</th>
+                                        <!-- <th>Cliente</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for customer in customers %}
+                                    <tr class="text-center">
+                                        <td>{{ customer.customer_name }} </td>
+                                        <!-- <td>000{{ orden.id }}</td> -->
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+    $('#order-datatable').DataTable();
+} );
+</script>
+{% endblock %}

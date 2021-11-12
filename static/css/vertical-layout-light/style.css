@@ -30596,4 +30596,17 @@ div.tagsinput span.tag a {
   height: 60%;
 }
 
+.card-green{
+  background-color: #3e615e!important;
+  color: #fff;
+}
+
+.tableeee{
+  overflow-x: hidden;
+}
+
+.tx-12-5{
+  font-size: 12.5px!important;
+}
+
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

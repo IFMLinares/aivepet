@@ -8,14 +8,7 @@ Lista de ordenes
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                {% url 'transactions:order_list_download' as download_url %}
-                {% url 'transactions:order_list_load' as load_url %}
-                <p class="card-title">Lista de órdenes de
-                {% if request.path == load_url %}
-                    Carga
-                {% else %}
-                    Descarga
-                {% endif %}
+                <p class="card-title">Lista de órdenes de barcos nominados (En espera)
                 </p>
                 <div class="row">
                     <div class="col-12">
@@ -23,14 +16,12 @@ Lista de ordenes
                             <table id="order-datatable" class="display expandable-table" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Estado</th>
                                         <th>Nro. Orden</th>
-                                        <th>Nro. Factura</th>
+                                        <th>Origen</th>
                                         <th>Cliente</th>
                                         <th>Buque</th>
                                         <th>Producto</th>
                                         <th>Usuario</th>
-                                        <th>Ult Act.</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -38,17 +29,15 @@ Lista de ordenes
                                     {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr class="text-center">
-                                        <td>{{ orden.order_type }}</td>
                                         <td>000{{ orden.id }}</td>
-                                        <td>{{ orden.number_invoice }}</td>
+                                        <td>{{ orden.origin_order }}</td>
                                         <td>{{ orden.customer_name }}</td>
                                         <td>{{ orden.buque_name }}</td>
                                         <td>{% for product in orden.product.all %}
                                             {{ product.name }}.
                                             {% endfor %}</td>
                                         <td>{{ orden.user }}</td>
-                                        <td></td>
-                                        <td><a class="btn btn-success" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a></td>
+                                        <td><a class="btn btn-success disabled" href="#">Actualizar</a></td>
                                     </tr>
                                     {% endfor %}
                                     {% endif %}
