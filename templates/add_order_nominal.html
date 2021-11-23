@@ -96,7 +96,10 @@ Dashboard
                                     <label for="id_product">Lista de productos:</label>
                                     <select class="add-order js-example-basic-multiple w-100" multiple
                                         style="width: 100%;" name="product" id="id_product" required>
-                                        <option disabled>Ingrese Nuevos productos</option>
+                                        <option disabled>Ingrese arriba nuevos productos</option>
+                                        {% for q in query %}
+                                        <option value="{{ q.name }}">{{ q.name|title }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>

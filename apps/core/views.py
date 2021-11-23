@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.transactions.models import Transaction, NominalTransaccion
+from .models import User
 
 # Create your views here.
 
@@ -33,6 +34,12 @@ class Index(LoginRequiredMixin,ListView):
 
         context['totalFinshedToday'] = (self.model.objects.filter(state='Finalizado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
         return context
+
+class ListUser(LoginRequiredMixin, ListView):
+    model = User
+    fields = '__all__'
+    template_name = 'user_list.html'
+    context_object_name = 'user'
 
 class Developing(LoginRequiredMixin,TemplateView):
     template_name = 'developing.html'

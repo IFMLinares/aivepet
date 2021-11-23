@@ -38,17 +38,22 @@ Lista de ordenes
                                     {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr class="text-center">
-                                        <td>{{ orden.order_type }}</td>
+                                        <td>{{ orden.order_type|title }}</td>
                                         <td>000{{ orden.id }}</td>
                                         <td>{{ orden.number_invoice }}</td>
-                                        <td>{{ orden.customer_name }}</td>
+                                        <td>{{ orden.customer_name|title }}</td>
                                         <td>{{ orden.buque_name }}</td>
                                         <td>{% for product in orden.product.all %}
-                                            {{ product.name }}.
+                                            {{ product.name|title }}.
                                             {% endfor %}</td>
-                                        <td>{{ orden.user }}</td>
-                                        <td></td>
+                                        <td>{{ orden.user.username }}</td>
+                                        <td>{{ orden.act_date|date:'d/m/Y G:i' }}
+                                        </td>
+                                        {% if user.role != 'CL' %}
                                         <td><a class="btn btn-success" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a></td>
+                                        {% else %}
+                                        <td><a class="btn btn-success" href="">Ver</a></td>
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                     {% endif %}

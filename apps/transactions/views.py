@@ -42,6 +42,11 @@ class AddOrder(LoginRequiredMixin,CreateView):
     fields = '__all__'
     template_name = 'add_order.html'
     success_url = '/'
+    context_object_name = 'query'
+    def get_context_data(self, **kwargs):
+        ctx = super(AddOrder, self).get_context_data(**kwargs)
+        ctx['query'] = Product.objects.values('name').distinct().order_by('name')
+        return ctx
 
 # Listado de orden de carga
 class OrderListLoad(LoginRequiredMixin,ListView):
@@ -170,6 +175,11 @@ class AddOrderNominal(LoginRequiredMixin,CreateView):
     fields = '__all__'
     template_name = 'add_order_nominal.html'
     success_url = '/'
+    context_object_name = 'query'
+    def get_context_data(self, **kwargs):
+        ctx = super(AddOrderNominal, self).get_context_data(**kwargs)
+        ctx['query'] = Product.objects.values('name').distinct().order_by('name')
+        return ctx
 
 #  Lista de barcos nominados
 class NominalList(LoginRequiredMixin,ListView):

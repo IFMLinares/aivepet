@@ -1,11 +1,15 @@
 from django.db import models
+from django.db.models.fields import DateField
 from django.template.defaultfilters import slugify
 from django.conf import settings
+
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='Producto')
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     def __str__ (self):
         return self.name
 
@@ -13,17 +17,20 @@ class Winerie(models.Model):
     number = models.CharField(max_length=150, verbose_name='Bodega')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     weight = models.CharField(max_length=150, verbose_name='Bodega')
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     def __str__ (self):
         return self.number + self.weight
 
 class Destination(models.Model):
     destiny = models.CharField(max_length=150, verbose_name='Destino')
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__ (self):
         return self.destiny
 
 class ReceivingCustomer(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre del cliente recibidor', blank=True, null=True)
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__ (self):
         return self.name
@@ -42,6 +49,7 @@ class Transaction(models.Model):
     port_name = models.CharField(max_length=150, verbose_name='Nombre del puerto', blank=True, null=True)
     numero_muelle =  models.PositiveIntegerField(verbose_name='Número del muelle', blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    act_date = models.DateTimeField(auto_now=True, blank=True, null=True)
     Wineries = models.ManyToManyField(Winerie, blank=True)
     gross_weight = models.CharField(max_length=150, verbose_name='peso bruto', blank=True, null=True)
     net_weight = models.CharField(max_length=150, verbose_name='peso neto', blank=True, null=True)
@@ -62,6 +70,7 @@ class Transaction(models.Model):
     freight_paid_by = models.CharField(max_length=150, verbose_name='flete pagado por', blank=True, null=True)
     comment = models.CharField(max_length=150, verbose_name='comentario', blank=True, null=True)
     state = models.CharField(max_length=150, verbose_name='Estado de la transaccion', blank=True, null=True)
+    history = HistoricalRecords(inherit=True)
 
     def save(self, *args, **kwargs):
         self.order_number = slugify('{}'.format(self.pk))
@@ -79,6 +88,7 @@ class NominalTransaccion(models.Model):
     product = models.ManyToManyField(Product, blank=True)
     state = models.CharField(max_length=150, verbose_name='Estado de la transaccion', blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
         self.order_number = slugify('{}'.format(self.pk))

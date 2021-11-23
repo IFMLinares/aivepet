@@ -16,14 +16,18 @@ Lista de ordenes
                             <table id="order-datatable" class="display expandable-table" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Clientes</th>
+                                        <th>Id</th>
+                                        <th>Cliente</th>
+                                        <th>Fecha de adición</th>
                                         <!-- <th>Cliente</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for customer in customers %}
                                     <tr class="text-center">
+                                        <td>{{ customer.pk }} </td>
                                         <td>{{ customer.customer_name }} </td>
+                                        <td>{{ customer.start_date }} </td>
                                         <!-- <td>000{{ orden.id }}</td> -->
                                     </tr>
                                     {% endfor %}

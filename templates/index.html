@@ -54,6 +54,7 @@ Dashboard
             </div>
         </div>
     </div> -->
+    {% if user.role != 'CL' %}
     <div class="col-md-12 grid-margin transparent">
         <div class="mb-4">
             <h2 class="text-center">Resumen general de operaciones:</h2>
@@ -111,6 +112,7 @@ Dashboard
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 <div class="row">
     <div class="col-md-6 grid-margin stretch-card">

@@ -21,6 +21,3 @@ class User(AbstractUser):
         db_table = 'auth_user'
         verbose_name = "Usuario"
         verbose_name_plural = "Usuarios"
-
-    def __str__(self):
-        return self.role

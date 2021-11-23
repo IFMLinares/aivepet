@@ -5,6 +5,10 @@
 .fs-35{
     font-size: 35px!important;
 }
+
+.fs-20{
+    font-size: 20px!important;
+}
 .stats-span{
     display: block; 
     float: right;
