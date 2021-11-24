@@ -17,18 +17,36 @@ Lista de ordenes
                                 <thead>
                                     <tr class="text-center">
                                         <th>Id</th>
-                                        <th>Productos</th>
-                                        <th>Fecha de adición</th>
-                                        <!-- <th>Cliente</th> -->
+                                        <th>Nombre y apellido</th>
+                                        <th>Nombre de usuario</th>
+                                        <th>Email</th>
+                                        <th>Fecha de registro</th>
+                                        <th>Tlf</th>
+                                        <th>Rif</th>
+                                        <th>Rol</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for product in products %}
+                                    {% for user in users %}
                                     <tr class="text-center">
-                                        <td>{{ product.pk }} </td>
-                                        <td>{{ product.name }} </td>
-                                        <td>{{ product.start_date }} </td>
-                                        <!-- <td>000{{ orden.id }}</td> -->
+                                        <td>{{ user.pk }} </td>
+                                        <td>{{ user.first_name|title }} {{ user.last_name|title }}</td>
+                                        <td>{{ user.username }} </td>
+                                        <td>{{ user.email }} </td>
+                                        <td>{{ user.date_joined|date:"d/m/Y g:i:a" }} </td>
+                                        <td>{{ user.phone_number }} </td>
+                                        <td>{{ user.rif }} </td>
+                                        <td>
+                                            {% if user.role == 'AD' %}
+                                            Admin
+                                            {% elif user.role == 'CL' %}
+                                            Cliente
+                                            {% elif user.role == 'SU' %}
+                                            Supervisor
+                                            {% else %}
+                                            Operador
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

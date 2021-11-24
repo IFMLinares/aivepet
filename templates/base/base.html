@@ -492,12 +492,12 @@
                             <span class="menu-title">Barcos nominados</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
                             <i class="ti-package menu-icon"></i>
                             <span class="menu-title">Almacenes</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'transactions:product_list' %}">
                             <i class="ti-archive menu-icon"></i>
@@ -511,12 +511,12 @@
                         </a>
                     </li>
                     {% endif %}
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="{% url 'core:dev' %}">
                             <i class="ti-settings menu-icon"></i>
                             <span class="menu-title">Configuración</span>
                         </a>
-                    </li>
+                    </li> -->
                     {% if user.role != 'CL' %}
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#users" aria-expanded="false"
@@ -537,7 +537,7 @@
                         <div class="collapse" id="users">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{% url 'core:list_user' %}">
                                         Listado de usuarios
                                     </a>
                                 </li>

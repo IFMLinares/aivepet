@@ -37,8 +37,9 @@ Dashboard
                         <h3 class="mb-xl-4">Tipo de orden: {{ orden.order_type|title }}</h3>
                     </div>
                     <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row" style="float: right;">
-                            <select class="form-control add-order mt-xl-2 mr-xl-3" id="id_state" name="state">
+                        <div class="form-group row">
+                            <label for="id_state" class="mt-xl-4 mr-xl-3 ml-xl-3">Estado de la orden:</label>
+                            <select class="form-control add-order mt-xl-3 mr-xl-3" id="id_state" name="state" style="width: 50%;">
                                 <option value="Aceptado" {% if orden.state == 'Aceptado' %} selected {% endif %}>Aceptado
                                 </option>
                                 <option value="Nominado" {% if orden.state == Nominado %} selected {% endif %} disabled>
@@ -245,7 +246,7 @@ Dashboard
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li>Registrar destinos</li>
+                                        <li>Registrar destino</li>
                                     </label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control add-order" id="destino_input">
@@ -258,9 +259,113 @@ Dashboard
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                       <div class="border border-secondary rounded mt-xl-3">
+                            <div class="col-md-12">
+                                <h2 class="mt-xl-2 text-center mb-xl-4">Transporte</h2>
+                                <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li>Peso:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="transport_weight"
+                                            id="id_transport_weight" {% if orden.transport_wight %}
+                                            value="{{ orden.transport_wight }}" {% endif %}>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li>Pesada:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="transport_heavy"
+                                            id="id_transport_heavy" {% if orden.transport_heavy %}
+                                            value="{{ orden.transport_heavy }}" {% endif %}>
+                                    </div>
+                                </div> -->
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li>Tipo de vehículo:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="vehicle" id="id_vehicle">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Placa:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="license_plate"
+                                            id="id_license_plate">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Nombre del Chofer:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="driver_name"
+                                            id="id_driver_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Ficha:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="ficha" id="id_ficha"
+                                            placeholder="orden que tiene el transportista">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> T.Muelle:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Dirección:</li></label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="exampleTextarea1" rows="4" name="direction"
+                                            itemid="id_direction"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Barco/ALM:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="boat_alm" id="id_boat_alm">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Puerto:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Balanza:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="balance" id="id_balance">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Flete pagado por:</li></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control add-order" name="freight_paid_by"
+                                            id="id_freight_paid_by">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><li> Comentario:</li></label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="exampleTextarea1" rows="4" name="comment"
+                                            id="id_comment"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-sm btn-primary mt-xl-1" type="button" style="float: right;"
+                                            id="transport_add">Añadir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="col-md-12 rounded border border-info d-inline-block leyend">
+                        <div class="col-md-12 rounded border border-info d-inline-block leyend" style="height: 100%;">
                             <div class="text-center mt-xl-3">
                                 <h3>Resultado de la operación:</h3>
                             </div>
@@ -345,134 +450,44 @@ Dashboard
                                     <div class="col-md-12" style="margin-top: 0px;">
                                         <hr>
                                     </div>
+                                    <label class="col-sm-12 col-form-label mt-xl-3 text-center fs-20" style="padding-top: 0px;">
+                                        Transporte:
+                                    </label>
+                                    <div class="col-sm-12">
+                                        <ul id="transport_list" class="col-md-12" style="margin-bottom: 0px;">
+                                            {% if orden.transport.all %}
+                                            {% for trans in orden.transport.all %}
+                                            <li class="col-md-12">
+                                                <span>
+                                                    {{ trans.vehicle|title }} <br> Peso: {{ trans.transport_weight }}TM
+                                                    <br>
+                                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                    <br>
+                                                    {{ trans.license_plate|title }} <br>
+                                                    {{ trans.driver_name|title }} <br>
+                                                    {{ trans.ficha|title }} <br>
+                                                    {{ trans.direction|title }} <br>
+                                                    {{ trans.boat_alm|title }} <br>
+                                                    {{ trans.balance|title }} <br>
+                                                    {{ trans.freight_paid_by|title }} <br>
+                                                    {{ trans.comment|title }} <br>
+                                            </li>
+                                            {% endfor %}
+                                            {% else %}
+                                            <li id="not_transport">
+                                                No hay transportes registrados
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <li>Pesada: <span id="pesada">{{ orden.transport_heavy }}</span></li>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                </div>
-                <hr>
-                <div class="row border border-secondary rounded ml-xl-1 mr-xl-1">
-                    <div class="col-md-12">
-                        <h2 class="mt-xl-2 text-center mb-xl-4">Transporte</h2>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Peso:</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="transport_weight"
-                                    id="id_transport_weight" {% if orden.transport_wight %}
-                                    value="{{ orden.transport_wight }}" {% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Pesada:</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="transport_heavy"
-                                    id="id_transport_heavy" {% if orden.transport_heavy %}
-                                    value="{{ orden.transport_heavy }}" {% endif %}>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Tipo de vehículo</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="vehicle" id="id_vehicle">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Placa</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="license_plate"
-                                    id="id_license_plate">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nombre del Chofer</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="driver_name"
-                                    id="id_driver_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Ficha</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="ficha" id="id_ficha"
-                                    placeholder="orden que tiene el transportista">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">T.Muelle</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Dirección</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4" name="direction"
-                                    itemid="id_direction"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Barco/ALM</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="boat_alm" id="id_boat_alm">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Puerto</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Balanza</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="balance" id="id_balance">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Flete pagado por</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control add-order" name="freight_paid_by"
-                                    id="id_freight_paid_by">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Comentario</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="exampleTextarea1" rows="4" name="comment"
-                                    id="id_comment"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
@@ -487,9 +502,11 @@ Dashboard
                     value="{{ orden.unit_measurement }}">
                 <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}">
                 {{ form.product }}
+                {{ form.transport }}
                 <input type="hidden" name="buque_name" id="id_buque_name" value="{{ orden.buque_name }}">
                 <input type="hidden" name="port_name" id="id_port_name" value="{{ orden.port_name }}">
                 <input type="hidden" name="numero_muelle" id="id_numero_muelle" value="{{ orden.numero_muelle }}">
+                <input type="hidden" name="transport_heavy" id="id_transport_heavy" value="{{ orden.transport_heavy }}">
                 <input type="hidden" name="start_date" id="id_start_date" value="{{ orden.start_date }}">
             </form>
         </div>
@@ -504,6 +521,7 @@ Dashboard
     $('#id_product').css('display', 'none')
     $('#id_destinations').css('display', 'none')
     $('#id_receiving_customer').css('display', 'none')
+    $('#id_transport').css('display', 'none')
 
     $('#bodega_nueva').keypress(function (e) {
         if (e.keyCode == 13) {
@@ -676,6 +694,58 @@ Dashboard
                 },
             });
         }
+    })
+
+    $('#transport_add').on('click', function () {
+        event.preventDefault();
+        if($('#id_direction').val()){
+            var direction = $('#id_direction').val()
+        }else{
+            var direction = ''
+        }
+        if($('#id_comment').val()){
+            var comment = $('#id_comment').val()
+        }else{
+            var comment = ''
+        }
+        $.ajax({
+            data: {
+                'id_transport_weight': $('#id_transport_weight').val(),
+                'id_vehicle': $('#id_vehicle').val(),
+                'id_license_plate': $('#id_license_plate').val(),
+                'id_driver_name': $('#id_driver_name').val(),
+                'id_ficha': $('#id_ficha').val(),
+                'id_boat_alm': $('#id_boat_alm').val(),
+                'id_balance': $('#id_balance').val(),
+                'id_freight_paid_by': $('#id_freight_paid_by').val(),
+                'id_direction': direction,
+                'id_comment': comment,
+            },
+            url: "{% url 'transactions:add_transport' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                console.log(data)
+                // $('#cliente_recibidor_input').val('')
+                var val = data[0].pk
+                var id_vehicle = data[0].fields.id_vehicle
+                var transport_weight = data[0].fields.transport_weight
+                var start_date = data[0].fields.start_date
+                var license_plate = data[0].fields.license_plate
+                var driver_name = data[0].fields.driver_name
+                var ficha = data[0].fields.ficha
+                var direction = data[0].fields.direction
+                var boat_alm = data[0].fields.boat_alm
+                var balance = data[0].fields.balance
+                var freight_paid_by = data[0].fields.freight_paid_by
+                var comment = data[0].fields.comment
+                $('#id_transport_heavy').val(parseFloat($('#id_transport_heavy').val()) + parseFloat(transport_weight))
+                $('#pesada').text( $('#id_transport_heavy').val())
+                $('#id_transport').append('<option selected value=' + val + '> </option>');
+                $("#transport_list").append('<li>' + id_vehicle + '<br>Peso:' + transport_weight + '<br>Fecha de adición' + start_date + '<br>' + license_plate + '<br>'+ driver_name + '<br>' + ficha+ '<br>'+ direction + '<br>'+ boat_alm + '<br>'+ balance + '<br>'+ freight_paid_by + '<br>'+ comment  + '</li>');
+                $('#not_transport').css('display', 'none');
+            },
+        });
     })
 
 

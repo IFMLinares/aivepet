@@ -13,6 +13,9 @@ class Index(LoginRequiredMixin,ListView):
     template_name = 'index.html'
     context_object_name = 'ordenes'
 
+    def get_queryset(self):
+        return self.model.objects.all().order_by("start_date")
+
     def get_context_data(self,**kwargs):
         context = super(Index,self).get_context_data(**kwargs)
 
@@ -39,7 +42,7 @@ class ListUser(LoginRequiredMixin, ListView):
     model = User
     fields = '__all__'
     template_name = 'user_list.html'
-    context_object_name = 'user'
+    context_object_name = 'users'
 
 class Developing(LoginRequiredMixin,TemplateView):
     template_name = 'developing.html'

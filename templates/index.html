@@ -100,7 +100,7 @@ Dashboard
                 <div class="card bg-success text-white">
                     <div class="card-body">
                         <p class="mb-4"><b>Estadísticas del día</b></p>
-                        <p class="mb-2 fs-25">Arribaron: <span class="stats-span"></span></p>
+                        <!-- <p class="mb-2 fs-25">Arribaron: <span class="stats-span"></span></p> -->
                         <p class="mb-2 fs-25">En espera: <span class="stats-span">{{ nominalTransToday }}</span></p>
                         <!-- <p class="mb-2 fs-25">En descarga: <span class="stats-span">2</span></p> -->
                         <!-- <p class="mb-2 fs-25">En Carga: <span class="stats-span">2</span></p> -->
@@ -120,7 +120,7 @@ Dashboard
             <div class="card-body">
                 <p class="card-title mb-0">Barcos en operación de carga</p>
                 <div class="table-responsive tableeee">
-                    <table class="table table-striped table-borderless text-center">
+                    <table class="table table-striped table-borderless text-center" id="table-load">
                         <thead>
                             <tr>
                                 <th class="tx-12-5">Fecha</th>
@@ -174,7 +174,7 @@ Dashboard
             <div class="card-body">
                 <p class="card-title mb-0">Barcos en operación de descarga</p>
                 <div class="table-responsive tableeee">
-                    <table class="table table-striped table-borderless text-center">
+                    <table class="table table-striped table-borderless text-center" id="table-download">
                         <thead>
                             <tr>
                                 <th class="tx-12-5">Fecha</th>
@@ -213,4 +213,18 @@ Dashboard
 
 {% endblock %}
 {% block extra_js %}
+<script>
+    $(document).ready(function() {
+    $('#table-load').DataTable({
+        "searching": false,
+        "bLengthChange": false,
+        "order": [[ 0, "desc" ]]
+    });
+    $('#table-download').DataTable({
+        "searching": false,
+        "bLengthChange": false,
+        "order": [[ 0, "desc" ]]
+    });
+} );
+</script>
 {% endblock %}

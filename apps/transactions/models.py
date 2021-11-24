@@ -35,6 +35,23 @@ class ReceivingCustomer(models.Model):
     def __str__ (self):
         return self.name
 
+class Transport(models.Model):
+    transport_weight = models.CharField(max_length=150, verbose_name='peso del transporte', blank=True, null=True, default='0')
+    transport_heavy = models.CharField(max_length=150, verbose_name='Pesada del transporte', blank=True, null=True)
+    vehicle = models.CharField(max_length=150, verbose_name='vehículo', blank=True, null=True)
+    license_plate = models.CharField(max_length=150, verbose_name='placa', blank=True, null=True)
+    driver_name = models.CharField(max_length=150, verbose_name='nombre del conductor', blank=True, null=True)
+    ficha = models.CharField(max_length=150, verbose_name='ficha', blank=True, null=True)
+    direction = models.CharField(max_length=150, verbose_name='direccción', blank=True, null=True)
+    boat_alm = models.CharField(max_length=150, verbose_name='bote/alm', blank=True, null=True)
+    balance = models.CharField(max_length=150, verbose_name='balanza', blank=True, null=True)
+    freight_paid_by = models.CharField(max_length=150, verbose_name='flete pagado por', blank=True, null=True)
+    comment = models.CharField(max_length=150, verbose_name='comentario', blank=True, null=True)
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__ (self):
+        return self.vehicle
+
 # transaction model
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
@@ -58,17 +75,8 @@ class Transaction(models.Model):
     total_weighing = models.CharField(max_length=150, verbose_name='total de la pesada', blank=True, null=True)
     condition = models.CharField(max_length=150, verbose_name='condición', blank=True, null=True)
     destinations = models.ManyToManyField(Destination, blank=True)
-    transport_weight = models.CharField(max_length=150, verbose_name='peso del transporte', blank=True, null=True)
-    transport_heavy = models.CharField(max_length=150, verbose_name='Pesada del transporte', blank=True, null=True)
-    vehicle = models.CharField(max_length=150, verbose_name='vehículo', blank=True, null=True)
-    license_plate = models.CharField(max_length=150, verbose_name='placa', blank=True, null=True)
-    driver_name = models.CharField(max_length=150, verbose_name='nombre del conductor', blank=True, null=True)
-    ficha = models.CharField(max_length=150, verbose_name='ficha', blank=True, null=True)
-    direction = models.CharField(max_length=150, verbose_name='direccción', blank=True, null=True)
-    boat_alm = models.CharField(max_length=150, verbose_name='bote/alm', blank=True, null=True)
-    balance = models.CharField(max_length=150, verbose_name='balanza', blank=True, null=True)
-    freight_paid_by = models.CharField(max_length=150, verbose_name='flete pagado por', blank=True, null=True)
-    comment = models.CharField(max_length=150, verbose_name='comentario', blank=True, null=True)
+    transport =models.ManyToManyField(Transport, blank=True)
+    transport_heavy = models.CharField(max_length=150, verbose_name='pesada transporte', blank=True, null=True)
     state = models.CharField(max_length=150, verbose_name='Estado de la transaccion', blank=True, null=True)
     history = HistoricalRecords(inherit=True)
 

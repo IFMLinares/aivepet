@@ -23,13 +23,14 @@ Lista de ordenes
                             <table id="order-datatable" class="display expandable-table" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Estado</th>
+                                        <th>Tipo</th>
                                         <th>Nro. Orden</th>
                                         <th>Nro. Factura</th>
                                         <th>Cliente</th>
                                         <th>Buque</th>
                                         <th>Producto</th>
                                         <th>Usuario</th>
+                                        <th>Fecha inicio.</th>
                                         <th>Ult Act.</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -47,6 +48,8 @@ Lista de ordenes
                                             {{ product.name|title }}.
                                             {% endfor %}</td>
                                         <td>{{ orden.user.username }}</td>
+                                        <td>{{ orden.start_date|date:'d/m/Y G:i' }}
+                                        </td>
                                         <td>{{ orden.act_date|date:'d/m/Y G:i' }}
                                         </td>
                                         {% if user.role != 'CL' %}
@@ -70,7 +73,9 @@ Lista de ordenes
 {% block extra_js %}
 <script>
     $(document).ready(function() {
-    $('#order-datatable').DataTable();
+    $('#order-datatable').DataTable({
+        "order": [[ 7, "desc" ]]
+    });
 } );
 </script>
 {% endblock %}

@@ -98,7 +98,7 @@ Dashboard
                                         style="width: 100%;" name="product" id="id_product" required>
                                         <option disabled>Ingrese arriba nuevos productos</option>
                                         {% for q in query %}
-                                        <option value="{{ q.name }}">{{ q.name|title }}</option>
+                                        <option value="{{ q.pk }}">{{ q.name|title }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

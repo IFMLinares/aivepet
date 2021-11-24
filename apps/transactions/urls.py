@@ -15,6 +15,7 @@ urlpatterns = [
     path('add-reciving-customers', ReceivingCustomerAdd.as_view(), name='add_reciving_customers'),
     path('product-list', OrderListProducts.as_view(), name='product_list'),
     path('customers-list', OrderListCustomers.as_view(), name='customers_list'),
+    path('add-transport', TransportAdd.as_view(), name='add_transport'),
 
     #URL PARA LAS VISTAS DE BARCOS NOMINADOS (NOMINAL TRANSACCIONS)
     path('add-nominal', AddOrderNominal.as_view(), name='add_order_nominal'),

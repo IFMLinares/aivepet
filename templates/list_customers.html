@@ -44,7 +44,9 @@ Lista de ordenes
 {% block extra_js %}
 <script>
     $(document).ready(function() {
-    $('#order-datatable').DataTable();
+    $('#order-datatable').DataTable({
+        "order": [[ 6, "desc" ]]
+    });
 } );
 </script>
 {% endblock %}

@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from apps.transactions.models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion
+from apps.transactions.models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport
 
 # Create your views here.
 
@@ -45,7 +45,7 @@ class AddOrder(LoginRequiredMixin,CreateView):
     context_object_name = 'query'
     def get_context_data(self, **kwargs):
         ctx = super(AddOrder, self).get_context_data(**kwargs)
-        ctx['query'] = Product.objects.values('name').distinct().order_by('name')
+        ctx['query'] = Product.objects.values('name', 'pk').distinct().order_by('name')
         return ctx
 
 # Listado de orden de carga
@@ -149,6 +149,35 @@ class DestinationAdd(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         destination = self.model.objects.create(destiny=self.request.POST['destino'])
         query = self.model.objects.get(pk=destination.pk)
+        data = serialize('json', [query,])
+        return HttpResponse(data, 'application/json')
+
+# Vista para añadir internamente los transportes (no visible para el usuario, solo para registro de datos)
+class TransportAdd(LoginRequiredMixin, CreateView):
+    model = Transport
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        trans = self.request.POST
+        transport = self.model.objects.create(
+            transport_weight= trans['id_transport_weight'],
+            vehicle= trans['id_vehicle'],
+            license_plate= trans['id_license_plate'],
+            driver_name= trans['id_driver_name'],
+            ficha= trans['id_ficha'],
+            direction= trans['id_direction'],
+            boat_alm= trans['id_boat_alm'],
+            balance= trans['id_balance'],
+            freight_paid_by= trans['id_freight_paid_by'],
+            comment= trans['id_comment'],
+            )
+        query = self.model.objects.get(pk=transport.pk)
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
 
