@@ -26230,7 +26230,7 @@ body.avgrund-active {
 }
 
 .expandable-table thead tr th {
-  background: #3e615e;
+  background: #57B657;
   padding: 10px;
   color: #ffffff;
   font-size: 14px;
@@ -28836,12 +28836,12 @@ div.tagsinput span.tag a {
 }
 
 .navbar .navbar-menu-wrapper {
-  background: #ffffff;
+  background: #57B657;
   transition: width 0.25s ease;
   -webkit-transition: width 0.25s ease;
   -moz-transition: width 0.25s ease;
   -ms-transition: width 0.25s ease;
-  color: #6C7383;
+  color: #fff;
   padding-right: 2.375rem;
   padding-left: 2.375rem;
   width: calc(100% - 235px);
@@ -30607,6 +30607,10 @@ div.tagsinput span.tag a {
 
 .tx-12-5{
   font-size: 12.5px!important;
+}
+
+#navbar-search-input::placeholder{
+  color: white;
 }
 
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

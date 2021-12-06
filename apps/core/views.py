@@ -1,7 +1,8 @@
 import datetime
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from apps.transactions.models import Transaction, NominalTransaccion
 from .models import User
 
@@ -32,10 +33,12 @@ class Index(LoginRequiredMixin,ListView):
         context['nominalTrans'] = (NominalTransaccion.objects.filter(state='En espera')).count()
         context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='En espera', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
 
-        context['acepted'] = context['load'] + context['unload']
-        context['total'] = context['load'] + context['unload'] + context['nominalTrans']
+        context['acepted'] = (NominalTransaccion.objects.filter(state='Aceptado')).count()
+        context['total'] = context['acepted'] + context['nominalTrans']
 
         context['totalFinshedToday'] = (self.model.objects.filter(state='Finalizado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
+
+        context['totalToday'] = context['totalFinshedToday'] + context['nominalTransToday']
         return context
 
 class ListUser(LoginRequiredMixin, ListView):
@@ -43,6 +46,13 @@ class ListUser(LoginRequiredMixin, ListView):
     fields = '__all__'
     template_name = 'user_list.html'
     context_object_name = 'users'
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    success_url = reverse_lazy('core:list_user')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 class Developing(LoginRequiredMixin,TemplateView):
     template_name = 'developing.html'

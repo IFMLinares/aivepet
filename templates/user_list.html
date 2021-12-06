@@ -17,37 +17,47 @@ Lista de ordenes
                                 <thead>
                                     <tr class="text-center">
                                         <th>Id</th>
-                                        <th>Nombre y apellido</th>
-                                        <th>Nombre de usuario</th>
+                                        <th>DNI</th>
+                                        <th>Empresa</th>
+                                        <th>Dirección</th>
+                                        <th>Nombre</th>
+                                        <!-- <th>Usuario</th> -->
                                         <th>Email</th>
-                                        <th>Fecha de registro</th>
                                         <th>Tlf</th>
                                         <th>Rif</th>
-                                        <th>Rol</th>
+                                        <!-- <th>Rol</th> -->
+                                        <th>Fecha de registro</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for user in users %}
-                                    <tr class="text-center">
-                                        <td>{{ user.pk }} </td>
-                                        <td>{{ user.first_name|title }} {{ user.last_name|title }}</td>
-                                        <td>{{ user.username }} </td>
-                                        <td>{{ user.email }} </td>
-                                        <td>{{ user.date_joined|date:"d/m/Y g:i:a" }} </td>
-                                        <td>{{ user.phone_number }} </td>
-                                        <td>{{ user.rif }} </td>
-                                        <td>
-                                            {% if user.role == 'AD' %}
-                                            Admin
-                                            {% elif user.role == 'CL' %}
-                                            Cliente
-                                            {% elif user.role == 'SU' %}
-                                            Supervisor
-                                            {% else %}
-                                            Operador
-                                            {% endif %}
-                                        </td>
-                                    </tr>
+                                        {% if user.role == 'CL' %}
+                                        <tr class="text-center">
+                                            <td>{{ user.pk }} </td>
+                                            <td>{{ user.rif }}</td>
+                                            <td>{{ user.company_name }}</td>
+                                            <td>{{ user.direction }}</td>
+                                            <td>{{ user.first_name|title }} {{ user.last_name|title }}</td>
+                                            <!-- <td>{{ user.username }} </td> -->
+                                            <td>{{ user.email }} </td>
+                                            <td>{{ user.phone_number }} </td>
+                                            <td>{{ user.rif }} </td>
+                                            <!-- <td>
+                                                {% if user.role == 'AD' %}
+                                                Admin
+                                                {% elif user.role == 'CL' %}
+                                                Cliente
+                                                {% elif user.role == 'SU' %}
+                                                Supervisor
+                                                {% else %}
+                                                Operador
+                                                {% endif %}
+                                            </td> -->
+                                            <td>{{ user.date_joined|date:"d/m/Y g:i:a" }} </td>
+                                            <td><a class="btn btn-danger" href="{% url 'core:delete_user' pk=user.pk %}">Eliminar</a></td>
+                                        </tr>
+                                        {% endif %}
                                     {% endfor %}
                                 </tbody>
                             </table>

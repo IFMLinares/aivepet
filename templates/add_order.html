@@ -89,8 +89,15 @@ Dashboard
                                     <li>Nombre del Cliente</li>
                                 </label>
                                 <div class="col-sm-7">
-                                    <input class="form-control add-order" type="text" name="customer_name"
-                                        maxlength="150" required id="id_customer_name">
+                                        <select class="add-order js-example-basic custom-select w-100"
+                                        style="width: 100%;" name="customer_name" id="id_customer_name" required>
+                                        <option disabled selected>Seleccione el cliente previamente registrado</option>
+                                        {% for q in users %}
+                                        {% if q.role == 'CL' %}
+                                        <option value="{{ q.pk }}">{{ q.first_name|title }} {{ q.last_name|title }}. Empresa: {{ q.company_name|title }}</option>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +129,7 @@ Dashboard
                                     <li>Nro/Color del muelle</li>
                                 </label>
                                 <div class="col-sm-7">
-                                    <input class="form-control add-order" type="number" name="numero_muelle" min="0"
+                                    <input class="form-control add-order" type="text" name="numero_muelle" min="0"
                                         required id="id_numero_muelle">
                                 </div>
                             </div>
@@ -137,7 +144,7 @@ Dashboard
                                         <input class="form-control add-order mt-xl-4" type="text" maxlength="150"
                                             style="width:  50%; height: 38%!important; display: inline;"
                                             id="add_product">
-                                        <button class="btn btn-sm btn-primary" type="button"
+                                        <button class="btn btn-sm btn-success" type="button"
                                             id="button_add_product">Añadir Producto</button>
                                     </div>
                                     <label for="id_product" class="mt-xl-2">Lista de productos:</label>

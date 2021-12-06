@@ -63,11 +63,11 @@ Dashboard
             <div class="col-md-3 mb-4 stretch-card transparent">
                 <div class="card card-green">
                     <div class="card-body">
-                        <p class="mb-3"><b>Barcos Nominados</b></p>
+                        <p class="mb-4"><b>Barcos Nominados</b></p>
                         <p class="mb-2 fs-25">Nominados: <span class="stats-span">{{ nominalTrans }}</span></p>
-                        <br>
                         <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ acepted }}</span></p>
                         <!-- <p class="mb-2 fs-25">En espera: <span class="stats-span"></span></p> -->
+                        <br>
                         <p class="fs-25">Total: <span class="stats-span">{{ total }}</span></p>
                     </div>
                 </div>
@@ -106,7 +106,8 @@ Dashboard
                         <!-- <p class="mb-2 fs-25">En Carga: <span class="stats-span">2</span></p> -->
                         <p class="mb-2 fs-25">Finalizados: <span class="stats-span">
                             {{ totalFinshedToday }}</span></p>
-                        <p class="fs-25">Total: <span class="stats-span"></span></p>
+                        <br>
+                        <p class="fs-25">Total:<span class="stats-span">{{ totalToday }}</span></p>
                     </div>
                 </div>
             </div>
@@ -137,12 +138,20 @@ Dashboard
                                 <td>{{ orden.number_invoice }}</td>
                                 <td class="font-weight-bold">
                                     <div
-                                        class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% endif %}">
+                                        class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
                                         {{ orden.state }}</div>
                                 </td>
-                                <td class="font-weight-medium"><a
-                                        href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span></a></td>
+                                <td class="font-weight-medium">
+                                    {% if user.role == 'CL' %}
+                                    <a href=""
+                                        class="btn btn-info btn-sm">Ver
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'transactions:update_order' pk=orden.pk %}"
+                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                    </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -191,12 +200,20 @@ Dashboard
                                 <td>{{ orden.number_invoice }}</td>
                                 <td class="font-weight-bold">
                                     <div
-                                        class="badge {% if orden.state == 'En operación' %} badge-success  {% endif %}">
+                                        class="badge {% if orden.state == 'En operación' %} badge-success {% elif  orden.state == 'Aceptado'  %}badge-info {% endif %}">
                                         {{ orden.state }}</div>
                                 </td>
-                                <td class="font-weight-medium"><a
-                                        href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span></a></td>
+                                <td class="font-weight-medium">
+                                    {% if user.role == 'CL' %}
+                                    <a href=""
+                                        class="btn btn-info btn-sm">Ver
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'transactions:update_order' pk=orden.pk %}"
+                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                    </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                             {% else %}
                             {% endif %}

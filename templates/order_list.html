@@ -23,7 +23,7 @@ Lista de ordenes
                             <table id="order-datatable" class="display expandable-table" style="width:100%">
                                 <thead>
                                     <tr class="text-center">
-                                        <th>Tipo</th>
+                                        <!-- <th>Tipo</th> -->
                                         <th>Nro. Orden</th>
                                         <th>Nro. Factura</th>
                                         <th>Cliente</th>
@@ -32,6 +32,7 @@ Lista de ordenes
                                         <th>Usuario</th>
                                         <th>Fecha inicio.</th>
                                         <th>Ult Act.</th>
+                                        <th>Nro Act.</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -39,7 +40,7 @@ Lista de ordenes
                                     {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr class="text-center">
-                                        <td>{{ orden.order_type|title }}</td>
+                                        <!-- <td>{{ orden.order_type|title }}</td> -->
                                         <td>000{{ orden.id }}</td>
                                         <td>{{ orden.number_invoice }}</td>
                                         <td>{{ orden.customer_name|title }}</td>
@@ -52,10 +53,18 @@ Lista de ordenes
                                         </td>
                                         <td>{{ orden.act_date|date:'d/m/Y G:i' }}
                                         </td>
+                                        <td>{{ orden.history.all|length }}
+                                        </td>
                                         {% if user.role != 'CL' %}
-                                        <td><a class="btn btn-success" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a></td>
+                                            <td>
+                                                <a class="btn btn-info" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
+                                                <br>
+                                                <a class="btn btn-secondary mt-xl-1" onclick="mostrar()">Ver act</a>
+                                            </td>
                                         {% else %}
-                                        <td><a class="btn btn-success" href="">Ver</a></td>
+                                            <td>
+                                                <a class="btn btn-success" href="">Ver</a>
+                                            </td>
                                         {% endif %}
                                     </tr>
                                     {% endfor %}
@@ -76,6 +85,9 @@ Lista de ordenes
     $('#order-datatable').DataTable({
         "order": [[ 7, "desc" ]]
     });
-} );
+    } );
+    function mostrar(){
+        event.preventDefault();
+    }
 </script>
 {% endblock %}

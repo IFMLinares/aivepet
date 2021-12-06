@@ -20,4 +20,7 @@ urlpatterns = [
     #URL PARA LAS VISTAS DE BARCOS NOMINADOS (NOMINAL TRANSACCIONS)
     path('add-nominal', AddOrderNominal.as_view(), name='add_order_nominal'),
     path('list_nominal', NominalList.as_view(), name='order_list_nominal'),
+    path('delete_nominal/<int:pk>', NominalTransactionDelete.as_view(), name='delete_nominal_trans'),
+    path('acepted_nominal/<int:pk>', NominalTransAcepted, name='acepted_nominal_trans'),
+    path('detail_nominal/<int:pk>', NominalTransactionDetail.as_view(), name='detail_nominal'),
 ]

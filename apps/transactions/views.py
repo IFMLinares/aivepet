@@ -2,11 +2,13 @@
 from django.core.serializers import serialize
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, CreateView, ListView, UpdateView
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from apps.transactions.models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport
+from django.shortcuts import render, redirect
+from .models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport
+from apps.core.models import User
 
 # Create your views here.
 
@@ -46,6 +48,10 @@ class AddOrder(LoginRequiredMixin,CreateView):
     def get_context_data(self, **kwargs):
         ctx = super(AddOrder, self).get_context_data(**kwargs)
         ctx['query'] = Product.objects.values('name', 'pk').distinct().order_by('name')
+        try:
+            ctx['users'] = User.objects.all()
+        except:
+            pass
         return ctx
 
 # Listado de orden de carga
@@ -108,11 +114,11 @@ class WineriesAdd(LoginRequiredMixin, CreateView):
         peso = self.request.POST['peso']
         orden = self.request.POST['transaccion']
         winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto))
-        trans = Transaction.objects.get(order_number=orden)
-        trans.Wineries.add(winerie)
-        net_weight = trans.net_weight
-        trans.net_weight = net_weight
-        trans.save()
+        # trans = Transaction.objects.get(order_number=orden)
+        # trans.Wineries.add(winerie)
+        # net_weight = trans.net_weight
+        # trans.net_weight = net_weight
+        # trans.save()
         query = Winerie.objects.get(pk=winerie.pk)
         producto = Product.objects.get(pk=query.product.pk)
         data = serialize('json', [query,producto])
@@ -147,7 +153,13 @@ class DestinationAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
-        destination = self.model.objects.create(destiny=self.request.POST['destino'])
+        customer = ReceivingCustomer.objects.get(pk=self.request.POST['customer'])
+        product =  Product.objects.get(pk=self.request.POST['product'])
+        destination = self.model.objects.create(
+            destiny=self.request.POST['destino'],
+            customer_name = customer,
+        )
+        destination.product.add(product)
         query = self.model.objects.get(pk=destination.pk)
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
@@ -193,7 +205,11 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
-        cliente = self.model.objects.create(name=self.request.POST['cliente'])
+        cliente = self.model.objects.create(
+            company_name=self.request.POST['empresa'],
+            name=self.request.POST['cliente'],
+            dni=self.request.POST['dni'],
+            )
         query = self.model.objects.get(pk=cliente.pk)
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
@@ -207,7 +223,11 @@ class AddOrderNominal(LoginRequiredMixin,CreateView):
     context_object_name = 'query'
     def get_context_data(self, **kwargs):
         ctx = super(AddOrderNominal, self).get_context_data(**kwargs)
-        ctx['query'] = Product.objects.values('name').distinct().order_by('name')
+        ctx['products'] = Product.objects.values('name', 'pk').distinct().order_by('name')
+        try:
+            ctx['users'] = User.objects.all()
+        except:
+            pass
         return ctx
 
 #  Lista de barcos nominados
@@ -216,3 +236,44 @@ class NominalList(LoginRequiredMixin,ListView):
     # fields = '__all__'
     template_name = 'list_nominal.html'
     context_object_name = 'ordenes'
+
+class NominalTransactionDelete(DeleteView):
+    model = NominalTransaccion
+    success_url = reverse_lazy('transactions:order_list_nominal')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+class NominalTransactionDetail(LoginRequiredMixin,DeleteView):
+    model = NominalTransaccion
+    template_name = 'detail_nominal.html'
+    context_object_name = 'orden'
+
+
+def NominalTransAcepted(request, pk):
+    nominal = NominalTransaccion.objects.filter(pk=pk)[0]
+    nominal.state = 'Aceptado'
+    nominal.save()
+
+    transaction = Transaction(
+        user = nominal.user,
+        order_number = nominal.order_number,
+        order_type = nominal.order_type,
+        number_invoice = nominal.number_invoice,
+        unit_measurement = nominal.unit_measurement,
+        buque_name = nominal.buque_name,
+        port_name = nominal.port_name,
+        numero_muelle = nominal.numero_muelle,
+        start_date = nominal.start_date,
+        state = nominal.state,
+        customer_name = nominal.customer_name
+    )
+    product = nominal.product
+    # customer_name = nominal.customer_name
+    # product = Product.objects.get(pk=nominal.product.pk)
+    # transaction.customer_name.add(customer_name)
+    transaction.save()
+    for p in nominal.product.all():
+        transaction.product.add(p)
+    transaction.save()
+    return redirect('transactions:order_list_nominal')
