@@ -139,9 +139,17 @@ Dashboard
                                 <div class="col-md-8">
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">Rif/Cédula:</label>
-                                        <div class="col-sm-7">
+                                        <div class="col-sm-3">
+                                            <select class="custom-select add-order" id="cliente_recibidor_tipdoc">
+                                                <option value="V">V</option>
+                                                <option value="E">E</option>
+                                                <option value="J">V</option>
+                                                <option value="G">G</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-5">
                                             <input type="text" class="form-control add-order"
-                                                placeholder="Cliente comprador" id="cliente_recibidor_dni">
+                                                placeholder="Rif/CI" id="cliente_recibidor_dni">
                                         </div>
                                     </div>
                                 </div>
@@ -412,7 +420,7 @@ Dashboard
                                     </label>
                                     <div class="col-sm-8">
                                         <textarea class="form-control" id="exampleTextarea1" rows="4" name="direction"
-                                            itemid="id_direction"></textarea>
+                                        ></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -429,8 +437,7 @@ Dashboard
                                         <li> Comentario:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <textarea class="form-control" id="exampleTextarea1" rows="4" name="comment"
-                                            id="id_comment"></textarea>
+                                        <textarea class="form-control" id="exampleTextarea2" rows="4" name="comment"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -439,8 +446,7 @@ Dashboard
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="transport_weight"
-                                            id="id_transport_weight" {% if orden.transport_wight %}
-                                            value="{{ orden.transport_wight }}" {% endif %}>
+                                            id="id_transport_weight">
                                     </div>
                                 </div>
                                 <!-- <div class="form-group row">
@@ -457,7 +463,7 @@ Dashboard
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="balance"
-                                            id="id_balance">
+                                            id="id_balance" placeholder="TONELADAS METRICAS">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -487,7 +493,7 @@ Dashboard
                                             <li>
                                                 <span>Empresa:{{ customer.company_name }} <br>
                                                     Responsable: {{ customer.name }} <br>
-                                                    DNI: {{ customer.dni }} <br>
+                                                    {{ customer.tipdoc }}: {{ customer.dni }} <br>
                                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }}
                                                 </span>
                                             </li>
@@ -523,19 +529,19 @@ Dashboard
                                         {{ form.Wineries }}
                                         <ul id="wineries_list" style="margin-bottom: 0px;">
                                             {% if orden.Wineries.all %}
-                                            {% for winerie in orden.Wineries.all %}
-                                            <li>
-                                                <span>{{ winerie.product.name|title }}; {{ winerie.number|title }}:
-                                                    {{ winerie.weight }} TM: <br> Fecha de adición:
-                                                    {{ winerie.start_date|date:"d/m/Y g:i:a" }}
-                                                </span>
+                                                {% for winerie in orden.Wineries.all %}
+                                                <li>
+                                                    <span>{{ winerie.product.name|title }}: {{ winerie.number|title }}:
+                                                        {{ winerie.weight }} TM: <br> Fecha de adición:
+                                                        {{ winerie.start_date|date:"d/m/Y g:i:a" }}
+                                                    </span>
 
-                                            </li>
-                                            {% endfor %}
+                                                </li>
+                                                {% endfor %}
                                             {% else %}
-                                            <li id="not_winerie">
-                                                No hay bodegas registradas
-                                            </li>
+                                                <li id="not_winerie">
+                                                    No hay bodegas registradas
+                                                </li>
                                             {% endif %}
                                         </ul>
                                         <br>
@@ -554,7 +560,7 @@ Dashboard
                                             {% if orden.destinations.all %}
                                             {% for destiny in orden.destinations.all %}
                                             <li class="col-md-12">
-                                                <span>Nombre del cliente: {{ destiny.customer_name|title }} <br> Dirección: {% for product in destiny.product.all %} {{ product.name|title }} {% endfor %} <br> Producto: {{ destiny.product|title }} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                <span>Nombre del cliente: {{ destiny.customer_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|title }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
                                             </li>
                                             {% endfor %}
                                             {% else %}
@@ -577,18 +583,30 @@ Dashboard
                                             {% for trans in orden.transport.all %}
                                             <li class="col-md-12">
                                                 <span>
-                                                    {{ trans.vehicle|title }} <br> Peso: {{ trans.transport_weight }}TM
+                                                    Tipo de vehículo: {{ trans.vehicle|title }}
+                                                    <br>
+                                                    Placa: {{ trans.license_plate|title }}
+                                                    <br>
+                                                    Nombre del chofer: {{ trans.driver_name|title }}
+                                                    <br>
+                                                    Ficha: {{ trans.ficha|title }}
+                                                    <br>
+                                                    Barco/ALM: {{ trans.boat_alm|title }}
+                                                    <br>
+                                                    Peso: {{ trans.transport_weight }}TM
+                                                    <br>
+                                                    Dirección: {{ trans.direction|title }}
+                                                    <br>
+                                                    Flete pagado por: {{ trans.freight_paid_by|title }}
+                                                    <br>
+                                                    Comentario: {{ trans.comment|title }}
+                                                    <br>
+                                                    Balanza{{ trans.balance|title }}
+                                                    <br>
+                                                    Peso: {{ trans.transport_weight|title }}
                                                     <br>
                                                     Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
                                                 <br>
-                                                {{ trans.license_plate|title }} <br>
-                                                {{ trans.driver_name|title }} <br>
-                                                {{ trans.ficha|title }} <br>
-                                                {{ trans.direction|title }} <br>
-                                                {{ trans.boat_alm|title }} <br>
-                                                {{ trans.balance|title }} <br>
-                                                {{ trans.freight_paid_by|title }} <br>
-                                                {{ trans.comment|title }} <br>
                                             </li>
                                             {% endfor %}
                                             {% else %}
@@ -618,7 +636,7 @@ Dashboard
                 <input type="hidden" name="number_invoice" id="id_number_invoice" value="{{ orden.number_invoice }}">
                 <input type="hidden" name="unit_measurement" id="id_unit_measurement"
                     value="{{ orden.unit_measurement }}">
-                <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}">
+                <!-- <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}"> -->
                 {{ form.product }}
                 {{ form.transport }}
                 {{ form.customer_name }}
@@ -640,6 +658,7 @@ Dashboard
     $('#id_product').css('display', 'none')
     $('#id_destinations').css('display', 'none')
     $('#id_receiving_customer').css('display', 'none')
+    $('#id_customer_name').css('display', 'none')
     $('#id_transport').css('display', 'none')
 
     $('#bodega_nueva').keypress(function (e) {
@@ -800,10 +819,11 @@ Dashboard
                     $('#destino_input').val('')
                     var val = data[0].pk
                     var destiny = data[0].fields.destiny
-                    var customer = data[0].fields.customer_name
-                    var product = data[0].fields.product
+                    var customer = data[1].fields.name
+                    var product = data[2].fields.name
+                    var product = data[2].fields.company_name
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
-                    $("#destinations_list").append('<li  class="col-md-6" style="display: inline;"> <span class="ti-control-record"></span>Destino: ' + destiny + '<br> Producto: ' + product + '<br> Cliente: '+ customer +'  </li>');
+                    $("#destinations_list").append('<li  class="col-md-6" style="display: inline;"> <span class="ti-control-record"></span>Destino: ' + destiny + '<br> Producto: ' + product + '<br> Cliente: '+ customer +' Empresa: '+ empresa +'  </li>');
                     $('#not_destiny').css('display', 'none');
                 },
             });
@@ -838,8 +858,8 @@ Dashboard
                     $('#destino_input').val('')
                     var val = data[0].pk
                     var destiny = data[0].fields.destiny
-                    var customer = data[0].fields.customer_name
-                    var product = data[0].fields.product
+                    var customer = data[1].fields.customer_name
+                    var product = data[2].fields.product
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
                     $("#destinations_list").append('<li  class="col-md-6" style="display: inline;"> <span class="ti-control-record"></span>Destino: ' + destiny + '<br> Producto: ' + product + '<br> Cliente: '+ customer +'  </li>');
                     $('#not_destiny').css('display', 'none');
@@ -858,6 +878,10 @@ Dashboard
     $('#cliente_recibidor_dni').on('click', function(){
         $(this).css('border-color', '')
     })
+    $('#cliente_recibidor_tipdoc').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    
 
     $('#cliente_recibidor_button').on('click', function () {
         event.preventDefault();
@@ -871,73 +895,95 @@ Dashboard
             if(!$('#cliente_recibidor_dni').val()){
                     $('#cliente_recibidor_dni').css('border-color', 'red')
                 }
+            if(!$('#cliente_recibidor_tipdoc').val()){
+                    $('#cliente_recibidor_tipdoc').css('border-color', 'red')
+                }
         }else{
-        $.ajax({
-            data: {
-                'cliente': $('#cliente_recibidor_comprador').val(),
-                'empresa': $('#cliente_recibidor_empresa').val(),
-                'dni': $('#cliente_recibidor_dni').val(),
-            },
-            url: "{% url 'transactions:add_reciving_customers' %}",
-            type: 'post',
-            beforeSend: function () { },
-            success: function (data) {
-                console.log(data)
-                $('#cliente_recibidor_comprador').val('')
-                $('#cliente_recibidor_empresa').val('')
-                $('#cliente_recibidor_dni').val('')
-                var val = data[0].pk
-                var name = data[0].fields.name
-                var company = data[0].fields.company_name
-                var dni = data[0].fields.dni
-                $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
-                $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
-                $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> DNI: ' + dni + '</li>');
-                $('#not_customer').css('display', 'none');
-            },
-        });
-    }
-    })
-
-    $('#cliente_recibidor_dni').keypress(function (e) {
-        if (e.keyCode == 13) {
-            event.preventDefault()
             $.ajax({
                 data: {
                     'cliente': $('#cliente_recibidor_comprador').val(),
                     'empresa': $('#cliente_recibidor_empresa').val(),
                     'dni': $('#cliente_recibidor_dni').val(),
+                    'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
                 },
                 url: "{% url 'transactions:add_reciving_customers' %}",
                 type: 'post',
                 beforeSend: function () { },
                 success: function (data) {
-                console.log(data)
-                $('#cliente_recibidor_comprador').val('')
-                $('#cliente_recibidor_empresa').val('')
-                $('#cliente_recibidor_dni').val('')
-                var val = data[0].pk
-                var name = data[0].fields.name
-                var company = data[0].fields.company_name
-                var dni = data[0].fields.dni
-                $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
-                $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
-                $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> DNI: ' + dni + '</li>');
-                $('#not_customer').css('display', 'none');
-            },
+                    console.log(data)
+                    $('#cliente_recibidor_comprador').val('')
+                    $('#cliente_recibidor_empresa').val('')
+                    $('#cliente_recibidor_dni').val('')
+                    var val = data[0].pk
+                    var name = data[0].fields.name
+                    var company = data[0].fields.company_name
+                    var dni = data[0].fields.dni
+                    var tipdoc = data[0].fields.tipdoc
+                    $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                    $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
+                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                    $('#not_customer').css('display', 'none');
+                },
             });
+        }
+    })
+
+    $('#cliente_recibidor_dni').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            if(!$('#cliente_recibidor_comprador').val() || !$('#cliente_recibidor_empresa').val() || !$('#cliente_recibidor_dni').val()){
+            if(!$('#cliente_recibidor_comprador').val()){
+                $('#cliente_recibidor_comprador').css('border-color', 'red')
+            }
+            if(!$('#cliente_recibidor_empresa').val()){
+                    $('#cliente_recibidor_empresa').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_dni').val()){
+                    $('#cliente_recibidor_dni').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_tipdoc').val()){
+                    $('#cliente_recibidor_tipdoc').css('border-color', 'red')
+                }
+            }else{
+                $.ajax({
+                    data: {
+                        'cliente': $('#cliente_recibidor_comprador').val(),
+                        'empresa': $('#cliente_recibidor_empresa').val(),
+                        'dni': $('#cliente_recibidor_dni').val(),
+                        'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
+                    },
+                    url: "{% url 'transactions:add_reciving_customers' %}",
+                    type: 'post',
+                    beforeSend: function () { },
+                    success: function (data) {
+                        console.log(data)
+                        $('#cliente_recibidor_comprador').val('')
+                        $('#cliente_recibidor_empresa').val('')
+                        $('#cliente_recibidor_dni').val('')
+                        var val = data[0].pk
+                        var name = data[0].fields.name
+                        var company = data[0].fields.company_name
+                        var dni = data[0].fields.dni
+                        var tipdoc = data[0].fields.tipdoc
+                        $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                        $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
+                        $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                        $('#not_customer').css('display', 'none');
+                    },
+                });
+            }
         }
     })
 
     $('#transport_add').on('click', function () {
         event.preventDefault();
-        if ($('#id_direction').val()) {
-            var direction = $('#id_direction').val()
+        if ($('textarea#id_direction').val()) {
+            var direction = ''
         } else {
             var direction = ''
         }
         if ($('#id_comment').val()) {
-            var comment = $('#id_comment').val()
+            var comment = ''
         } else {
             var comment = ''
         }
@@ -951,8 +997,8 @@ Dashboard
                 'id_boat_alm': $('#id_boat_alm').val(),
                 'id_balance': $('#id_balance').val(),
                 'id_freight_paid_by': $('#id_freight_paid_by').val(),
-                'id_direction': direction,
-                'id_comment': comment,
+                'id_direction': $('#exampleTextarea1').val(),
+                'id_comment': $('#exampleTextarea2').val(),
             },
             url: "{% url 'transactions:add_transport' %}",
             type: 'post',
@@ -961,7 +1007,7 @@ Dashboard
                 console.log(data)
                 // $('#cliente_recibidor_input').val('')
                 var val = data[0].pk
-                var id_vehicle = data[0].fields.id_vehicle
+                var id_vehicle = data[0].fields.vehicle
                 var transport_weight = data[0].fields.transport_weight
                 var start_date = data[0].fields.start_date
                 var license_plate = data[0].fields.license_plate
@@ -975,7 +1021,7 @@ Dashboard
                 $('#id_transport_heavy').val(parseFloat($('#id_transport_heavy').val()) + parseFloat(transport_weight))
                 $('#pesada').text($('#id_transport_heavy').val())
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li>' + id_vehicle + '<br>Peso:' + transport_weight + '<br>Fecha de adición' + start_date + '<br>' + license_plate + '<br>' + driver_name + '<br>' + ficha + '<br>' + direction + '<br>' + boat_alm + '<br>' + balance + '<br>' + freight_paid_by + '<br>' + comment + '</li>');
+                $("#transport_list").append('<li> Tipo de vehículo' + id_vehicle + '<br>Placa: ' + license_plate +  '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Barco/ALM: ' + boat_alm + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by +  '<br>Peso: ' + transport_weight + '<br>Fecha de adición: ' + start_date + '<br>Balanza: ' + balance + '<br>Comentario: ' + comment + '</li>');
                 $('#not_transport').css('display', 'none');
             },
         });

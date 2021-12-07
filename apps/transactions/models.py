@@ -24,6 +24,7 @@ class Winerie(models.Model):
 class ReceivingCustomer(models.Model):
     company_name = models.CharField(max_length=150, verbose_name='nombre de la empresa', blank=True, null=True)
     name = models.CharField(max_length=150, verbose_name='Nombre del cliente recibidor', blank=True, null=True)
+    tipdoc = models.CharField(max_length=150, verbose_name='Documento de identificación', blank=True, null=True)
     dni = models.CharField(max_length=150, verbose_name='Documento de identificación', blank=True, null=True)
     start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 

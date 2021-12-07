@@ -1,6 +1,6 @@
 # from django.shortcuts import render
 from django.core.serializers import serialize
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,6 +45,13 @@ class AddOrder(LoginRequiredMixin,CreateView):
     template_name = 'add_order.html'
     success_url = '/'
     context_object_name = 'query'
+
+    def get_success_url(self):
+        if(self.object.order_type == 'carga'):
+            return reverse_lazy('transactions:order_list_load')
+        else:
+            return reverse_lazy('transactions:order_list_download')
+
     def get_context_data(self, **kwargs):
         ctx = super(AddOrder, self).get_context_data(**kwargs)
         ctx['query'] = Product.objects.values('name', 'pk').distinct().order_by('name')
@@ -53,6 +60,7 @@ class AddOrder(LoginRequiredMixin,CreateView):
         except:
             pass
         return ctx
+
 
 # Listado de orden de carga
 class OrderListLoad(LoginRequiredMixin,ListView):
@@ -81,21 +89,28 @@ class OrderListProducts(LoginRequiredMixin,ListView):
     context_object_name = 'products'
 
 class OrderListCustomers(LoginRequiredMixin,ListView):
-    model = Transaction
+    model = ReceivingCustomer
     fields = '__all__'
     template_name = 'list_customers.html'
     context_object_name = 'customers'
 
     def get_queryset(self):
-        return self.model.objects.all().only('customer_name')
+        return self.model.objects.all()
 
 # Actualiazación de ordenes carga/descarga
 class OrderUpdate(LoginRequiredMixin, UpdateView):
     model = Transaction
     fields = '__all__'
     template_name = 'update_order.html'
-    success_url = reverse_lazy('core:index')
+    # success_url = reverse_lazy('core:index')
     context_object_name = 'orden'
+
+    def get_success_url(self):
+        if(self.object.order_type == 'carga'):
+            return reverse_lazy('transactions:order_list_load')
+        else:
+            return reverse_lazy('transactions:order_list_download')
+
 
 # Vista para añadir internamente las bodegas (no visible para el usuario, solo para registro de datos)
 class WineriesAdd(LoginRequiredMixin, CreateView):
@@ -161,7 +176,27 @@ class DestinationAdd(LoginRequiredMixin, CreateView):
         )
         destination.product.add(product)
         query = self.model.objects.get(pk=destination.pk)
-        data = serialize('json', [query,])
+        user = ReceivingCustomer.objects.get(pk = query.customer_name.pk)
+        # product = Product.objects.get(pk = query.product.pk)
+        data = serialize('json', [query, user, product])
+        return HttpResponse(data, 'application/json')
+
+class GetAct(LoginRequiredMixin, CreateView):
+    model = Transaction
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        query = self.model.objects.filter(pk=self.request.POST['id']).first()
+        s = query.history.all()
+        # history = query.history.all()
+        # product = Product.objects.get(pk = query.product.pk)
+        data = serialize('json', [query])
         return HttpResponse(data, 'application/json')
 
 # Vista para añadir internamente los transportes (no visible para el usuario, solo para registro de datos)
@@ -209,10 +244,16 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
             company_name=self.request.POST['empresa'],
             name=self.request.POST['cliente'],
             dni=self.request.POST['dni'],
+            tipdoc= self.request.POST['tipodc']
             )
         query = self.model.objects.get(pk=cliente.pk)
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
+
+class UserViewTransaction(LoginRequiredMixin,DetailView):
+    model = Transaction
+    template_name = 'user_view_order.html'
+    context_object_name = 'orden'
 
 # Nominar nuevo barco
 class AddOrderNominal(LoginRequiredMixin,CreateView):
@@ -244,7 +285,7 @@ class NominalTransactionDelete(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
-class NominalTransactionDetail(LoginRequiredMixin,DeleteView):
+class NominalTransactionDetail(LoginRequiredMixin,DetailView):
     model = NominalTransaccion
     template_name = 'detail_nominal.html'
     context_object_name = 'orden'

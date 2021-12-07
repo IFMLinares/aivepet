@@ -37,7 +37,7 @@
                 <a class="navbar-brand brand-logo-mini" href="{%  url 'core:index' %}"><img
                         src="{% static 'images/logo-3.png' %}" alt="logo" /></a>
             </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end bg-success">
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" style="background-color: #3e615e;">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
@@ -102,16 +102,28 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'core:index' %}">
-                            <i class="icon-grid menu-icon"></i>
+                        <a class="nav-link" href="{% url 'core:index' %}" style="background-color: #7DA0FA; color: #fff;">
+                            <i class="icon-grid menu-icon" style="color: #fff;"></i>
                             <span class="menu-title">Resumen general</span>
                         </a>
                     </li>
                     {% if user.role != 'CL' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transactions:add_order' %}">
-                            <i class="ti-plus menu-icon"></i>
-                            <span class="menu-title">Registrar nueva orden</span>
+                        <a class="nav-link" href="{% url 'transactions:add_order_nominal' %}" style="background-color: #3e615e;color:#fff">
+                            <i class="ti-plus menu-icon" style="color: #fff;"></i>
+                            <span class="menu-title text-center">Registrar nominado</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:add_order' %}" style="background-color: #3e615e;color:#fff">
+                            <i class="ti-plus menu-icon" style="color: #fff;"></i>
+                            <span class="menu-title">Registrar orden</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:order_list_nominal' %}">
+                            <i class="ti-list menu-icon"></i>
+                            <span class="menu-title">Barcos nominados</span>
                         </a>
                     </li>
                     {% endif %}
@@ -128,18 +140,6 @@
                         </a>
                     </li>
                     {% if user.role != 'CL' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transactions:add_order_nominal' %}">
-                            <i class="ti-plus menu-icon"></i>
-                            <span class="menu-title text-center">Registrar barco <br> nominado</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transactions:order_list_nominal' %}">
-                            <i class="ti-list menu-icon"></i>
-                            <span class="menu-title">Barcos nominados</span>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'transactions:product_list' %}">
                             <i class="ti-archive menu-icon"></i>

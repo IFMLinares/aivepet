@@ -40,31 +40,47 @@ Lista de ordenes
                                     {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr class="text-center">
-                                        <!-- <td>{{ orden.order_type|title }}</td> -->
-                                        <td>000{{ orden.id }}</td>
-                                        <td>{{ orden.number_invoice }}</td>
-                                        <td>{{ orden.customer_name|title }}</td>
-                                        <td>{{ orden.buque_name }}</td>
-                                        <td>{% for product in orden.product.all %}
-                                            {{ product.name|title }}.
-                                            {% endfor %}</td>
-                                        <td>{{ orden.user.username }}</td>
-                                        <td>{{ orden.start_date|date:'d/m/Y G:i' }}
-                                        </td>
-                                        <td>{{ orden.act_date|date:'d/m/Y G:i' }}
-                                        </td>
-                                        <td>{{ orden.history.all|length }}
-                                        </td>
-                                        {% if user.role != 'CL' %}
-                                            <td>
-                                                <a class="btn btn-info" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
-                                                <br>
-                                                <a class="btn btn-secondary mt-xl-1" onclick="mostrar()">Ver act</a>
-                                            </td>
-                                        {% else %}
-                                            <td>
-                                                <a class="btn btn-success" href="">Ver</a>
-                                            </td>
+                                        {% if user.role == 'CL' %}
+                                            <!-- <td>{{ orden.order_type|title }}</td> -->
+                                                {% if orden.customer_name.pk == user.pk %}
+                                                <td>000{{ orden.id }}</td>
+                                                <td>{{ orden.number_invoice }}</td>
+                                                <td>{{ orden.customer_name|title }}</td>
+                                                <td>{{ orden.buque_name }}</td>
+                                                <td>{% for product in orden.product.all %}
+                                                    {{ product.name|title }}.
+                                                    {% endfor %}</td>
+                                                <td>{{ orden.user.username }}</td>
+                                                <td>{{ orden.start_date|date:'d/m/Y G:i' }}
+                                                </td>
+                                                <td>{{ orden.act_date|date:'d/m/Y G:i' }}
+                                                </td>
+                                                <td>{{ orden.history.all|length }}
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-success" href="{% url 'transactions:client_view' pk=orden.pk %}">Ver</a>
+                                                </td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td>000{{ orden.id }}</td>
+                                                <td>{{ orden.number_invoice }}</td>
+                                                <td>{{ orden.customer_name|title }}</td>
+                                                <td>{{ orden.buque_name }}</td>
+                                                <td>{% for product in orden.product.all %}
+                                                    {{ product.name|title }}.
+                                                    {% endfor %}</td>
+                                                <td>{{ orden.user.username }}</td>
+                                                <td>{{ orden.start_date|date:'d/m/Y G:i' }}
+                                                </td>
+                                                <td>{{ orden.act_date|date:'d/m/Y G:i' }}
+                                                </td>
+                                                <td>{{ orden.history.all|length }}
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-info" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
+                                                    <br>
+                                                    <a class="btn btn-secondary mt-xl-1" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date }},{% endfor %}')">Ver act</a>
+                                                </td>
                                         {% endif %}
                                     </tr>
                                     {% endfor %}
@@ -78,6 +94,29 @@ Lista de ordenes
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Historico de actualizaciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-body"></h3>
+                <h4 class="text-center mt-3">¿Está usted seguro?</h4>
+                <p id="test"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <!-- <button type="button" class="btn btn-primary" id="sig-info">Confirmar</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block extra_js %}
 <script>
@@ -86,8 +125,14 @@ Lista de ordenes
         "order": [[ 7, "desc" ]]
     });
     } );
-    function mostrar(){
+    function mostrar(id){
         event.preventDefault();
+        $('#exampleModal').modal('show');
+        let str = id;
+        let arr = str.split(',');
+        arr.pop()
+        $('#test').text(arr)
+        console.log(arr);
     }
 </script>
 {% endblock %}

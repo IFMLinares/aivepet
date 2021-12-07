@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% block title %}
-Lista de ordenes
+Lista de Clientes
 {% endblock %}
 {% load static %}
 {% block content %}
@@ -18,6 +18,9 @@ Lista de ordenes
                                     <tr class="text-center">
                                         <th>Id</th>
                                         <th>Cliente</th>
+                                        <th>Tip-Doc</th>
+                                        <th>Num-Doc</th>
+                                        <th>Empresa</th>
                                         <th>Fecha de adición</th>
                                         <!-- <th>Cliente</th> -->
                                     </tr>
@@ -26,7 +29,10 @@ Lista de ordenes
                                     {% for customer in customers %}
                                     <tr class="text-center">
                                         <td>{{ customer.pk }} </td>
-                                        <td>{{ customer.customer_name }} </td>
+                                        <td>{{ customer.name }} </td>
+                                        <td>{{ customer.tipdoc }}</td>
+                                        <td>{{ customer.dni }}</td>
+                                        <td>{{ customer.company_name }}</td>
                                         <td>{{ customer.start_date }} </td>
                                         <!-- <td>000{{ orden.id }}</td> -->
                                     </tr>

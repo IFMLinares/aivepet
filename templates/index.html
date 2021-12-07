@@ -134,24 +134,41 @@ Dashboard
                             {% for orden in ordenes %}
                             {% if orden.order_type == 'carga'%}
                             <tr>
-                                <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                <td>{{ orden.number_invoice }}</td>
-                                <td class="font-weight-bold">
-                                    <div
-                                        class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
-                                        {{ orden.state }}</div>
-                                </td>
-                                <td class="font-weight-medium">
-                                    {% if user.role == 'CL' %}
-                                    <a href=""
-                                        class="btn btn-info btn-sm">Ver
-                                    </a>
-                                    {% else %}
-                                    <a href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
-                                    </a>
+                                {% if user.role == 'CL' %}
+                                    {% if orden.customer_name.pk == user.pk %}
+                                    <td>{{orden.start_date|date:"d/m/Y"}}</td>
+                                    <td>{{ orden.number_invoice }}</td>
+                                    <td class="font-weight-bold">
+                                        <div
+                                            class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
+                                            {{ orden.state }}</div>
+                                    </td>
+                                    <td class="font-weight-medium">
+                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}"
+                                            class="btn btn-info btn-sm">Ver
+                                        </a>
+                                    </td>
                                     {% endif %}
-                                </td>
+                                {% else %}
+                                    <td>{{orden.start_date|date:"d/m/Y"}}</td>
+                                    <td>{{ orden.number_invoice }}</td>
+                                    <td class="font-weight-bold">
+                                        <div
+                                            class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
+                                            {{ orden.state }}</div>
+                                    </td>
+                                    <td class="font-weight-medium">
+                                        {% if user.role == 'CL' %}
+                                        <a href=""
+                                            class="btn btn-info btn-sm">Ver
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'transactions:update_order' pk=orden.pk %}"
+                                            class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -196,24 +213,41 @@ Dashboard
                             {% for orden in ordenes %}
                             {% if orden.order_type == 'descarga' %}
                             <tr>
-                                <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                <td>{{ orden.number_invoice }}</td>
-                                <td class="font-weight-bold">
-                                    <div
-                                        class="badge {% if orden.state == 'En operación' %} badge-success {% elif  orden.state == 'Aceptado'  %}badge-info {% endif %}">
-                                        {{ orden.state }}</div>
-                                </td>
-                                <td class="font-weight-medium">
-                                    {% if user.role == 'CL' %}
-                                    <a href=""
-                                        class="btn btn-info btn-sm">Ver
-                                    </a>
-                                    {% else %}
-                                    <a href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                        class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
-                                    </a>
+                                {% if user.role == 'CL' %}
+                                    {% if orden.customer_name.pk == user.pk %}
+                                    <td>{{orden.start_date|date:"d/m/Y"}}</td>
+                                    <td>{{ orden.number_invoice }}</td>
+                                    <td class="font-weight-bold">
+                                        <div
+                                            class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
+                                            {{ orden.state }}</div>
+                                    </td>
+                                    <td class="font-weight-medium">
+                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}"
+                                            class="btn btn-info btn-sm">Ver
+                                        </a>
+                                    </td>
                                     {% endif %}
-                                </td>
+                                {% else %}
+                                    <td>{{orden.start_date|date:"d/m/Y"}}</td>
+                                    <td>{{ orden.number_invoice }}</td>
+                                    <td class="font-weight-bold">
+                                        <div
+                                            class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
+                                            {{ orden.state }}</div>
+                                    </td>
+                                    <td class="font-weight-medium">
+                                        {% if user.role == 'CL' %}
+                                        <a href=""
+                                            class="btn btn-info btn-sm">Ver
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'transactions:update_order' pk=orden.pk %}"
+                                            class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
                             </tr>
                             {% else %}
                             {% endif %}
