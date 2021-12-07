@@ -290,6 +290,15 @@ class NominalTransactionDetail(LoginRequiredMixin,DetailView):
     template_name = 'detail_nominal.html'
     context_object_name = 'orden'
 
+def FinishTransaction(request,pk):
+    transaction = Transaction.objects.get(pk=pk)
+    transaction.state = 'Finalizado'
+    transaction.save()
+    if transaction.order_type == 'carga':
+        return redirect('transactions:order_list_load')
+    else:
+        return redirect('transactions:order_list_download')
+
 
 def NominalTransAcepted(request, pk):
     nominal = NominalTransaccion.objects.filter(pk=pk)[0]

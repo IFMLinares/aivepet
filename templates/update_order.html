@@ -628,7 +628,7 @@ Dashboard
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
                 <div class="text-right pt-xl-2">
-                    <button type="submit" class="btn btn-success">Actualizar orden</button>
+                    <a href="{% url 'transactions:finish_trans' pk=orden.pk %}" class="btn btn-danger mr-xl-2" id="finish">Finalizar orden</a><button type="submit" class="btn btn-success">Actualizar orden</button>
                 </div>
                 <input type="hidden" name="user" id="id_user" value="{{ orden.user.id }}">
                 <input type="hidden" name="order_type" id="id_order_type" value="{{ orden.order_type }}">

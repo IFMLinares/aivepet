@@ -77,9 +77,12 @@ Lista de ordenes
                                                 <td>{{ orden.history.all|length }}
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-info" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
+                                                    <a class="btn btn-info {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
                                                     <br>
                                                     <a class="btn btn-secondary mt-xl-1" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date }},{% endfor %}')">Ver act</a>
+                                                    {% if orden.state == 'Finalizado' %}
+                                                    <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
+                                                    {% endif %}
                                                 </td>
                                         {% endif %}
                                     </tr>
