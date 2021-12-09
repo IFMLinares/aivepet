@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
-from .models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport
+from .models import Product, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport, Weight
 from apps.core.models import User
 
 # Create your views here.
@@ -247,6 +247,26 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
             tipdoc= self.request.POST['tipodc']
             )
         query = self.model.objects.get(pk=cliente.pk)
+        data = serialize('json', [query,])
+        return HttpResponse(data, 'application/json')
+
+class RecordWeightAdd(LoginRequiredMixin, CreateView):
+    model = Weight
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        weight = self.model.objects.create(
+            gross_weight=self.request.POST['gross_weight'],
+            tare_weight=self.request.POST['tare_weight'],
+            heavy=self.request.POST['heavy'],
+            )
+        query = self.model.objects.get(pk=weight.pk)
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
 

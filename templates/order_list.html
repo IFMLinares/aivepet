@@ -29,7 +29,9 @@ Lista de ordenes
                                         <th>Cliente</th>
                                         <th>Buque</th>
                                         <th>Producto</th>
+                                        {% if user.role != 'CL' %}
                                         <th>Usuario</th>
+                                        {% endif %}
                                         <th>Fecha inicio.</th>
                                         <th>Ult Act.</th>
                                         <th>Nro Act.</th>
@@ -50,7 +52,6 @@ Lista de ordenes
                                                 <td>{% for product in orden.product.all %}
                                                     {{ product.name|title }}.
                                                     {% endfor %}</td>
-                                                <td>{{ orden.user.username }}</td>
                                                 <td>{{ orden.start_date|date:'d/m/Y G:i' }}
                                                 </td>
                                                 <td>{{ orden.act_date|date:'d/m/Y G:i' }}
@@ -77,9 +78,8 @@ Lista de ordenes
                                                 <td>{{ orden.history.all|length }}
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-info {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
-                                                    <br>
-                                                    <a class="btn btn-secondary mt-xl-1" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date }},{% endfor %}')">Ver act</a>
+                                                    <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br>
+                                                    <a class="btn btn-info mt-xl-1 {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
                                                     {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
                                                     {% endif %}
@@ -110,8 +110,10 @@ Lista de ordenes
             </div>
             <div class="modal-body">
                 <h3 id="modal-body"></h3>
-                <h4 class="text-center mt-3">¿Está usted seguro?</h4>
-                <p id="test"></p>
+                <h4 class="text-center">Lista de actualizaciones:</h4>
+                <div id="historico-act" class="text-center">
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -134,8 +136,15 @@ Lista de ordenes
         let str = id;
         let arr = str.split(',');
         arr.pop()
-        $('#test').text(arr)
-        console.log(arr);
+        arr.pop()
+        // let arr1 = [new Set(arr)]
+        // console.log(arr1)
+        console.log(arr)
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i].search('None') == -1){
+                $('#historico-act').append(arr[i] + '<a href="'+arr[i]+'"class="btn btn-sm btn-secondary disabled mt-xl-2 mt-xl-2 ml-xl-2">Ver</a><br>')
+            }
+        }
     }
 </script>
 {% endblock %}

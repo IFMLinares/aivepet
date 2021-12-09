@@ -23,7 +23,7 @@ Lista de ordenes
                                         <th>Buque</th>
                                         <th>Producto</th>
                                         <th>Usuario</th>
-                                        <th>Fecha inicio</th>
+                                        <th>Fecha de registro</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -45,7 +45,7 @@ Lista de ordenes
                                             <a class="btn btn-info {% if orden.state == 'Aceptado' %}disabled{% endif %}" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">Aceptar</a>
                                             <a class="btn btn-secondary {% if orden.state == 'Aceptado' %}disabled{% endif %}" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver</a>
                                             <br>
-                                            <a class="btn btn-danger mt-xl-1 {% if orden.state == 'Aceptado' %} disabled {% endif %}" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
+                                            <a class="btn btn-danger mt-xl-1 {% if orden.state == 'Aceptado' %} {% endif %}" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
                                         </td>
                                     </tr>
                                     {% endfor %}

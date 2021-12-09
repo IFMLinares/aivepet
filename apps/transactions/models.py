@@ -58,6 +58,12 @@ class Transport(models.Model):
     def __str__ (self):
         return self.vehicle
 
+class Weight(models.Model):
+    gross_weight = models.CharField(max_length=150, verbose_name='peso bruto', blank=True, null=True)
+    tare_weight = models.CharField(max_length=150, verbose_name='peso de tara', blank=True, null=True)
+    heavy = models.CharField(max_length=150, verbose_name='pesada', blank=True, null=True)
+    start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
 # transaction model
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,related_name='user')
@@ -74,11 +80,9 @@ class Transaction(models.Model):
     start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     act_date = models.DateTimeField(auto_now=True, blank=True, null=True)
     Wineries = models.ManyToManyField(Winerie, blank=True)
-    gross_weight = models.CharField(max_length=150, verbose_name='peso bruto', blank=True, null=True)
     net_weight = models.CharField(max_length=150, verbose_name='peso neto', blank=True, null=True)
-    tare_weight = models.CharField(max_length=150, verbose_name='peso de tara', blank=True, null=True)
-    heavy = models.CharField(max_length=150, verbose_name='pesada', blank=True, null=True)
     total_weighing = models.CharField(max_length=150, verbose_name='total de la pesada', blank=True, null=True)
+    weight_record = models.ManyToManyField(Weight, blank=True)
     condition = models.CharField(max_length=150, verbose_name='condición', blank=True, null=True)
     destinations = models.ManyToManyField(Destination, blank=True)
     transport =models.ManyToManyField(Transport, blank=True)

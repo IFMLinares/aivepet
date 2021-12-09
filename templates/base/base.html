@@ -128,15 +128,15 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transactions:order_list_load' %}">
-                            <i class="ti-truck menu-icon"></i>
-                            <span class="menu-title">Órdenes de carga</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'transactions:order_list_download' %}">
                             <i class="ti-truck menu-icon"></i>
                             <span class="menu-title">Órdenes de descarga</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'transactions:order_list_load' %}">
+                            <i class="ti-truck menu-icon"></i>
+                            <span class="menu-title">Órdenes de carga</span>
                         </a>
                     </li>
                     {% if user.role != 'CL' %}

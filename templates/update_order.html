@@ -233,8 +233,7 @@ Dashboard
                                         <div class="col-sm-6" style="padding-right: 0px!important;">
                                             <input type="number" class="form-control add-order"
                                                 placeholder="Peso que trae el producto en el barco" name="gross_weight"
-                                                id="id_gross_weight" {% if orden.gross_weight %}
-                                                value="{{ orden.gross_weight }}" {% endif %}>
+                                                id="id_gross_weight">
                                         </div>
                                         <div class="col-sm-3 text-center" style="padding-left: 0px!important;">
                                             Toneladas Métricas (TM)
@@ -249,8 +248,7 @@ Dashboard
                                         <div class="col-sm-6" style="padding-right: 0px!important;">
                                             <input type="number" class="form-control add-order"
                                                 placeholder="pesada en la tara en toneladas métricas" name="tare_weight"
-                                                id="id_tare_weight" {% if orden.tare_weight %}
-                                                value="{{ orden.tare_weight }}" {% endif %}>
+                                                id="id_tare_weight">
                                         </div>
                                         <div class="col-sm-3 text-center" style="padding-left: 0px!important;">
                                             Toneladas Métricas (TM)
@@ -263,8 +261,7 @@ Dashboard
                                     <div class="form-group row">
                                         <label class="col-sm-3 col-form-label">Pesada:</label>
                                         <div class="col-sm-6" style="padding-right: 0px!important;">
-                                            <input type="number" class="form-control add-order" name="heavy" id="id_heavy"
-                                                {% if orden.heavy %} value="{{ orden.heavy }}" {% endif %}>
+                                            <input type="number" class="form-control add-order" name="heavy" id="id_heavy">
                                         </div>
                                         <div class="col-sm-3 text-center" style="padding-left: 0px!important;">
                                             Toneladas Métricas (TM)
@@ -287,15 +284,11 @@ Dashboard
                                     </div>
                                 </div>
                             </div>
-                            <div class="row ml-xl-3">
-                                <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">Condición:</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control add-order" name="condition"
-                                                id="id_condition" {% if orden.condition %} value="{{ orden.condition }}"
-                                                {% endif %}>
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="form-group row mt-xl-1">
+                                    <div class="col-sm-12 pt-xl-2">
+                                        <button class="btn btn-sm btn-success" type="button"
+                                            id="weight_record_button">Añadir</button>
                                     </div>
                                 </div>
                             </div>
@@ -339,7 +332,7 @@ Dashboard
                                         </select>
                                     </div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-sm btn-primary mt-xl-1" type="button"
+                                        <button class="btn btn-sm btn-success mt-xl-1" type="button"
                                             id="destino_button">Añadir
                                         </button>
                                     </div>
@@ -468,7 +461,7 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12">
-                                        <button class="btn btn-sm btn-primary mt-xl-1" type="button"
+                                        <button class="btn btn-sm btn-success mt-xl-1" type="button"
                                             style="float: right;" id="transport_add">Añadir
                                         </button>
                                     </div>
@@ -546,6 +539,48 @@ Dashboard
                                         </ul>
                                         <br>
                                         <b>Total: <span id="net_weight">{{ orden.net_weight }}</span> TM</b>
+                                    </div>
+                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
+                                        <hr>
+                                    </div>
+                                    <label class="col-sm-12 col-form-label mt-xl-3 text-center fs-20"
+                                        style="padding-top: 0px;">Registros de pesadas</label>
+                                    <div class="col-sm-12 ml-xl-3">
+                                        {{ form.weight_record }}
+                                        <ul id="record_list" style="margin-bottom: 0px;">
+                                            {% if orden.weight_record.all %}
+                                                {% for record in orden.weight_record.all %}
+                                                <li>
+                                                    <span>
+                                                        Peso bruto: {{ record.gross_weight }} <br>
+                                                        Peso de tara: {{ record.tare_weight }} <br>
+                                                        Pesada {{ record.heavy }} <br>
+                                                        Fecha de adicion {{ record.start_date|date:"d/m/Y g:i a" }} <br>
+                                                    </span>
+
+                                                </li>
+                                                {% endfor %}
+                                            {% else %}
+                                                <li id="not_record">
+                                                    No hay registros
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
+                                        <hr>
+                                    </div>
+                                    <label class="col-sm-12 mt-xl-3 text-center fs-20">Productos:</label>
+                                    <div class="col-sm-12 ml-xl-3">
+                                        {% for product in orden.product.all %}
+                                        <ul style="margin-bottom: 0px;">
+                                            <li>
+                                                <span> {{ product.name|title }}.</span>
+                                            </li>
+                                        </ul>
+                                        {% endfor %}
+                                        <br>
+                                        <b>Número total de productos: {{ orden.product.all|length }}</b>
                                     </div>
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                         <hr>
@@ -660,6 +695,7 @@ Dashboard
     $('#id_receiving_customer').css('display', 'none')
     $('#id_customer_name').css('display', 'none')
     $('#id_transport').css('display', 'none')
+    $('#id_weight_record').css('display', 'none')
 
     $('#bodega_nueva').keypress(function (e) {
         if (e.keyCode == 13) {
@@ -881,7 +917,6 @@ Dashboard
     $('#cliente_recibidor_tipdoc').on('click', function(){
         $(this).css('border-color', '')
     })
-    
 
     $('#cliente_recibidor_button').on('click', function () {
         event.preventDefault();
@@ -972,6 +1007,94 @@ Dashboard
                     },
                 });
             }
+        }
+    })
+
+    $('#id_heavy').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#id_tare_weight').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#id_gross_weight').on('click', function(){
+        $(this).css('border-color', '')
+    })
+
+    $('#id_heavy').keypress(function (e) {
+        event.preventDefault();
+        if (e.keyCode == 13) {
+        if(!$('#id_heavy').val() || !$('#id_tare_weight').val() || !$('#id_gross_weight').val()){
+            if(!$('#id_heavy').val()){
+                $('#id_heavy').css('border-color', 'red')
+            }
+            if(!$('#id_tare_weight').val()){
+                    $('#id_tare_weight').css('border-color', 'red')
+                }
+            if(!$('#id_gross_weight').val()){
+                    $('#id_gross_weight').css('border-color', 'red')
+                }
+        }else{
+            $.ajax({
+                data: {
+                    'heavy': $('#id_heavy').val(),
+                    'tare_weight': $('#id_tare_weight').val(),
+                    'gross_weight': $('#id_gross_weight').val(),
+                },
+                url: "{% url 'transactions:add_weight' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    $('#id_heavy').val('')
+                    $('#id_tare_weight').val('')
+                    $('#id_gross_weight').val('')
+                    var val = data[0].pk
+                    var gross_weight = data[0].fields.gross_weight
+                    var tare_weight = data[0].fields.tare_weight
+                    var heavy = data[0].fields.heavy
+                    $('#id_weight_record').append('<option selected value=' + val + '>' + ' </option>');
+                    $('#id_weight_record').append('<option value=' + val + '>' + name + ' </option>');
+                    $("#record_list").append('<li> ¨Peso bruto: '+ gross_weight + '<br> Peso de tara: ' + tare_weight + '<br> Pesada: '+ heavy + '</li>');
+                    $('#not_record').css('display', 'none');
+                },
+            });
+        }}
+    })
+    $('#weight_record_button').on('click', function () {
+        event.preventDefault();
+        if(!$('#id_heavy').val() || !$('#id_tare_weight').val() || !$('#id_gross_weight').val()){
+            if(!$('#id_heavy').val()){
+                $('#id_heavy').css('border-color', 'red')
+            }
+            if(!$('#id_tare_weight').val()){
+                    $('#id_tare_weight').css('border-color', 'red')
+                }
+            if(!$('#id_gross_weight').val()){
+                    $('#id_gross_weight').css('border-color', 'red')
+                }
+        }else{
+            $.ajax({
+                data: {
+                    'heavy': $('#id_heavy').val(),
+                    'tare_weight': $('#id_tare_weight').val(),
+                    'gross_weight': $('#id_gross_weight').val(),
+                },
+                url: "{% url 'transactions:add_weight' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    $('#id_heavy').val('')
+                    $('#id_tare_weight').val('')
+                    $('#id_gross_weight').val('')
+                    var val = data[0].pk
+                    var gross_weight = data[0].fields.gross_weight
+                    var tare_weight = data[0].fields.tare_weight
+                    var heavy = data[0].fields.heavy
+                    $('#id_weight_record').append('<option selected value=' + val + '>' + ' </option>');
+                    $('#id_weight_record').append('<option value=' + val + '>' + name + ' </option>');
+                    $("#record_list").append('<li> Peso bruto: '+ gross_weight + '<br> Peso de tara: ' + tare_weight + '<br> Pesada: '+ heavy + '</li>');
+                    $('#not_record').css('display', 'none');
+                },
+            });
         }
     })
 

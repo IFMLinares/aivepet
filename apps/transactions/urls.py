@@ -19,6 +19,7 @@ urlpatterns = [
     path('get-act', GetAct.as_view(), name='get_act'),
     path('client_transaction/<int:pk>', UserViewTransaction.as_view(), name='client_view'),
     path('finish_transaction/<int:pk>', FinishTransaction, name='finish_trans'),
+    path('add-weight', RecordWeightAdd.as_view(), name='add_weight'),
 
     #URL PARA LAS VISTAS DE BARCOS NOMINADOS (NOMINAL TRANSACCIONS)
     path('add-nominal', AddOrderNominal.as_view(), name='add_order_nominal'),
