@@ -3,8 +3,13 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from allauth.account.forms import SignupForm
 from apps.transactions.models import Transaction, NominalTransaccion
 from .models import User
+
 
 # Create your views here.
 
@@ -30,10 +35,10 @@ class Index(LoginRequiredMixin,ListView):
         context['unloadFinish'] = (self.model.objects.filter(order_type='descarga', state='Finalizado')).count()
         context['totalUnload'] = context['unload'] + context['unloadFinish']
 
-        context['nominalTrans'] = (NominalTransaccion.objects.filter(state='En espera')).count()
-        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='En espera', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
+        context['nominalTrans'] = (NominalTransaccion.objects.filter(state='Aceptado')).count() + (NominalTransaccion.objects.filter(state='En operación')).count()
+        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='Aceptado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
 
-        context['acepted'] = (NominalTransaccion.objects.filter(state='Aceptado')).count()
+        context['acepted'] = (self.model.objects.filter(state='En operación')).count()
         context['total'] = context['acepted'] + context['nominalTrans']
 
         context['totalFinshedToday'] = (self.model.objects.filter(state='Finalizado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
@@ -56,3 +61,33 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
 class Developing(LoginRequiredMixin,TemplateView):
     template_name = 'developing.html'
+
+class MyCustomSignupForm(SignupForm):
+
+    def save(self, request):
+
+        # Ensure you call the parent class's save.
+        # .save() returns a User object.
+        user = super(MyCustomSignupForm, self).save(request)
+
+        # Add your own processing here.
+        my_pass = User.objects.make_random_password()
+        user.set_password(my_pass)
+
+        message = 'Su contraseña es: %s' % (my_pass)
+        body = render_to_string(
+            'email_content.html',{
+                'message': message
+            },
+        )
+        email_message = EmailMessage(
+            subject='REGISTRO EXITOSO',
+            body = body,
+            from_email= 'notificaciones@aivepet.com',
+            to = [user.email]
+        )
+        email_message.content_subtype = 'html'
+        email_message.send()
+
+        # You must return the original result.
+        return user

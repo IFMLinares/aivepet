@@ -25,7 +25,8 @@ Lista de ordenes
                                     <tr class="text-center">
                                         <!-- <th>Tipo</th> -->
                                         <th>Nro. Orden</th>
-                                        <th>Nro. Factura</th>
+                                        <th>Ref Cliente</th>
+                                        <th>Ref Aivepet</th>
                                         <th>Cliente</th>
                                         <th>Buque</th>
                                         <th>Producto</th>
@@ -46,11 +47,12 @@ Lista de ordenes
                                             <!-- <td>{{ orden.order_type|title }}</td> -->
                                                 {% if orden.customer_name.pk == user.pk %}
                                                 <td>000{{ orden.id }}</td>
-                                                <td>{{ orden.number_invoice }}</td>
+                                                <td>{{ orden.number_invoice_client }}</td>
+                                                <td>{{ orden.number_invoice_aivepet }}</td>
                                                 <td>{{ orden.customer_name|title }}</td>
                                                 <td>{{ orden.buque_name }}</td>
                                                 <td>{% for product in orden.product.all %}
-                                                    {{ product.name|title }}.
+                                                    {{ product.product_id.name|title }}.
                                                     {% endfor %}</td>
                                                 <td>{{ orden.start_date|date:'d/m/Y G:i' }}
                                                 </td>
@@ -64,11 +66,12 @@ Lista de ordenes
                                                 {% endif %}
                                             {% else %}
                                                 <td>000{{ orden.id }}</td>
-                                                <td>{{ orden.number_invoice }}</td>
+                                                <td>{{ orden.number_invoice_client }}</td>
+                                                <td>{{ orden.number_invoice_aivepet }}</td>
                                                 <td>{{ orden.customer_name|title }}</td>
                                                 <td>{{ orden.buque_name }}</td>
                                                 <td>{% for product in orden.product.all %}
-                                                    {{ product.name|title }}.
+                                                    {{ product.product_id.name|title }}.
                                                     {% endfor %}</td>
                                                 <td>{{ orden.user.username }}</td>
                                                 <td>{{ orden.start_date|date:'d/m/Y G:i' }}
@@ -78,7 +81,7 @@ Lista de ordenes
                                                 <td>{{ orden.history.all|length }}
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br>
+                                                    <!-- <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br> -->
                                                     <a class="btn btn-info mt-xl-1 {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
                                                     {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>

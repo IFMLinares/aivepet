@@ -32,7 +32,7 @@ Dashboard
                 </div>
                 {% endfor %}
                 {% endif %}
-                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1 mb-xl-3" style="background-color: #F5F7FF;">
                     <div class="col-md-6 mt-xl-3">
                         <h3 class="mb-xl-4">Tipo de orden: <span style="color: #57B657;"> {{ orden.order_type|title }}</span></h3>
                     </div>
@@ -43,9 +43,8 @@ Dashboard
                                 style="width: 50%;" disabled>
                                 <option value="Aceptado" {% if orden.state == 'Aceptado' %} selected {% endif %}>Aceptado
                                 </option>
-                                <option value="Nominado" {% if orden.state == 'En espera' %} selected {% endif %}
-                                    disabled>
-                                    Nominado (En espera)</option>
+                                <option value="Nominado" {% if orden.state == Nominado %} selected {% endif %} disabled>
+                                    Nominado</option>
                                 <option value="En operación" {% if orden.state == 'En operación' %} selected {% endif %}>
                                     En operación</option>
                                 <option value="Finalizado" {% if orden.state == 'Finalizado' %} selected {% endif %}>
@@ -62,8 +61,15 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Número de Factura:
-                                <b>{{ orden.number_invoice }}</b>
+                            <div class="col-sm-12 col-form-label">Número de referencia (Cliente):
+                                <b>{{ orden.number_invoice_client }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de referencia (Aivepet):
+                                <b>{{ orden.number_invoice_aivepet }}</b>
                             </div>
                         </div>
                     </div>
@@ -83,7 +89,7 @@ Dashboard
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Producto:
                                 {% for product in orden.product.all %}
-                                <b>{{ product.name|title }}.</b>
+                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
                                 {% endfor %}
                             </div>
                         </div>
@@ -116,6 +122,60 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
+                        <h3 class="mb-xl-4 text-center">Estatus de la operación:</h3>
+                    </div>
+                    {% if orden.status.all %}
+                    {% for state in orden.status.all %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li>
+                                <span>Estado: {{ state.state }} <br>
+                                    Comentario: {{ state.comment }} <br>
+                                    Fecha: {{ state.fecha|date:"d/m/Y g:i:a" }}
+                                </span>
+                            </li>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li id="not_status">
+                                No hay Estatus registrados
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-12 mt-xl-3">
+                        <h3 class="mb-xl-4 text-center">Bill of Lading (BL)::</h3>
+                    </div>
+                    <div class="col-md-12 pl-xl-5">
+                        <div class="form-group row text-center">
+                            <li>
+                                <span>BL: {{ orden.bl }} <br>
+                                </span>
+                            </li>
+                        </div>
+                    </div>
+                    {% if orden.multiple_bl.all %}
+                    {% for bl in orden.multiple_bl.all %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li>
+                                <span>BL: {{ bl.bl }} <br>
+                                </span>
+                            </li>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-12 mt-xl-3">
                         <h3 class="mb-xl-4 text-center">Bodegas:</h3>
                     </div>
                     {% if orden.Wineries.all %}
@@ -144,6 +204,27 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
+                        <h3 class="mb-xl-4 text-center">Cliente Suplidor:</h3>
+                    </div>
+                    <div class="col-md-12 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="ml-xl-4 mr-xl-4">
+                                <span>Empresa: {{ orden.company_name }}
+                            </li>
+                            <li class="ml-xl-4 mr-xl-4">
+                                <span>Responsable: {{ orden.name }}
+                                </span>
+                            </li>
+                            <li class="ml-xl-4 mr-xl-4">
+                                <span>{{ orden.tipdoc }}: {{ orden.dni }}
+                                </span>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-12 mt-xl-3">
                         <h3 class="mb-xl-4 text-center">Clientes compradores:</h3>
                     </div>
                     {% if orden.receiving_customer.all %}
@@ -151,7 +232,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li>
-                                <span>Empresa:{{ customer.company_name }} <br>
+                                <span>Empresa: {{ customer.company_name }} <br>
                                     Responsable: {{ customer.name }} <br>
                                     {{ customer.tipdoc }}: {{ customer.dni }} <br>
                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }}
@@ -212,11 +293,9 @@ Dashboard
                                     <br>
                                     Nombre del chofer: {{ trans.driver_name|title }}
                                     <br>
-                                    Ficha: {{ trans.ficha|title }}
+                                    Guía: {{ trans.ficha|title }}
                                     <br>
                                     Barco/ALM: {{ trans.boat_alm|title }}
-                                    <br>
-                                    Peso: {{ trans.transport_weight }}TM
                                     <br>
                                     Dirección: {{ trans.direction|title }}
                                     <br>
@@ -224,12 +303,21 @@ Dashboard
                                     <br>
                                     Comentario: {{ trans.comment|title }}
                                     <br>
-                                    Balanza{{ trans.balance|title }}
+                                    Sindicato: {{ trans.syndicate|title }}
                                     <br>
-                                    Peso: {{ trans.transport_weight|title }}
+                                    Placa del deposito: {{ trans.tank_plate|title }}
+                                    <br>
+                                    Peso de tara: {{ trans.tare_weight|title }}
+                                    <br>
+                                    Peso bruto: {{ trans.gross_weight|title }}
+                                    <br>
+                                    Peso Neto: {{ trans.net_weight|title }}
+                                    <br>
+                                    Puerto: {{ trans.port|title }}
+                                    <br>
+                                    T.Muelle: {{ trans.T_Muelle|title }}
                                     <br>
                                     Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
-                                <br>
                             </li>
                         </div>
                     </div>

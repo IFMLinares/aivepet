@@ -18,3 +18,7 @@
 .leyend{
     background-color: rgba(231, 231, 231, 0.3);
 }
+
+#cliente_recibidor_dni{
+    white-space:nowrap;
+}

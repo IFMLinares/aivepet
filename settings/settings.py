@@ -156,4 +156,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
+EMAIL_TIMEOUT = 5
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'notificaciones@aivepet.com'
+EMAIL_HOST_PASSWORD = '987654321'
+EMAIL_SUBJECT_PREFIX = 'Aivepet'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 AUTH_USER_MODEL = 'core.User'
+
+LOGIN_REDIRECT_URL = '/'

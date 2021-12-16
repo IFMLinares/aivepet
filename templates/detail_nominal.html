@@ -61,8 +61,15 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Número de Factura:
-                                <b>{{ orden.number_invoice }}</b>
+                            <div class="col-sm-12 col-form-label">Número de referencia (Cliente):
+                                <b>{{ orden.number_invoice_client }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de referencia (Aivepet):
+                                <b>{{ orden.number_invoice_aivepet }}</b>
                             </div>
                         </div>
                     </div>
@@ -82,7 +89,7 @@ Dashboard
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Producto:
                                 {% for product in orden.product.all %}
-                                <b>{{ product.name|title }}.</b>
+                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
                                 {% endfor %}
                             </div>
                         </div>

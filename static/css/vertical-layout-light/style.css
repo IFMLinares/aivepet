@@ -30614,3 +30614,12 @@ div.tagsinput span.tag a {
 }
 
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */
+tfoot input {
+        width: 15%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+
+    #cliente_recibidor_dni{
+    white-space:nowrap;
+}

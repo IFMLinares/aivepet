@@ -37,15 +37,15 @@ Lista de ordenes
                                         <td>{{ orden.customer_name }}</td>
                                         <td>{{ orden.buque_name }}</td>
                                         <td>{% for product in orden.product.all %}
-                                            {{ product.name }}.
+                                            {{ product.product_id.name|title }}.
                                             {% endfor %}</td>
                                         <td>{{ orden.user }}</td>
                                         <td>{{ orden.start_date|date:'d/m/Y G:i' }}</td>
                                         <td>
-                                            <a class="btn btn-info {% if orden.state == 'Aceptado' %}disabled{% endif %}" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">Aceptar</a>
-                                            <a class="btn btn-secondary {% if orden.state == 'Aceptado' %}disabled{% endif %}" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver</a>
+                                            <a class="btn btn-secondary {% if orden.state == 'En operación' %}disabled{% endif %}" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver</a>
+                                            <a class="btn btn-danger{% if orden.state == 'En operación' %} {% endif %}" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
                                             <br>
-                                            <a class="btn btn-danger mt-xl-1 {% if orden.state == 'Aceptado' %} {% endif %}" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
+                                            <a class="btn btn-info mt-xl-1 {% if orden.state == 'En operación' %}disabled{% endif %}" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">Comenzar operación</a>
                                         </td>
                                     </tr>
                                     {% endfor %}

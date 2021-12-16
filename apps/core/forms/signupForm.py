@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
-
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+usuario = get_user_model()
 
 class SignupForm(forms.ModelForm):
     class Meta:
@@ -43,4 +45,21 @@ class SignupForm(forms.ModelForm):
         user.rif = self.cleaned_data['rif']
         user.direction = self.cleaned_data['direction']
         user.phone_number = self.cleaned_data['phone_number']
+
+        my_pass = usuario.objects.make_random_password()
+        user.set_password(my_pass)
         user.save()
+        message = 'Nombre de usuario: %s Contraseña: %s' % (user.username,my_pass)
+        body = render_to_string(
+            'email_content.html',{
+                'message': message
+            },
+        )
+        email_message = EmailMessage(
+            subject='REGISTRO DE USUARIO EN EL SISTEMA AIVEPET',
+            body = body,
+            from_email= 'notificaciones@aivepet.com',
+            to = [user.email]
+        )
+        email_message.content_subtype = 'html'
+        email_message.send()

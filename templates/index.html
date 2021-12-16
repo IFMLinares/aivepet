@@ -63,9 +63,9 @@ Dashboard
             <div class="col-md-3 mb-4 stretch-card transparent">
                 <div class="card card-green">
                     <div class="card-body">
-                        <p class="mb-4"><b>Barcos Nominados</b></p>
-                        <p class="mb-2 fs-25">Nominados: <span class="stats-span">{{ nominalTrans }}</span></p>
-                        <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ acepted }}</span></p>
+                        <p class="mb-4"><b>Buques Nominados</b></p>
+                        <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ nominalTrans }}</span></p>
+                        <p class="mb-2 fs-25">En operación: <span class="stats-span">{{ acepted }}</span></p>
                         <!-- <p class="mb-2 fs-25">En espera: <span class="stats-span"></span></p> -->
                         <br>
                         <p class="fs-25">Total: <span class="stats-span">{{ total }}</span></p>
@@ -137,7 +137,7 @@ Dashboard
                                 {% if user.role == 'CL' %}
                                     {% if orden.customer_name.pk == user.pk %}
                                     <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                    <td>{{ orden.number_invoice }}</td>
+                                    <td>{{ orden.number_invoice_client }}</td>
                                     <td class="font-weight-bold">
                                         <div
                                             class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
@@ -151,7 +151,7 @@ Dashboard
                                     {% endif %}
                                 {% else %}
                                     <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                    <td>{{ orden.number_invoice }}</td>
+                                    <td>{{ orden.number_invoice_aivepet }}</td>
                                     <td class="font-weight-bold">
                                         <div
                                             class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
@@ -214,7 +214,7 @@ Dashboard
                                 {% if user.role == 'CL' %}
                                     {% if orden.customer_name.pk == user.pk %}
                                     <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                    <td>{{ orden.number_invoice }}</td>
+                                    <td>{{ orden.number_invoice_client }}</td>
                                     <td class="font-weight-bold">
                                         <div
                                             class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
@@ -228,7 +228,7 @@ Dashboard
                                     {% endif %}
                                 {% else %}
                                     <td>{{orden.start_date|date:"d/m/Y"}}</td>
-                                    <td>{{ orden.number_invoice }}</td>
+                                    <td>{{ orden.number_invoice_aivepet }}</td>
                                     <td class="font-weight-bold">
                                         <div
                                             class="badge {% if orden.state == 'En operación' %} badge-success  {% elif  orden.state == 'Finalizado'  %} badge-danger {% elif  orden.state == 'Aceptado'  %}badge-info{% endif %}">
