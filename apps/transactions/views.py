@@ -1,42 +1,42 @@
 # from django.shortcuts import render
+import os
 from django.core.serializers import serialize
 from django.conf import settings
+from django.http import HttpResponse
+from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
+from django.contrib.staticfiles import finders
+
+from xhtml2pdf import pisa
+
 from .models import Product, ProductWeight, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport, Weight, Status, MultipleBL
 from apps.core.models import User
 
 # Create your views here.
-
 '''
 Resumen de las vistas usadas en el módulo de transacciones
 
 Vista para el modelo de transacciones:
-
     AddOrder: Vista para añadir las órdenes de carga/descarga
     OrderListLoad: Listado de todas las órdenes en gestión de carga
     OrderListDownload: Listado de todas las órdenes en gestión de descarga
     OrderUpdate: Vista utilizada para el monitoreo y actualización de cualquier orden no culminada
 
     Las siguientes vistas son solo para el guardado de datos enviados por ajax, no tienen ningún html visible:
-
         WineriesAdd: Guarda las bodegas con relacion ManyToMany
         ProductAdd: Guarda los productos con relacion ManyToMany
         DestinationAdd: Guarda los destinos con relacion ManyToMany
         ReceivingCustomerAdd: Guarda los clientes recibidores con relacion ManyToMany
 
-
 Vistas para el modelo de Transacciones nominales:
-
     AddOrderNominal: Nomina un nuevo barco Cuyo estatus por defecto es "En espera"
     NominalList: Lista de barcos nominados cuyo estatus sigue "En espera"
-
-
 '''
 
 def normalize(s):
@@ -73,7 +73,6 @@ class AddOrder(LoginRequiredMixin,CreateView):
         except:
             pass
         return ctx
-
 
 # Listado de orden de carga
 class OrderListLoad(LoginRequiredMixin,ListView):
@@ -123,7 +122,6 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
             return reverse_lazy('transactions:order_list_load')
         else:
             return reverse_lazy('transactions:order_list_download')
-
 
 # Vista para añadir internamente las bodegas (no visible para el usuario, solo para registro de datos)
 class WineriesAdd(LoginRequiredMixin, CreateView):
@@ -310,27 +308,6 @@ class MultipleBLAdd(LoginRequiredMixin, CreateView):
         data = serialize('json', [query,])
         return HttpResponse(data, 'application/json')
 
-# ELIMINAR LUEGO EL REGISTRO DE PESADAS (INFORMACIÓN EQUIVOCADA)
-# class RecordWeightAdd(LoginRequiredMixin, CreateView):
-#     model = Weight
-
-#     @method_decorator(csrf_exempt)
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
-
-#     def get_queryset(self):
-#         return self.model.objects.all()
-
-#     def post(self, request, *args, **kwargs):
-#         weight = self.model.objects.create(
-#             gross_weight=self.request.POST['gross_weight'],
-#             tare_weight=self.request.POST['tare_weight'],
-#             heavy=self.request.POST['heavy'],
-#             )
-#         query = self.model.objects.get(pk=weight.pk)
-#         data = serialize('json', [query,])
-#         return HttpResponse(data, 'application/json')
-
 class UserViewTransaction(LoginRequiredMixin,DetailView):
     model = Transaction
     template_name = 'user_view_order.html'
@@ -371,6 +348,57 @@ class NominalTransactionDetail(LoginRequiredMixin,DetailView):
     template_name = 'detail_nominal.html'
     context_object_name = 'orden'
 
+class PDFView(View):
+
+    def link_callback(self, uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            result = finders.find(uri)
+            if result:
+                    if not isinstance(result, (list, tuple)):
+                            result = [result]
+                    result = list(os.path.realpath(path) for path in result)
+                    path=result[0]
+            else:
+                    sUrl = settings.STATIC_URL        # Typically /static/
+                    sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+                    mUrl = settings.MEDIA_URL         # Typically /media/
+                    mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+                    if uri.startswith(mUrl):
+                            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+                    elif uri.startswith(sUrl):
+                            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+                    else:
+                            return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                    raise Exception(
+                            'media URI must start with %s or %s' % (sUrl, mUrl)
+                    )
+            return path
+
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('pdf/pdfaivepet.html')
+            context = {
+                'orden': Transaction.objects.get(pk=self.kwargs['pk']),
+                'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png')
+                }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            pisa_status = pisa.CreatePDF(html, dest=response)
+            if pisa_status.err:
+                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            return response
+        except:
+            return response
+        return HttpResponseRedirect(reverse_lazy('core:index'))
+
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
     transaction.state = 'Finalizado'
@@ -379,7 +407,6 @@ def FinishTransaction(request,pk):
         return redirect('transactions:order_list_load')
     else:
         return redirect('transactions:order_list_download')
-
 
 def NominalTransAcepted(request, pk):
     nominal = NominalTransaccion.objects.filter(pk=pk)[0]
@@ -417,3 +444,4 @@ def NominalTransAcepted(request, pk):
         transaction.receiving_customer.add(p)
     transaction.save()
     return redirect('transactions:order_list_nominal')
+

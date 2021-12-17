@@ -21,6 +21,7 @@ urlpatterns = [
     path('finish_transaction/<int:pk>', FinishTransaction, name='finish_trans'),
     path('status_add/', StatusAdd.as_view(), name='status_add'),
     path('multiple_bl/', MultipleBLAdd.as_view(), name='multiple_bl'),
+    path('pdf/<int:pk>', PDFView.as_view(), name='pdf_view'),
     # path('add-weight', RecordWeightAdd.as_view(), name='add_weight'),
 
     #URL PARA LAS VISTAS DE BARCOS NOMINADOS (NOMINAL TRANSACCIONS)

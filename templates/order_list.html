@@ -85,6 +85,7 @@ Lista de ordenes
                                                     <a class="btn btn-info mt-xl-1 {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
                                                     {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
+                                                    <a href="{% url 'transactions:pdf_view' pk=orden.pk %}" target="_blank" class="btn btn-danger mt-xl-1">PDF</a>
                                                     {% endif %}
                                                 </td>
                                         {% endif %}
