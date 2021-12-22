@@ -115,6 +115,7 @@ class Transaction(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre del cliente recibidor', blank=True, null=True)
     tipdoc = models.CharField(max_length=150, verbose_name='Documento de identificación', blank=True, null=True)
     dni = models.CharField(max_length=150, verbose_name='Documento de identificación', blank=True, null=True)
+    updates = models.PositiveBigIntegerField(default=0)
     history = HistoricalRecords(inherit=True)
 
     def save(self, *args, **kwargs):

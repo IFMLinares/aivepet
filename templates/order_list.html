@@ -58,7 +58,7 @@ Lista de ordenes
                                                 </td>
                                                 <td>{{ orden.act_date|date:'d/m/Y G:i' }}
                                                 </td>
-                                                <td>{{ orden.history.all|length }}
+                                                <td>{{ orden.updates }}
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-success" href="{% url 'transactions:client_view' pk=orden.pk %}">Ver</a>
@@ -78,7 +78,7 @@ Lista de ordenes
                                                 </td>
                                                 <td>{{ orden.act_date|date:'d/m/Y G:i' }}
                                                 </td>
-                                                <td>{{ orden.history.all|length }}
+                                                <td>{{ orden.updates }}
                                                 </td>
                                                 <td>
                                                     <!-- <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br> -->

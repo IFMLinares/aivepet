@@ -768,8 +768,9 @@ Dashboard
                 <input type="hidden" name="number_invoice_aivepet" id="number_invoice_aivepet" value="{{ orden.number_invoice_aivepet }}">
                 <input type="hidden" name="unit_measurement" id="id_unit_measurement"
                     value="{{ orden.unit_measurement }}">
-                <input type="hidden" name="comment_initial" id="id_comment_initial" value="{{ comment_initial }}">
-                <input type="hidden" name="total_weighing" id="id_total_weighing" value="{{ total_weighing }}">
+                <input type="hidden" name="comment_initial" id="id_comment_initial" value="{{ orden.comment_initial }}">
+                <input type="hidden" name="updates" id="id_updates" value="{{ orden.updates }}">
+                <input type="hidden" name="total_weighing" id="id_total_weighing" value="{{ orden.total_weighing }}">
                 <!-- <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}"> -->
                 {{ form.product }}
                 {{ form.transport }}
@@ -791,6 +792,10 @@ Dashboard
 
 {% block extra_js %}
 <script>
+
+    var update = parseInt($('#id_updates').val());
+    update = update + 1
+    $('#id_updates').val(update)
 
     $('#id_Wineries').css('display', 'none')
     $('#id_product').css('display', 'none')
