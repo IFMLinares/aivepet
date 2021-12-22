@@ -61,9 +61,9 @@ class AddOrder(LoginRequiredMixin,CreateView):
 
     def get_success_url(self):
         if(self.object.order_type == 'carga'):
-            return reverse_lazy('transactions:order_list_load')
+            return reverse_lazy('transactions:transaction_success')
         else:
-            return reverse_lazy('transactions:order_list_download')
+            return reverse_lazy('transactions:transaction_success')
 
     def get_context_data(self, **kwargs):
         ctx = super(AddOrder, self).get_context_data(**kwargs)
@@ -318,7 +318,7 @@ class AddOrderNominal(LoginRequiredMixin,CreateView):
     model = NominalTransaccion
     fields = '__all__'
     template_name = 'add_order_nominal.html'
-    success_url = reverse_lazy('transactions:order_list_nominal')
+    success_url = reverse_lazy('transactions:transaction_success')
     context_object_name = 'query'
     def get_context_data(self, **kwargs):
         ctx = super(AddOrderNominal, self).get_context_data(**kwargs)
@@ -328,6 +328,9 @@ class AddOrderNominal(LoginRequiredMixin,CreateView):
         except:
             pass
         return ctx
+
+class TranssaccionSuccess(LoginRequiredMixin, TemplateView):
+    template_name = 'transaction_success.html'
 
 #  Lista de barcos nominados
 class NominalList(LoginRequiredMixin,ListView):

@@ -45,7 +45,10 @@ Lista de ordenes
 <script>
     $(document).ready(function() {
     $('#order-datatable').DataTable({
-        "order": [[ 2, "desc" ]]
+        "order": [[ 2, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+        },
     });
 } );
 </script>

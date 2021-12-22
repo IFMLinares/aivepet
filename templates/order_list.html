@@ -83,8 +83,8 @@ Lista de ordenes
                                                 <td>
                                                     <!-- <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br> -->
                                                     <a class="btn btn-info mt-xl-1 {% if orden.state == 'Finalizado' %}disabled{% endif %}" href="{% url 'transactions:update_order' pk=orden.pk %}">Actualizar</a>
-                                                    {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
+                                                    {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:pdf_view' pk=orden.pk %}" target="_blank" class="btn btn-danger mt-xl-1">PDF</a>
                                                     {% endif %}
                                                 </td>
@@ -131,7 +131,10 @@ Lista de ordenes
 <script>
     $(document).ready(function() {
     $('#order-datatable').DataTable({
-        "order": [[ 7, "desc" ]]
+        "order": [[ 7, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+        },
     });
     } );
     function mostrar(id){

@@ -17,14 +17,13 @@ Lista de Clientes
                                 <thead>
                                     <tr class="text-center">
                                         <th>Id</th>
-                                        <th>Nro documento</th>
+                                        <th>RIF</th>
                                         <th>Empresa</th>
                                         <th>Dirección</th>
                                         <th>Nombre</th>
                                         <!-- <th>Usuario</th> -->
                                         <th>Email</th>
                                         <th>Tlf</th>
-                                        <th>Rif</th>
                                         <!-- <th>Rol</th> -->
                                         <th>Fecha de registro</th>
                                         <th>Acciones</th>
@@ -35,14 +34,13 @@ Lista de Clientes
                                         {% if user.role == 'CL' %}
                                         <tr class="text-center">
                                             <td>{{ user.pk }} </td>
-                                            <td>{{ user.rif }}</td>
+                                            <td>{{ user.rif }} </td>
                                             <td>{{ user.company_name }}</td>
                                             <td>{{ user.direction }}</td>
                                             <td>{{ user.first_name|title }} {{ user.last_name|title }}</td>
                                             <!-- <td>{{ user.username }} </td> -->
                                             <td>{{ user.email }} </td>
                                             <td>{{ user.phone_number }} </td>
-                                            <td>{{ user.rif }} </td>
                                             <!-- <td>
                                                 {% if user.role == 'AD' %}
                                                 Admin
@@ -55,7 +53,13 @@ Lista de Clientes
                                                 {% endif %}
                                             </td> -->
                                             <td>{{ user.date_joined|date:"d/m/Y g:i:a" }} </td>
-                                            <td><a class="btn btn-danger" href="{% url 'core:delete_user' pk=user.pk %}">Eliminar</a></td>
+                                            <td>
+                                                <a class="btn btn-secondary" href="{% url 'core:user_detail' pk=user.pk %}">Ver</a>
+                                                <br>
+                                                <a class="btn btn-success mt-sm-1" href="{% url 'core:user_edit' pk=user.pk %}">Editar</a>
+                                                <br>
+                                                <a class="btn btn-danger mt-sm-1" href="{% url 'core:delete_user' pk=user.pk %}">Eliminar</a>
+                                            </td>
                                         </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -72,7 +76,11 @@ Lista de Clientes
 {% block extra_js %}
 <script>
     $(document).ready(function() {
-    $('#order-datatable').DataTable();
+    $('#order-datatable').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+        },
+    });
 } );
 </script>
 {% endblock %}

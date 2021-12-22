@@ -35,9 +35,10 @@ Dashboard
                 <div class="row">
                     <input type="hidden" class="form-control add-order" readonly placeholder="00001" name="user"
                         id="id_user" value="{{ user.id }}">
-                    <input type="hidden" name="state" id="id_state" value="En operación">
+                    <input type="hidden" name="state" id="id_state" value="Aceptado">
                     <div class="col-md-12">
-                        <h3 class="mb-xl-4">Por favor seleccione el tipo de orden:</h3>
+                        <h3 class="mb-xl-4" id="text-order-type">Por favor seleccione el tipo de orden:</h3>
+                        <h3 class="mb-xl-4 d-none" id="text-info">Información de la orden:</h3>
                     </div>
                     <div class="row col-md-12" id="type_load">
                         <div class="col-md-6">
@@ -76,9 +77,8 @@ Dashboard
                                     <li>Nro Referencia (Cliente):</li>
                                 </label>
                                 <div class="col-sm-7">
-                                    <input class="form-control add-order" type="number" name="number_invoice_client"
+                                    <input class="form-control add-order" type="text" name="number_invoice_client"
                                         min="0" required id="id_number_invoice_client"
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                         maxlength="10" placeholder="Nro de referencia dado por el cliente">
                                 </div>
                             </div>
@@ -89,9 +89,8 @@ Dashboard
                                     <li>Nro Referencia (Aivepet):</li>
                                 </label>
                                 <div class="col-sm-7">
-                                    <input class="form-control add-order" type="number" name="number_invoice_aivepet"
+                                    <input class="form-control add-order" type="text" name="number_invoice_aivepet"
                                         min="0" required id="id_number_invoice_aivepet"
-                                        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                                         maxlength="10" placeholder="Nro de referencia propio de aivepet">
                                 </div>
                             </div>
@@ -122,42 +121,40 @@ Dashboard
                         </div>
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-sm-12 col-form-label">
                                     <h3>Cliente Suplidor:</h3>
-                                </label>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Empresa:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Empresa:</li></label>
                                         <div class="col-sm-7">
                                             <input type="text" class="form-control add-order"
-                                                placeholder="Empresa del cliente recibidor" id="id_company_name" name="company_name">
+                                                placeholder="Nombre de la empresa emisor" id="id_company_name" name="company_name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Responsable:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Responsable:</li></label>
                                         <div class="col-sm-7">
                                             <input type="text" class="form-control add-order"
-                                                placeholder="Cliente comprador" id="id_name" name="name">
+                                                placeholder="Nombre del responsable" id="id_name" name="name">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Rif/Cédula:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Rif/Cédula:</li></label>
                                         <div class="form-row">
-                                            <div class="col  mt-xl-1">
-                                                <select class="custom-select" id="id_tipdoc" name="tipdoc">
+                                            <div class="col mt-xl-1">
+                                                <select class="custom-select add-order" id="id_tipdoc" name="tipdoc">
                                                     <option value="V">V</option>
                                                     <option value="E">E</option>
-                                                    <option value="J">V</option>
+                                                    <option value="J">J</option>
                                                     <option value="G">G</option>
                                                 </select>
                                             </div>
-                                            <div class="col  mt-xl-1">
-                                                <input type="text" class="form-control"
-                                                placeholder="Rif/CI" id="id_dni" name="dni">
+                                            <div class="col mt-xl-1">
+                                                <input type="number" class="form-control add-order"
+                                                placeholder="Rif/CI" id="id_dni" name="dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </div>
                                         </div>
                                     </div>
@@ -166,30 +163,31 @@ Dashboard
                         </div>
                         <div class="col-md-12">
                             <div class="form-group row">
-                                <label class="col-sm-12 col-form-label">
                                     <h3>Cliente recibidor:</h3>
-                                </label>
+                                    <div class="jumbotron" style="padding: 15px">
+                                        <p class="lead">Aqui puede añadir los multiples clientes recibidores de la orden, Estos se veran reflejados en el lado derecho de esta ventana.
+                                    </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Empresa:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Empresa:</li></label>
                                         <div class="col-sm-7">
                                             <input type="text" class="form-control add-order"
-                                                placeholder="Empresa del cliente recibidor" id="cliente_recibidor_empresa">
+                                                placeholder="Nombre de la empresa recibidor" id="cliente_recibidor_empresa">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Comprador:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Comprador:</li></label>
                                         <div class="col-sm-7">
                                             <input type="text" class="form-control add-order"
-                                                placeholder="Cliente comprador" id="cliente_recibidor_comprador">
+                                                placeholder="Nombre del responsable" id="cliente_recibidor_comprador">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label ml-xl-5"><li>Rif/Cédula:</li></label>
+                                        <label class="col-md-3 col-form-label"><li>Rif/Cédula:</li></label>
                                         <div class="form-row">
                                             <div class="col  mt-xl-1">
                                                 <select class="custom-select add-order" id="cliente_recibidor_tipdoc">
@@ -199,19 +197,20 @@ Dashboard
                                                     <option value="G">G</option>
                                                 </select>
                                             </div>
-                                            <div class="col  mt-xl-1">
-                                                <input type="text" class="form-control add-order"
-                                                placeholder="Rif/CI" id="cliente_recibidor_dni">
+                                            <div class="col mt-xl-1">
+                                                <input type="number" class="form-control add-order"
+                                                placeholder="Rif/CI" id="cliente_recibidor_dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </div>
-                                        <div class="col-sm-12 mr-xl-2">
-                                            <button class="btn btn-sm btn-success mr-xl-2" type="button"
-                                                id="cliente_recibidor_button" style="float: right;">Añadir</button>
+                                        <div class="col mt-sm-1">
+                                            <button class="btn btn-sm btn-success" type="button"
+                                                id="cliente_recibidor_button">Añadir</button>
                                         </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <h3 class="mb-xl-4">Información del buque:</h3>
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <label class="col-sm-5 col-form-label">
@@ -241,7 +240,7 @@ Dashboard
                                 </label>
                                 <div class="col-sm-7">
                                     <input class="form-control add-order" type="text" name="numero_muelle" min="0"
-                                        required id="id_numero_muelle">
+                                        required id="id_numero_muelle" maxlength="7">
                                 </div>
                             </div>
                         </div>
@@ -339,7 +338,7 @@ Dashboard
                                 <button type="submit" class="btn btn-success d-none" id="save-info">Crear nueva
                                     orden</button>
                                 <!-- <button type="button" class="btn btn-success" id="sig-info">Siguiente</button> -->
-                                <button type="button" class="btn btn-primary mt-xl-2" data-toggle="modal"
+                                <button type="button" class="btn btn-success mt-xl-2" data-toggle="modal"
                                     data-target="#exampleModal" id="modal-button" disabled>
                                     Confirmar orden
                                 </button>
@@ -357,19 +356,19 @@ Dashboard
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmar Registro</h5>
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="exampleModalLabel">CONFIRMAR REGISTRO</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h3 id="modal-body"></h3>
+                <h3 id="modal-body" class="text-center"></h3>
                 <h4 class="text-center mt-3">¿Está usted seguro?</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="sig-info">Confirmar</button>
+                <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" style="color: white;">Cerrar</button>
+                <button type="button" class="btn btn-success mr-auto" id="sig-info">Confirmar</button>
             </div>
         </div>
     </div>

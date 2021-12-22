@@ -2,13 +2,16 @@ $('#sig-info').on('click', function(){
     event.preventDefault()
     $(this).fadeOut().addClass("d-none");
     $('#modal-button').addClass("d-none");
+    $('#text-order-type').addClass("d-none");
     $('#type_load').animate({
         height: 'toggle'
     });
     $('#exampleModal').modal('hide');
     $('#info-load').removeClass('d-none').fadeTo("slow")
     $('#leyend-info-load').removeClass('d-none').fadeTo("slow")
+    $('#text-info').removeClass('d-none').fadeTo("slow")
     $('#save-info').removeClass('d-none').fadeTo("slow")
+    
 })
 
 $('input[name=order_type]').on('change', function(){

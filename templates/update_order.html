@@ -87,15 +87,6 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Producto:
-                                {% for product in orden.product.all %}
-                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del puerto: <b>{{ orden.port_name }}</b></div>
                         </div>
                     </div>
@@ -118,6 +109,16 @@ Dashboard
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Producto:
+                                {% for product in orden.product.all %}
+                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
+                                <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-7">
@@ -134,9 +135,9 @@ Dashboard
                                                 <option value="ARRIBO">ARRIBO</option>
                                                 <option value="BUQUE FONDEADO (ANCLO)">BUQUE FONDEADO (ANCLO)</option>
                                                 <option value="ATRACADO">ATRACADO</option>
-                                                <option value="FINLAZIA LA INSPECCIÓN INICIAL">FINLAZIA LA INSPECCIÓN INICIAL</option>
+                                                <option value="FINLAZIA LA INSPECCIÓN INICIAL">FINALIZA LA INSPECCIÓN INICIAL</option>
                                                 <option value="FINALIZA LA INSPECCIÓN FINAL">FINALIZA LA INSPECCIÓN FINAL</option>
-                                                <option value="FINALIZA CALCULOS">FINALIZA CALCULOS</option>
+                                                <option value="FINALIZA CALCULOS">FINALIZA CÁLCULOS</option>
                                                 <option value="PAUSADO">PAUSADO</option>
                                             </select>
                                         </div>
@@ -183,10 +184,10 @@ Dashboard
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                             <input type="number" class="form-control add-order mt-xl-2"
-                                                placeholder="BL del buque" id="id_bl_multiple">
+                                                placeholder="BL del buque" id="id_bl_multiple" {% if orden.bl %} readonly {% endif %}>
                                         </div>
                                         <div class="col-sm-3 mt-xl-1">
-                                            <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1" type="button"
+                                            <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 {% if orden.bl %} disabled {% endif %}" type="button"
                                                     id="multiple_bl">Añadir</button>
                                         </div>
                                     </div>
@@ -197,7 +198,7 @@ Dashboard
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                             <input type="number" class="form-control add-order mt-xl-2"
-                                                placeholder="Draft del buque" name="draft" id="id_draft">
+                                                placeholder="Draft del buque" name="draft" id="id_draft" {% if orden.draft %} readonly value="{{ orden.draft }}" {% endif %}>
                                         </div>
                                         <div class="col-sm-3 mt-xl-1">
                                             Toneladas Métricas (TM)
@@ -567,12 +568,25 @@ Dashboard
                                             </li>
                                             {% if orden.multiple_bl.all %}
                                             {% for bl in orden.multiple_bl.all %}
-                                            <li class="ml-xl-2">
+                                            <br>
+                                            Multiples BL:
+                                            <li>
                                                 <span>BL: {{ bl.bl }} <br>
                                                 </span>
                                             </li>
                                             {% endfor %}
                                             {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
+                                        <hr>
+                                    </div>
+                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3">Draft surveys:</label>
+                                    <div class="col-sm-12 ml-xl-3">
+                                        <ul id="bl_list" style="margin-bottom: 0px;">
+                                            <li>
+                                                <span>Draft: {{ orden.draft }}</span>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">

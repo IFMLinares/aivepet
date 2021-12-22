@@ -1,0 +1,105 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Lista de Clientes
+{% endblock %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">Editar datos de usuario</h1>
+                    <form action="#" method="post" class="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.first_name.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.first_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.last_name.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.email.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.username.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.username }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.rif.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.rif }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.company_name.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.company_name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.direction.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.direction }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-5 col-form-label">
+                                        <li>{{ form.phone_number.label }}:</li>
+                                    </label>
+                                    <div class="col-sm-7">
+                                        {{ form.phone_number }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-right mt-xl-2">
+                            <button type="submit" class="btn btn-success" id="save-info">Guardar Cambios</button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

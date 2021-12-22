@@ -10,6 +10,22 @@ Dashboard
             <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                 <h3 class="font-weight-bold">¡Bienvenido al sistema de control de despacho {{ user.first_name|title }}!
                 </h3>
+                <div id="accordion">
+                    <div class="">
+                        <div class="" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color: red;">
+                                AVISO IMPORTANTE!
+                            </button>
+                        </h5>
+                    </div>
+                        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                <h5 class="font-weight-bold">PARA REGISTRAR UNA NUEVA ORDEN EN EL SISTEMA USTED DEBE REALIZAR EL REGISTRO DEL CLIENTE PRIMERAMENTE EN EL SISTEMA, EN LA OPCIÓN NUEVO USUARIO>CLIENTE</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- <h6 class="font-weight-normal mb-0">All systems are running smoothly! You have <span
                         class="text-primary">3 unread alerts!</span></h6> -->
             </div>
@@ -101,7 +117,7 @@ Dashboard
                     <div class="card-body">
                         <p class="mb-4"><b>Estadísticas del día</b></p>
                         <!-- <p class="mb-2 fs-25">Arribaron: <span class="stats-span"></span></p> -->
-                        <p class="mb-2 fs-25">En espera: <span class="stats-span">{{ nominalTransToday }}</span></p>
+                        <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ nominalTransToday }}</span></p>
                         <!-- <p class="mb-2 fs-25">En descarga: <span class="stats-span">2</span></p> -->
                         <!-- <p class="mb-2 fs-25">En Carga: <span class="stats-span">2</span></p> -->
                         <p class="mb-2 fs-25">Finalizados: <span class="stats-span">
@@ -145,7 +161,7 @@ Dashboard
                                     </td>
                                     <td class="font-weight-medium">
                                         <a href="{% url 'transactions:client_view' pk=orden.pk %}"
-                                            class="btn btn-info btn-sm">Ver
+                                            class="btn btn-success btn-sm">Ver
                                         </a>
                                     </td>
                                     {% endif %}
@@ -158,13 +174,10 @@ Dashboard
                                             {{ orden.state }}</div>
                                     </td>
                                     <td class="font-weight-medium">
-                                        {% if orden.state == 'Finalizado' %}
-                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
-                                        {% else %}
                                         <a href="{% url 'transactions:update_order' pk=orden.pk %}"
                                             class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
-                                        </a>
-                                        {% endif %}
+                                        </a><br>
+                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-success mt-sm-1">Ver</a>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -222,7 +235,7 @@ Dashboard
                                     </td>
                                     <td class="font-weight-medium">
                                         <a href="{% url 'transactions:client_view' pk=orden.pk %}"
-                                            class="btn btn-info btn-sm">Ver
+                                            class="btn btn-success btn-sm">Ver
                                         </a>
                                     </td>
                                     {% endif %}
@@ -235,13 +248,10 @@ Dashboard
                                             {{ orden.state }}</div>
                                     </td>
                                     <td class="font-weight-medium">
-                                        {% if orden.state == 'Finalizado' %}
-                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-primary mt-xl-1">Ver</a>
-                                        {% else %}
                                         <a href="{% url 'transactions:update_order' pk=orden.pk %}"
                                             class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
-                                        </a>
-                                        {% endif %}
+                                        </a><br>
+                                        <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-success mt-sm-1">Ver</a>
                                     </td>
                                 {% endif %}
                             </tr>
@@ -265,12 +275,18 @@ Dashboard
     $('#table-load').DataTable({
         "searching": false,
         "bLengthChange": false,
-        "order": [[ 0, "desc" ]]
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+        },
     });
     $('#table-download').DataTable({
         "searching": false,
         "bLengthChange": false,
-        "order": [[ 0, "desc" ]]
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+        },
     });
 } );
 </script>

@@ -1,14 +1,16 @@
 import datetime
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DeleteView
+from django.views.generic import TemplateView, ListView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from allauth.account.forms import SignupForm
+from allauth.account.forms import SignupForm, UserForm
+from django.views.generic.edit import UpdateView
 from apps.transactions.models import Transaction, NominalTransaccion
 from .models import User
+from .user_update_form import UserForm
 
 
 # Create your views here.
@@ -36,7 +38,7 @@ class Index(LoginRequiredMixin,ListView):
         context['totalUnload'] = context['unload'] + context['unloadFinish']
 
         context['nominalTrans'] = (NominalTransaccion.objects.filter(state='Aceptado')).count() + (NominalTransaccion.objects.filter(state='En operación')).count()
-        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='Aceptado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
+        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='Aceptado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count() + (NominalTransaccion.objects.filter(state='En operación', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
 
         context['acepted'] = (self.model.objects.filter(state='En operación')).count()
         context['total'] = context['acepted'] + context['nominalTrans']
@@ -58,6 +60,18 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+class UserView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'user_view.html'
+    context_object_name = 'us'
+
+class UserEdit(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    success_url = reverse_lazy('core:list_user')
+    context_object_name = 'us'
+    template_name = 'user_edit.html'
 
 class Developing(LoginRequiredMixin,TemplateView):
     template_name = 'developing.html'

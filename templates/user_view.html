@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Detalles del usuario {{ us.first_name|title }} {{ us.last_name|title }}
+{% endblock %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">Detalles del usuario</h1>
+                <div class="row">
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Nombre y Apellido:
+                                <b>{{ us.first_name|title }} {{ us.last_name|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Nombre de usuario:
+                                <b>{{ us.username|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">RIF/CI:
+                                <b>{{ us.rif|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Email:
+                                <b>{{ us.email|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Compañía:
+                                <b>{{ us.company_name|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Dirección:
+                                <b>{{ us.direction|title }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Número de teléfono:
+                                <b>{{ us.phone_number }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Fecha de registro:
+                                <b>{{ us.date_joined }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Última conexión:
+                                <b>{{ us.last_login }}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
