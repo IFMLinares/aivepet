@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = db.SQLITE
+DATABASES = db.MYSQL
 
 
 # Password validation
@@ -162,6 +162,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'notificaciones@aivepet.com'
 EMAIL_HOST_PASSWORD = '987654321'
+# 987654321Ab$
 EMAIL_SUBJECT_PREFIX = 'Aivepet'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

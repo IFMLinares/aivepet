@@ -23,10 +23,10 @@ POSTGRESQL = {
 MYSQL = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'user_management_django',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': 'aivepet$systemtracker',
+        'USER': 'aivepet',
+        'PASSWORD': '987654321Ab$',
+        'HOST': 'aivepet.mysql.pythonanywhere-services.com',
         'PORT': ''
     }
 }
