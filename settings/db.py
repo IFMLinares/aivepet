@@ -28,8 +28,8 @@ MYSQL = {
         'PASSWORD': '987654321Ab$',
         'HOST': 'aivepet.mysql.pythonanywhere-services.com',
         'PORT': '',
-        'OPTIONS': {
-            'init_command': 'SET default_storage_engine=INNODB',
-        }
+        # 'OPTIONS': {
+        #     'init_command': 'SET default_storage_engine=INNODB',
+        # }
     }
 }
