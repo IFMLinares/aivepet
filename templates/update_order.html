@@ -1,5 +1,7 @@
 {% extends 'base/base.html' %}
 {% block title %}
+
+{% load humanize %}
 Dashboard
 {% endblock %}
 {% load static %}
@@ -16,7 +18,8 @@ Dashboard
             <p class="card-description text-center">
                 Información de carga:
             </p>
-            <form class="form-sample" id="" method="post" action="">
+            <!-- {{ form.as_p }} -->
+            <form class="form-sample" id="form-submit" method="post" action="">
                 {% csrf_token %}
                 {% if form.errors %}
                 {% for field in form %}
@@ -113,7 +116,7 @@ Dashboard
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Producto:
                                 {% for product in orden.product.all %}
-                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
+                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM (Toneladas Métricas).</b>
                                 <br>
                                 {% endfor %}
                             </div>
@@ -150,7 +153,7 @@ Dashboard
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-4 col-form-label">Comentario:</label>
+                                        <label class="col-md-4 col-form-label">Evento:</label>
                                         <div class="col-sm-7">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                             <textarea class="form-control" id="status_comment"></textarea>
@@ -175,16 +178,43 @@ Dashboard
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                             <input type="number" class="form-control add-order mt-xl-2"
-                                                placeholder="BL del buque" name="bl" id="id_bl" {% if orden.bl %} value="{{ orden.bl }}" readonly {% endif %}>
+                                                placeholder="BL del buque" name="bl" id="id_bl" {% if orden.bl %} value="{{ orden.bl }}" disabled {% endif %}>
                                         </div>
                                         <div class="col-sm-3 mt-xl-1">
                                             Toneladas Métricas (TM)
                                         </div>
+                                        
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-md-4 col-form-label">Draft:</label>
+                                                <div class="col-sm-5">
+                                                    <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
+                                                    <input type="number" class="form-control add-order mt-xl-2"
+                                                        placeholder="Draft del buque" name="draft" id="id_draft" {% if orden.draft %} disabled value="{{ orden.draft }}" {% endif %}>
+                                                </div>
+                                                <div class="col-sm-3 mt-xl-1">
+                                                    Toneladas Métricas (TM)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group row">
                                         <label class="col-md-4 col-form-label">Añadir Multiples BL:</label>
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                             <input type="number" class="form-control add-order mt-xl-2"
-                                                placeholder="BL del buque" id="id_bl_multiple" {% if orden.bl %} readonly {% endif %}>
+                                                placeholder="BL del buque" id="id_bl_multiple" {% if orden.bl %} disabled {% endif %}>
+                                        </div>
+                                        <label class="col-md-4 col-form-label">Cliente Recibidor:</label>
+                                        <div class="col-sm-5">
+                                            <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
+                                            
+                                            <select class="custom-select add-order mt-xl-2" id="id_bl_customer">
+                                                {% for customer in orden.receiving_customer.all %}
+                                                <option value="{{ customer.pk }}">{{ customer.name }}- {{ customer.tipdoc }}{{ customer.dni }} - {{ customer.company_name }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                         <div class="col-sm-3 mt-xl-1">
                                             <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 {% if orden.bl %} disabled {% endif %}" type="button"
@@ -193,21 +223,8 @@ Dashboard
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group row">
-                                        <label class="col-md-4 col-form-label">Draft:</label>
-                                        <div class="col-sm-5">
-                                            <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
-                                            <input type="number" class="form-control add-order mt-xl-2"
-                                                placeholder="Draft del buque" name="draft" id="id_draft" {% if orden.draft %} readonly value="{{ orden.draft }}" {% endif %}>
-                                        </div>
-                                        <div class="col-sm-3 mt-xl-1">
-                                            Toneladas Métricas (TM)
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
                                     <div class="form-group row text-center" style="color: darkgray;">
-                                        Nota: Estos campos se guardarán automaticamente al ejecutar la actualización de orden.
+                                        Nota: El campo Bill of Lading (BL): se guardará al actualizar la orden, si esta misma posee mas de un BL debe ingresar el bill of lading total y añadir los multiples en la seccion de multiples BL
                                     </div>
                                 </div>
                             </div>
@@ -365,9 +382,23 @@ Dashboard
                         <div class="border border-secondary rounded mt-xl-3">
                             <div class="col-md-12">
                                 <h2 class="mt-xl-2 text-center mb-xl-4">Información del transporte</h2>
+                                <input type="hidden" id="transaction_id" value="{{ orden.pk }}">
                                 <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                             </div>
                             <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">
+                                        <li>Cliente Recibidor:</li>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select class="custom-select add-order mt-xl-2" id="id_transport_customer">
+                                            {% for customer in orden.receiving_customer.all %}
+                                            <option value="{{ customer.pk }}">{{ customer.name }}- {{ customer.tipdoc }}{{ customer.dni }} - {{ customer.company_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
                                         <li>Tipo de transporte:</li>
@@ -391,7 +422,7 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li> Placa del depósito:</li>
+                                        <li> Placa de la volqueta:</li>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="tank_plate"
@@ -437,7 +468,7 @@ Dashboard
                                         <li> T.Muelle:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control add-order" name="T_Muelle" id="id_T_Muelle">
+                                        <input type="text" class="form-control add-order" name="T_Muelle" id="id_T_Muelle" value="{{ orden.port_name }}"> 
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -493,10 +524,10 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li> Peso de tara:</li>
+                                        <li> Peso neto:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="number" class="form-control add-order" name="net_weight" id="id_net_weight" placeholder="Peso neto" readonly>
+                                        <input type="number" class="form-control add-order" name="trans_net_weight" id="id_trans_net_weight" placeholder="Peso neto" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -520,7 +551,7 @@ Dashboard
                                         <li>Monto Draft Final:</li>
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="number" class="form-control add-order" id="final_draft" name="final_draft" placeholder="Monto del draft final">
+                                        <input type="number" class="form-control add-order" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft %}disabled {% endif %}>
                                     </div>
                                     <div class="col-sm-3 mt-xl-1">
                                         Toneladas Métricas (TM)
@@ -528,9 +559,14 @@ Dashboard
                                 </div>
                             </div>
                         </div>
+                        
+                
+                <div class="text-right pt-xl-2 mb-xl-2">
+                    <a href="{% url 'transactions:finish_trans' pk=orden.pk %}" class="btn btn-danger mr-xl-2" id="finish">Finalizar orden</a><button type="submit" class="btn btn-success">Actualizar orden</button>
+                </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="col-md-12 rounded border border-info d-inline-block leyend" style="height: 100%;">
+                        <div class="col-md-12 rounded border border-info d-inline-block leyend" style="overflow: auto;">
                             <div class="text-center mt-xl-3">
                                 <h3>Resultado de la operación:</h3>
                             </div>
@@ -539,7 +575,7 @@ Dashboard
                                     <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3">Estatus de operación:</label>
                                     <div class="col-sm-12 ml-xl-3">
                                         {{ form.status }}
-                                        <ul id="status_list" style="margin-bottom: 0px;">
+                                        <ul id="status_list">
                                             {% if orden.status.all %}
                                             {% for state in orden.status.all %}
                                             <li>
@@ -564,14 +600,14 @@ Dashboard
                                         {{ form.multiple_bl }}
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span>BL: {{ orden.bl }}</span>
+                                                <span>BL: {{ orden.bl }} TM (Toneladas Métricas)</span>
                                             </li>
                                             {% if orden.multiple_bl.all %}
                                             {% for bl in orden.multiple_bl.all %}
                                             <br>
                                             Multiples BL:
                                             <li>
-                                                <span>BL: {{ bl.bl }} <br>
+                                                <span>BL: {{ bl.bl }}  TM (Toneladas Métricas)<br>
                                                 </span>
                                             </li>
                                             {% endfor %}
@@ -607,8 +643,7 @@ Dashboard
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                         <hr>
                                     </div>
-                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3">Clientes
-                                        recibidores:</label>
+                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3">Clientes recibidores:</label>
                                     <div class="col-sm-12 ml-xl-3">
                                         {{ form.receiving_customer }}
                                         <ul id="customer_list" style="margin-bottom: 0px;">
@@ -618,6 +653,11 @@ Dashboard
                                                 <span>Empresa: {{ customer.company_name }} <br>
                                                     Responsable: {{ customer.name }} <br>
                                                     {{ customer.tipdoc }}: {{ customer.dni }} <br>
+                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM (Toneladas Métricas)
+                                                    {% else %}
+                                                        Descargado: {{ customer.quantity }} TM (Toneladas Métricas)
+                                                    {% endif %}
+                                                    <br>
                                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }}
                                                 </span>
                                             </li>
@@ -637,7 +677,7 @@ Dashboard
                                         {% for product in orden.product.all %}
                                         <ul style="margin-bottom: 0px;">
                                             <li>
-                                                <span> {{ product.product_id.name|title }} {{ product.weight }}TM.</span>
+                                                <span> {{ product.product_id.name|title }} {{ product.weight }}TM (Toneladas Métricas).</span>
                                             </li>
                                         </ul>
                                         {% endfor %}
@@ -656,7 +696,7 @@ Dashboard
                                                 {% for winerie in orden.Wineries.all %}
                                                 <li>
                                                     <span>{{ winerie.product.name|title }}: {{ winerie.number|title }}:
-                                                        {{ winerie.weight }} TM: <br> Fecha de adición:
+                                                        {{ winerie.weight }} TM (Toneladas Métricas): <br> Fecha de adición:
                                                         {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                                     </span>
 
@@ -669,7 +709,8 @@ Dashboard
                                             {% endif %}
                                         </ul>
                                         <br>
-                                        <b>Total: <span id="net_weight">{{ orden.net_weight }}</span> TM</b>
+                                        <b>Total: <span id="net_weight">{{ orden.net_weight }}</span> TM (Toneladas Métricas)</b>
+                                        <input type="text" step="0.01" name="net_weight" id="id_net_weight" value="{% if orden.net_weight %}{{ orden.net_weight|floatformat:2 }}{% else %} 0 {% endif %}" class="d-none">
                                     </div>
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                         <hr>
@@ -707,6 +748,12 @@ Dashboard
                                             {% for trans in orden.transport.all %}
                                             <li class="col-md-12">
                                                 <span>
+                                                    Cliente Recibidor: {{ trans.customer_name.name|title }} - {{ trans.customer_name.company_name|title }}
+                                                    <br>
+                                                    Viaje: {{ trans.viaje }}
+                                                    <br>
+                                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                    <br>
                                                     Tipo de vehículo: {{ trans.vehicle|title }}
                                                     <br>
                                                     Placa: {{ trans.license_plate|title }}
@@ -727,17 +774,15 @@ Dashboard
                                                     <br>
                                                     Placa del deposito: {{ trans.tank_plate|title }}
                                                     <br>
-                                                    Peso de tara: {{ trans.tare_weight|title }}
+                                                    Peso de tara: {{ trans.tare_weight|title }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso bruto: {{ trans.gross_weight|title }}
+                                                    Peso bruto: {{ trans.gross_weight|title }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso Neto: {{ trans.net_weight|title }}
+                                                    Peso Neto: {{ trans.net_weight|title }} TM (Toneladas Métricas)
                                                     <br>
                                                     Puerto: {{ trans.port|title }}
                                                     <br>
                                                     T.Muelle: {{ trans.T_Muelle|title }}
-                                                    <br>
-                                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
                                             </li>
                                             {% endfor %}
                                             {% else %}
@@ -748,19 +793,17 @@ Dashboard
                                         </ul>
                                     </div>
                                     <div class="col-sm-12">
-                                        <li>Pesada: <span id="pesada">{{ orden.transport_heavy }}</span></li>
+                                        <li>Pesada: <span id="pesada">{{ orden.transport_heavy }} TM (Toneladas Métricas)</span></li>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-                <div class="text-right pt-xl-2">
-                    <a href="{% url 'transactions:finish_trans' pk=orden.pk %}" class="btn btn-danger mr-xl-2" id="finish">Finalizar orden</a><button type="submit" class="btn btn-success">Actualizar orden</button>
-                </div>
                 <input type="hidden" name="user" id="id_user" value="{{ orden.user.id }}">
                 <input type="hidden" name="order_type" id="id_order_type" value="{{ orden.order_type }}">
                 <input type="hidden" name="order_number" id="id_order_number" value="{{ orden.order_number }}">
@@ -770,7 +813,7 @@ Dashboard
                     value="{{ orden.unit_measurement }}">
                 <input type="hidden" name="comment_initial" id="id_comment_initial" value="{{ orden.comment_initial }}">
                 <input type="hidden" name="updates" id="id_updates" value="{{ orden.updates }}">
-                <input type="hidden" name="total_weighing" id="id_total_weighing" value="{{ orden.total_weighing }}">
+                <input type="number" name="total_weighing" id="id_total_weighing" value="{% if orden.total_weighing %}{{ orden.total_weighing|floatformat:2 }}{% else %} 0 {% endif %}" class="d-none">
                 <!-- <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}"> -->
                 {{ form.product }}
                 {{ form.transport }}
@@ -782,7 +825,7 @@ Dashboard
                 <input type="hidden" name="buque_name" id="id_buque_name" value="{{ orden.buque_name }}">
                 <input type="hidden" name="port_name" id="id_port_name" value="{{ orden.port_name }}">
                 <input type="hidden" name="numero_muelle" id="id_numero_muelle" value="{{ orden.numero_muelle }}">
-                <input type="hidden" name="transport_heavy" id="id_transport_heavy" value="{{ orden.transport_heavy }}">
+                <input type="hidden" name="transport_heavy" id="id_transport_heavy" value="{% if orden.transport_heavy %}{{ orden.transport_heavy }}{% else %}0{% endif %}">
                 <input type="hidden" name="start_date" id="id_start_date" value="{{ orden.start_date }}">
             </form>
         </div>
@@ -813,7 +856,7 @@ Dashboard
             pesoTara = $('#id_tare_weight').val()
             pesoBruto = $('#id_gross_weight').val()
             pesoNeto = Math.abs(pesoTara - pesoBruto)
-            $('#id_net_weight').val(pesoNeto)
+            $('#id_trans_net_weight').val(pesoNeto)
         }
     }
 
@@ -855,17 +898,18 @@ Dashboard
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
                         $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
                         $('#not_winerie').css('display', 'none');
-
-                        var weight_act = Number($('#id_net_weight').val());
-                        $('#id_net_weight').val(weight_act + Number(weight));
-
+                        var weight_act = $('#id_net_weight').val();
+                        weight_act = parseFloat(weight_act)
+                        $('#id_net_weight').val(weight_act + parseFloat(weight));
                         $('#net_weight').text($('#id_net_weight').val())
+                        $('#id_net_weight').val($('#id_net_weight').val())
+                        
+                        $('#id_net_weight').val(parseFloat($('#id_net_weight').val()))
                     },
                 });
             }
         }
     })
-
     $('#bodega_peso').keypress(function (e) {
         if (e.keyCode == 13) {
             event.preventDefault()
@@ -946,10 +990,13 @@ Dashboard
                         $("#wineries_list").append('<li><span>' + name + ': ' + product + '; ' + weight + ' Toneladas Métricas</span></li>');
                         $('#not_winerie').css('display', 'none');
 
-                        var weight_act = Number($('#id_net_weight').val());
-                        $('#id_net_weight').val(weight_act + Number(weight));
-
+                        var weight_act = $('#id_net_weight').val();
+                        weight_act = parseFloat(weight_act)
+                        $('#id_net_weight').val(weight_act + parseFloat(weight));
                         $('#net_weight').text($('#id_net_weight').val())
+                        $('#id_net_weight').val($('#id_net_weight').val())
+                        
+                        $('#id_net_weight').val(parseFloat($('#id_net_weight').val()))
                     },
                 });
             }
@@ -1131,11 +1178,12 @@ Dashboard
             }
         }
     })
-
+console.log($('#id_transport_customer option:selected').val())
     $('#transport_add').on('click', function () {
         event.preventDefault();
         $.ajax({
             data: {
+                'transaction_id' : $('#transaction_id').val(),
                 'id_vehicle': $('#id_vehicle').val(),
                 'id_license_plate': $('#id_license_plate').val(),
                 'id_tank_plate': $('#id_tank_plate').val(),
@@ -1151,7 +1199,8 @@ Dashboard
                 'id_T_Muelle': $('#id_T_Muelle').val(),
                 'id_gross_weight': $('#id_gross_weight').val(),
                 'id_tare_weight': $('#id_tare_weight').val(),
-                'id_net_weight': $('#id_net_weight').val(),
+                'id_net_weight': $('#id_trans_net_weight').val(),
+                'id_transport_customer': $('#id_transport_customer option:selected').val()
             },
             url: "{% url 'transactions:add_transport' %}",
             type: 'post',
@@ -1171,8 +1220,11 @@ Dashboard
                 $('#id_T_Muelle').val('')
                 $('#id_gross_weight').val('')
                 $('#id_tare_weight').val('')
-                $('#id_net_weight').val('')
+                $('#id_trans_net_weight').val('')
+                $('#id_transport_customer').val('')
                 var val = data[0].pk
+                var id_transport_customer = data[1].fields.name + ' - ' +  data[1].fields.company_name
+                var viaje = data[0].fields.viaje
                 var id_vehicle = data[0].fields.vehicle
                 var start_date = data[0].fields.start_date
                 var license_plate = data[0].fields.license_plate
@@ -1192,13 +1244,11 @@ Dashboard
                 var net_weight = data[0].fields.net_weight
                 var pesoActual = parseInt($('#id_transport_heavy').val())
                 var pesadaActual = pesoActual + parseInt(net_weight)
-                console.log(pesoActual)
-                console.log(net_weight)
-                console.log(pesadaActual)
+                console.log(data)
                 $('#pesada').text(pesadaActual)
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li> Tipo de vehículo' + id_vehicle + '<br>Placa: ' + license_plate + '<br>Placa del Depósito: ' + tank_plate + '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Sindicato: '+ syndicate +'<br>Puerto: '+ port + '<br> T.Muelle'+ T_Muelle +'<br>Barco/ALM: '+ boat_alm  + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by + '<br>Fecha de adición: ' + start_date +  '<br>Comentario: ' + comment + '<br>Peso bruto: '+ gross_weight + '<br>Peso de tara: '+ tare_weight + '<br>Peso neto: '+ net_weight+'</li>');
+                $("#transport_list").append('<li> Cliente Recibidor: ' + id_transport_customer + '<br>Viaje: ' + viaje + '<br>Fecha de adición: ' + start_date + 'Tipo de vehículo: ' + id_vehicle + '<br>Placa: ' + license_plate + '<br>Placa del Depósito: ' + tank_plate + '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Sindicato: '+ syndicate +'<br>Puerto: '+ port + '<br> T.Muelle'+ T_Muelle +'<br>Barco/ALM: '+ boat_alm  + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by + '<br>Comentario: ' + comment + '<br>Peso bruto: '+ gross_weight + 'TM (Toneladas Métricas) <br>Peso de tara: '+ tare_weight + 'TM (Toneladas Métricas) <br>Peso neto: '+ net_weight+'TM (Toneladas Métricas) </li>');
                 $('#not_transport').css('display', 'none');
             },
         });
@@ -1273,6 +1323,7 @@ Dashboard
             $.ajax({
             data: {
                 'id_bl_multiple': $('#id_bl_multiple').val(),
+                'id_bl_customer': $('#id_bl_customer option:selected').val()
             },
             url: "{% url 'transactions:multiple_bl' %}",
             type: 'post',
@@ -1282,12 +1333,13 @@ Dashboard
                 var val = data[0].pk;
                 var bl = data[0].fields.bl;
                 $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
-                $("#bl_list").append('<li class="ml-xl-2">BL: '+ bl +'</li>');
+                $("#bl_list").append('<li class="ml-xl-2">BL: '+ bl + 'TM. ' + data[1].fields.company_name + '</li>');
             },
         });
         }
     })
 
+$('#id_net_weight').val(parseFloat($('#id_net_weight').val()))
 </script>
 <script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
 <script src="{% static 'vendors/select2/select2.min.js' %}"></script>

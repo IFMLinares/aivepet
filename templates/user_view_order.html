@@ -3,6 +3,7 @@
 Dashboard
 {% endblock %}
 {% load static %}
+{% load humanize %}
 {% block extra_css %}
 <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
 <link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
@@ -155,7 +156,7 @@ Dashboard
                     <div class="col-md-12 pl-xl-5">
                         <div class="form-group row text-center">
                             <li>
-                                <span>BL: {{ orden.bl }} <br>
+                                <span>BL: {{ orden.bl }} TM (Toneladas Métricas)<br>
                                 </span>
                             </li>
                         </div>
@@ -165,7 +166,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li>
-                                <span>BL: {{ bl.bl }} <br>
+                                <span>BL: {{ bl.bl }} TM (Toneladas Métricas) <br>
                                 </span>
                             </li>
                         </div>
@@ -184,7 +185,7 @@ Dashboard
                         <div class="form-group row">
                             <li>
                                 <span>{{ winerie.product.name|title }}: {{ winerie.number|title }}:
-                                    {{ winerie.weight }} TM: <br> Fecha de adición:
+                                    {{ winerie.weight }} TM (Toneladas Métricas) <br> Fecha de adición:
                                     {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                 </span>
                             </li>
@@ -235,7 +236,11 @@ Dashboard
                                 <span>Empresa: {{ customer.company_name }} <br>
                                     Responsable: {{ customer.name }} <br>
                                     {{ customer.tipdoc }}: {{ customer.dni }} <br>
-                                    Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }}
+                                    Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }} <br>
+                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM (Toneladas Métricas)
+                                                    {% else %}
+                                                        Descargado: {{ customer.quantity }} TM (Toneladas Métricas)
+                                                    {% endif %}
                                 </span>
                             </li>
                         </div>
@@ -287,6 +292,12 @@ Dashboard
                         <div class="form-group row">
                             <li class="col-md-12">
                                 <span>
+                                    Cliente recibidor: {{ trans.customer_name.name|title }} - {{ trans.customer_name.company_name|title }}
+                                    <br>
+                                    Viaje: {{ trans.viaje }}
+                                    <br>
+                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
+                                    <br>
                                     Tipo de vehículo: {{ trans.vehicle|title }}
                                     <br>
                                     Placa: {{ trans.license_plate|title }}
@@ -316,8 +327,6 @@ Dashboard
                                     Puerto: {{ trans.port|title }}
                                     <br>
                                     T.Muelle: {{ trans.T_Muelle|title }}
-                                    <br>
-                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
                             </li>
                         </div>
                     </div>

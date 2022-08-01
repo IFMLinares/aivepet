@@ -1,4 +1,5 @@
 # from django.shortcuts import render
+from asyncio.trsock import TransportSocket
 import os
 from django.core.serializers import serialize
 from django.conf import settings
@@ -12,6 +13,7 @@ from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
+from django.shortcuts import render, get_object_or_404
 
 from xhtml2pdf import pisa
 
@@ -140,11 +142,8 @@ class WineriesAdd(LoginRequiredMixin, CreateView):
         peso = self.request.POST['peso']
         orden = self.request.POST['transaccion']
         winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto))
-        # trans = Transaction.objects.get(order_number=orden)
-        # trans.Wineries.add(winerie)
-        # net_weight = trans.net_weight
-        # trans.net_weight = net_weight
-        # trans.save()
+        trans = Transaction.objects.get(order_number=orden)
+        trans.save()
         query = Winerie.objects.get(pk=winerie.pk)
         producto = Product.objects.get(pk=query.product.pk)
         data = serialize('json', [query,producto])
@@ -247,6 +246,12 @@ class TransportAdd(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         trans = self.request.POST
+        transaction = get_object_or_404(Transaction, pk=trans['transaction_id'])
+        viaje = 1
+        if transaction.transport.count() > 0:
+            viaje = transaction.transport.all().last().viaje + 1
+
+        customer = ReceivingCustomer.objects.get(pk=trans['id_transport_customer'])
         transport = self.model.objects.create(
             vehicle= trans['id_vehicle'],
             license_plate= trans['id_license_plate'],
@@ -263,9 +268,16 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             gross_weight = trans['id_gross_weight'],
             tare_weight = trans['id_tare_weight'],
             net_weight = trans['id_net_weight'],
+            customer_name = customer,
+            viaje = viaje,
             )
+        quantity = 0
+        quantity = quantity + customer.quantity  
+        customer.quantity = float(quantity) + float(transport.net_weight)
+        customer.save()
         query = self.model.objects.get(pk=transport.pk)
-        data = serialize('json', [query,])
+        query.customer_name = customer
+        data = serialize('json', [query, customer])
         return HttpResponse(data, 'application/json')
 
 # Vista para añadir internamente los clientees recibidores (no visible para el usuario, solo para registro de datos)
@@ -301,11 +313,13 @@ class MultipleBLAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
+        receiving_customer = ReceivingCustomer.objects.get(id=self.request.POST['id_bl_customer'])
         bl = self.model.objects.create(
             bl=self.request.POST['id_bl_multiple'],
+            receiving_customer=receiving_customer,
         )
         query = self.model.objects.get(pk=bl.pk)
-        data = serialize('json', [query,])
+        data = serialize('json', [query,receiving_customer])
         return HttpResponse(data, 'application/json')
 
 class UserViewTransaction(LoginRequiredMixin,DetailView):
@@ -386,11 +400,125 @@ class PDFView(View):
 
     def get(self, request, *args, **kwargs):
         try:
-            template = get_template('pdf/pdfaivepet.html')
+            template = get_template('pdf/pdf.html')
+            transaction = Transaction.objects.get(pk=self.kwargs['pk'])
+            total_w = 0
+            for winerie in transaction.Wineries.all():
+                total_w += float(winerie.weight)
+                # pass
+            transports = transaction.transport.all()
+            receiving_customers = transaction.receiving_customer.all()
+            acumulado = {}
+            viajes = {}
+            for receiving_customer in receiving_customers:
+                acumulado[receiving_customer.company_name] = 0
+                viajes[receiving_customer.company_name] = 0
+            # print (acumulado)
+            for transport in transports:
+                # print(acumulado[transport.customer_name.company_name])
+                v = viajes[transport.customer_name.company_name]
+                viajes[transport.customer_name.company_name] = transport.viaje + v
+                a = acumulado[transport.customer_name.company_name]
+                acumulado[transport.customer_name.company_name] = a + transport.net_weight
+                transport.acumulado = 0
+                transport.acumulado = acumulado[transport.customer_name.company_name]
+                transport.save()
+            for receiving_customer in receiving_customers:
+                receiving_customer.total = acumulado[receiving_customer.company_name]
+                receiving_customer.total_viajes = viajes[receiving_customer.company_name]
+                receiving_customer.save()
+            transaction.difference = float(transaction.final_draft) - float(transaction.net_weight)
+            transaction.save()
             context = {
-                'orden': Transaction.objects.get(pk=self.kwargs['pk']),
-                'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png')
+                'orden': transaction,
+                'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
+                'total_w': total_w,
                 }
+
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            # response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            pisa_status = pisa.CreatePDF(html, dest=response)
+            if pisa_status.err:
+                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            return response
+        except:
+            return response
+        return HttpResponseRedirect(reverse_lazy('core:index'))
+
+class PDFView1(View):
+
+    def link_callback(self, uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            result = finders.find(uri)
+            if result:
+                    if not isinstance(result, (list, tuple)):
+                            result = [result]
+                    result = list(os.path.realpath(path) for path in result)
+                    path=result[0]
+            else:
+                    sUrl = settings.STATIC_URL        # Typically /static/
+                    sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+                    mUrl = settings.MEDIA_URL         # Typically /media/
+                    mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+                    if uri.startswith(mUrl):
+                            path = os.path.join(mRoot, uri.replace(mUrl, ""))
+                    elif uri.startswith(sUrl):
+                            path = os.path.join(sRoot, uri.replace(sUrl, ""))
+                    else:
+                            return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                    raise Exception(
+                            'media URI must start with %s or %s' % (sUrl, mUrl)
+                    )
+            return path
+
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('pdf/pdf2.html')
+            transaction = Transaction.objects.get(pk=self.kwargs['pk'])
+            total_w = 0
+            for winerie in transaction.Wineries.all():
+                total_w += float(winerie.weight)
+            transports = transaction.transport.all()
+            receiving_customers = transaction.receiving_customer.all()
+            acumulado = {}
+            viajes = {}
+            for receiving_customer in receiving_customers:
+                acumulado[receiving_customer.company_name] = 0
+                viajes[receiving_customer.company_name] = 0
+            a_total = 0
+            for transport in transports:
+                a_total += transport.net_weight
+                v = viajes[transport.customer_name.company_name]
+                viajes[transport.customer_name.company_name] = transport.viaje + v
+                a = acumulado[transport.customer_name.company_name]
+                acumulado[transport.customer_name.company_name] = a + transport.net_weight
+                transport.acumulado = 0
+                transport.acumulado = acumulado[transport.customer_name.company_name]
+                transport.acumulado_total = a_total
+                transport.save()
+            
+
+            for receiving_customer in receiving_customers:
+                receiving_customer.total = acumulado[receiving_customer.company_name]
+                receiving_customer.total_viajes = viajes[receiving_customer.company_name]
+                receiving_customer.save()
+            transaction.difference = float(transaction.final_draft) - float(transaction.net_weight)
+            transaction.total_weight = a_total
+            transaction.save()
+            context = {
+                'orden': transaction,
+                'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
+                'total_w': total_w,
+                }
+
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')
             # response['Content-Disposition'] = 'attachment; filename="report.pdf"'

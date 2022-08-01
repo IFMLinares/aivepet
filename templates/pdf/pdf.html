@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load humanize %}
+  {% load mathfilters %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container {
+      /* margin-left: 100px;
+      margin-right: 100px; */
+    }
+    .imagen-pdf img {
+      width: 100px;
+    }
+    .p-lateral {
+      display: flex;
+      justify-content: right;
+      margin-left: 500px;
+    }
+    .p-lateral-izq p{
+        margin: 0px 0px;
+        /* background-color: black; */
+    }
+    .p-medio-dos {
+      display: flex;
+      justify-content: start;
+    }
+    .p-medio-dos p {
+      padding-left: 10px;
+      margin: 2px 0px;
+
+    }
+    .cuadro-pdf-medio {
+      margin: auto;
+      width: 75%;
+    }
+    .p-cuadro-pdf {
+      display: flex;
+      justify-content: space-between; 
+      width: 40%; 
+      margin: auto;
+      /* border: 1px solid black; */
+
+    }
+    .p-cuadro-pdf p{
+        text-align: center;
+        /* color: red; */
+        margin: 2px 0px;
+    }
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding-top: 2px;
+      margin-left: 5px;
+      margin-top: 5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="p-lateral">
+        <p  style="padding-left: 570px;">ISO-9001:2008 CERTIFIED</p>
+      </div>
+
+      <div class="imagen-pdf" style="display:inline;">
+        <img src="http://localhost:8000{{ icon }}" alt=""  style="display:inline;"/>
+      </div>
+
+      <div class="p-lateral-izq">
+        <p>VSL. " {{ orden.buque_name|title }} " / OCAMAR, VENEZUELA</p>
+        <div class="p-medio-dos">
+          <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}</p>
+        </div>
+        <div class="p-medio-dos">
+          <p>DATE: {{ orden.start_date|date:"d/m/Y"  }}</p>
+        </div>
+        <div class="p-medio-dos">
+          <p>REF AIVEPET: {{ orden.number_invoice_aivepet }}</p>
+        </div>
+        <p>INSPECTION RESULTS (UNLOADING)</p>
+      </div>
+
+      <table style="margin-left: 85px;"> 
+        <tr>
+          <td style="border:none;">VESSEL NAME</td>
+          <td style="border:none;">{{ orden.buque_name|title }}</td> 
+        </tr>
+        <tr style="border:none;">
+          <td style="border:none;">PORT</td>
+          <td style="border:none;">{{ orden.port_name|title }}</td> 
+        </tr>
+        <tr style="border:none;">
+          <td style="border:none;">DOCK:</td>
+          <td style="border:none;">{{ orden.numero_muelle|title }}</td> 
+        </tr>
+        {% for product in orden.product.all %}
+        <tr style="border:none;">
+          <td style="border:none;">CARGO LABELED BY SUPPLIER AS</td>
+          <td style="border:none;">{{ product.product_id.name|title }}</td> 
+        </tr>
+        {% endfor %}
+
+        {% if orden.multiple_bl|length > 0 %}
+          {% for bl in orden.multiple_bl.all %}
+            <tr style="border:none;">
+              <td style="border:none;">BILL OF LADING</td>
+              <td style="border:none;">{{ bl.bl }} TM</td> 
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;">FOR THE ACCOUNT OF</td>
+              <td style="border:none;">{{ bl.receiving_customer.company_name }}</td> 
+            </tr>
+          {% endfor %}
+        {% else %}
+            <tr style="border:none;">
+              <td style="border:none;">BILL OF LADING</td>
+              <td style="border:none;">{{ orden.bl }} TM</td> 
+            </tr>
+            <tr style="border:none;">
+              <td style="border:none;">FOR THE ACCOUNT OF</td>
+              <td style="border:none;">{{ orden.customer_name.company_name }}</td> 
+            </tr>
+        {% endif %}
+      </table> 
+        <p>TIME LOG (AS PER TERMINAL LOG)</p>
+        <table>
+          <tr>
+            <th></th>
+            <th>TIME</th>
+            <th>DATE</th>
+          </tr>
+          {% for status in orden.status.all %}
+          <tr style="background-color: #dddddd">
+            <td>{{ status.state }}</td>
+            <td>{{ status.fecha|date:"G:i:s" }}</td>
+            <td>{{ status.fecha|date:"d-m-Y" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        <br />
+        <br />
+        <table>
+          
+          <tr style="background-color: #dddddd">
+            <th>CARGO DISTRIBUTED ON BOARD :</th>
+            <th>HOLDS</th>
+            <th>M/T</th>
+          </tr>
+          {% for winerie in orden.Wineries.all %}
+          <tr>
+            <td></td>
+            <td>{{ winerie.number }}</td>
+            <td>{{ winerie.weight|floatformat:2|intcomma }}</td>
+          </tr>
+          {% endfor %}
+          <tr style="background-color: #dddddd">
+            <th></th>
+            <th>TOTAL CARGO</th>
+            <th>{{ total_w|floatformat:2|intcomma }}</th>
+          </tr>
+        </table>
+        {% for customer in orden.receiving_customer.all %}
+        <p>{% if orden.order_type == 'carga' %} LOADING {% else %}UNLOADING {% endif %} ({{customer.company_name}})</p>
+        <table>
+          <tr style="background-color: #dddddd">
+            <th>FECHA</th>
+            <th>M/T</th>
+            <th>ACUMULADO</th>
+            <th>VIAJES</th>
+          </tr>
+          {% for transport in orden.transport.all %}
+            {% if transport.customer_name.company_name == customer.company_name %}
+            <tr>
+              <td>{{ transport.start_date|date:"d-m-Y G:i:s" }}</td>
+              <td>{{ transport.net_weight|floatformat:2|intcomma }}</td>
+              <td>{{ transport.acumulado|floatformat:2|intcomma }}</td>
+              <td>{{ transport.viaje }}</td>
+            </tr> 
+            {% endif %}
+          {% endfor %}
+          <tr>
+            <th>TOTAL</th>
+            <th>{{ customer.total|floatformat:2|intcomma }}</th>
+            <th></th>
+            <th>{{ customer.total_viajes }}</th>
+          </tr>
+          <tr style="background-color: #dddddd">
+            <th>ROB</th>
+            <th>0,000</th>
+          </tr>
+        </table>
+        {% endfor %}
+        <br /><br />
+        <table>
+          <tr style="background-color: #dddddd">
+            <td>QUANTITY DATA (BOL FIGURES)</td>
+            <td>{{ orden.net_weight }}</td>
+            <td>METRIC TONS</td>
+          </tr>
+          <tr>
+            <td>QUANTITY ACCORDING DRAFT.</td>
+            <td>{{ orden.draft|floatformat:2|intcomma }}</td>
+            <td>METRIC TONS</td>
+          </tr>
+          <tr style="background-color: #dddddd">
+            <td>SHORE FIGURES (ONLY REFERENCES)</td>
+            <td>{{ orden.final_draft|floatformat:2|intcomma }}</td>
+            <td>METRIC TONS</td>
+          </tr>
+          <tr>
+            <td>DIFERENCE</td>
+              <td>{{ orden.difference }}</td>
+            <td>METRIC TONS</td>
+          </tr>
+        </table>
+        <br /><br />
+        <div class="p-lateral-izq">
+          <p>BEST REGARDS,</p>
+          <p>AIVEPET C.A.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
