@@ -1,96 +1,12 @@
 <!DOCTYPE html>
-
-{% load humanize %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <style>
-     @page {
-    size: letter landscape;
-    margin: 50px;
-}
-    .cuadro-medio-pdf { 
-      width: 100%;
-      margin: auto;
-      display: flex;
-      justify-content: space-evenly;
-    }
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width:100%; 
-    }
-
-    td,
-    th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
-  </style>
-  <body>
-      
-      <table style="margin-bottom:10px;">
-        <tr style="border: none;">
-          <th style="text-align: center; border: none;"><img src="http://localhost:8000{{ icon }}" alt=""  style="width: 75px;"/></th>
-          <th style="text-align: center; border: none;">VESSEL:</th>
-          <th style="text-align: center; border: none;">{{ orden.buque_name|title }}</th>
-          <th style="text-align: center; border: none;">PRODUCT:</th>
-          <th style="text-align: center; border: none;">{% for product in orden.product.all %}{{ product.product_id.name|title }},
-            {% endfor %}</th>
-          <th style="text-align: center; border: none;">DAILY TRUCK DISPATCH REPORT</th> 
-        </tr>
-        <tr>
-          <th style="text-align: left; border: none; white-space: pre-line;">  </th>
-          <th style="text-align: center; border: none;">PORT:</th>
-          <th style="text-align: center; border: none;">{{ orden.port_name|title }}</th>
-          <th style="text-align: center; border: none;">CLIENT:</th>
-          <th style="text-align: center; border: none;">{{ orden.customer_name.company_name }}</th>
-          <th style="text-align: center; border: none;">{{ orden.number_invoice_aivepet }}</th> 
-        </tr>
-      </table>
-      
-      <table>
-        <tr>
-          <th style="text-align: center;">DATE</th>
-          <th style="text-align: center;">VOYAGER</th>
-          <th style="text-align: center;">TRUCK ID PLATE</th>
-          <th style="text-align: center;">DUMP ID PLATE</th>
-          <th style="text-align: center;">INVOICE</th>
-          <th style="text-align: center;">METRIC TONS</th>
-          <th style="text-align: center;">ACCUMULATED</th>
-          <th style="text-align: center;">RECEIVER</th>
-          <th style="text-align: center;">WAREHOUSE</th>
-        </tr>
-        {% for transport in orden.transport.all %}
-        <tr>
-          <th style="text-align: center;">{{ transport.start_date|date:"d-m-Y G:i:s" }}</th>
-          <th style="text-align: center;">{{ transport.viaje }}</th>
-          <th style="text-align: center;">{{ transport.license_plate }}</th>
-          <th style="text-align: center;">{{ transport.tank_plate }}</th>
-          <th style="text-align: center;">{{ orden.number_invoice_client }}</th>
-          <th style="text-align: center;">{{ transport.net_weight|floatformat:2|intcomma }}</th>
-          <th style="text-align: center;">{{ transport.acumulado_total|floatformat:2|intcomma }}</th>
-          <th style="text-align: center;">{{ transport.customer_name.company_name }}</th>
-          <th style="text-align: center;">0</th>
-        </tr>
-        {% endfor %}
-        <tr>
-            <th style="text-align: center; border: none;">TOTAL RECEIVED:</th>
-            <th style="text-align: center; border: none;">{{ orden.total_weight|floatformat:2|intcomma }}</th>
-            <th style="text-align: center; border: none;">TM</th>
-            <th style="text-align: center; border: none;">TOTAL TRUCKS:</th>
-            <th style="text-align: center; border: none;">{{ orden.transport.all|length }}</th> 
-          </tr>
-      </table>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>titulo</h1>
+</body>
 </html>
