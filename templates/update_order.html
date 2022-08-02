@@ -561,12 +561,12 @@ Dashboard
                         </div>
                         
                 
-                <div class="text-right pt-xl-2 mb-xl-2">
+                <!-- <div class="text-right pt-xl-2 mb-xl-2">
                     <a href="{% url 'transactions:finish_trans' pk=orden.pk %}" class="btn btn-danger mr-xl-2" id="finish">Finalizar orden</a><button type="submit" class="btn btn-success">Actualizar orden</button>
-                </div>
+                </div> -->
                     </div>
                     <div class="col-md-5">
-                        <div class="col-md-12 rounded border border-info d-inline-block leyend" style="overflow: auto;">
+                        <div class="col-md-12 rounded border border-info d-inline-block leyend" style="overflow-y: auto; overflow-x: hidden; max-height: 3540px;">
                             <div class="text-center mt-xl-3">
                                 <h3>Resultado de la operación:</h3>
                             </div>
@@ -798,7 +798,9 @@ Dashboard
                                 </div>
                             </div>
                         </div>
-                        
+                        <div class="text-right pt-xl-2 mb-xl-2">
+                            <a href="{% url 'transactions:finish_trans' pk=orden.pk %}" class="btn btn-danger mr-xl-2" id="finish">Finalizar orden</a><button type="submit" class="btn btn-success">Actualizar orden</button>
+                        </div>
                     </div>
                 </div>
                 {% if redirect_field_value %}

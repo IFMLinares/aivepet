@@ -490,29 +490,29 @@ class PDFView1(View):
             receiving_customers = transaction.receiving_customer.all()
             acumulado = {}
             viajes = {}
-            for receiving_customer in receiving_customers:
-                acumulado[receiving_customer.company_name] = 0
-                viajes[receiving_customer.company_name] = 0
-            a_total = 0
-            for transport in transports:
-                a_total += transport.net_weight
-                v = viajes[transport.customer_name.company_name]
-                viajes[transport.customer_name.company_name] = transport.viaje + v
-                a = acumulado[transport.customer_name.company_name]
-                acumulado[transport.customer_name.company_name] = a + transport.net_weight
-                transport.acumulado = 0
-                transport.acumulado = acumulado[transport.customer_name.company_name]
-                transport.acumulado_total = a_total
-                transport.save()
+            # for receiving_customer in receiving_customers:
+            #     acumulado[receiving_customer.company_name] = 0
+            #     viajes[receiving_customer.company_name] = 0
+            # a_total = 0
+            # for transport in transports:
+            #     a_total += transport.net_weight
+            #     v = viajes[transport.customer_name.company_name]
+            #     viajes[transport.customer_name.company_name] = transport.viaje + v
+            #     a = acumulado[transport.customer_name.company_name]
+            #     acumulado[transport.customer_name.company_name] = a + transport.net_weight
+            #     transport.acumulado = 0
+            #     transport.acumulado = acumulado[transport.customer_name.company_name]
+            #     transport.acumulado_total = a_total
+            #     transport.save()
             
 
-            for receiving_customer in receiving_customers:
-                receiving_customer.total = acumulado[receiving_customer.company_name]
-                receiving_customer.total_viajes = viajes[receiving_customer.company_name]
-                receiving_customer.save()
-            transaction.difference = float(transaction.final_draft) - float(transaction.net_weight)
-            transaction.total_weight = a_total
-            transaction.save()
+            # for receiving_customer in receiving_customers:
+            #     receiving_customer.total = acumulado[receiving_customer.company_name]
+            #     receiving_customer.total_viajes = viajes[receiving_customer.company_name]
+            #     receiving_customer.save()
+            # transaction.difference = float(transaction.final_draft) - float(transaction.net_weight)
+            # transaction.total_weight = a_total
+            # transaction.save()
             context = {
                 'orden': transaction,
                 'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
