@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load humanize %}
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -37,10 +37,9 @@
   </style>
   <body>
       
-  
       <table style="margin-bottom:10px;">
         <tr style="border: none;">
-          <th style="text-align: center; border: none;"><img src="https://systemtracker.aivepet.com/{{ icon }}" alt=""  style="width: 75px;"/></th>
+          <th style="text-align: center; border: none;"><img src="https://systemtracker.aivepet.com{{ icon }}" alt=""  style="width: 75px;"/></th>
           <th style="text-align: center; border: none;">VESSEL:</th>
           <th style="text-align: center; border: none;">{{ orden.buque_name|title }}</th>
           <th style="text-align: center; border: none;">PRODUCT:</th>
