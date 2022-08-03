@@ -162,10 +162,10 @@ EMAIL_TIMEOUT = 5
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'notificaciones@aivepet.com'
-# EMAIL_HOST_PASSWORD = '987654321'
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'titolfalcon@gmail.com'
-EMAIL_HOST_PASSWORD = 'rrnxabbbadrrteqq'
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'notificaciones@aivepet.com'
+EMAIL_HOST_PASSWORD = '864730.Not'
+# EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'titolfalcon@gmail.com'
+# EMAIL_HOST_PASSWORD = 'rrnxabbbadrrteqq'
 # 987654321Ab$
 EMAIL_SUBJECT_PREFIX = 'Aivepet'
 
