@@ -175,7 +175,7 @@ Dashboard
                                     </td>
                                     <td class="font-weight-medium">
                                         <a href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                            class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                            class="btn btn-info btn-sm {% if orden.state == 'Finalizado' %}disabled{% endif %}"><span class="ti-pencil-alt"></span>
                                         </a><br>
                                         <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-success mt-sm-1">Ver</a>
                                     </td>
@@ -249,7 +249,7 @@ Dashboard
                                     </td>
                                     <td class="font-weight-medium">
                                         <a href="{% url 'transactions:update_order' pk=orden.pk %}"
-                                            class="btn btn-info btn-sm"><span class="ti-pencil-alt"></span>
+                                            class="btn btn-info btn-sm {% if orden.state == 'Finalizado' %}disabled{% endif %}"><span class="ti-pencil-alt"></span>
                                         </a><br>
                                         <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-success mt-sm-1">Ver</a>
                                     </td>
@@ -279,6 +279,7 @@ Dashboard
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
+        scrollX: true,
     });
     $('#table-download').DataTable({
         "searching": false,
@@ -287,6 +288,7 @@ Dashboard
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
         },
+        scrollX: true,
     });
 } );
 </script>

@@ -31,21 +31,21 @@ Lista de ordenes
                                     {% if ordenes %}
                                     {% for orden in ordenes %}
                                     <tr class="text-center">
-                                        <td>000{{ orden.id }}</td>
+                                        <td style="font-weight: bold;">000{{ orden.id }}</td>
                                         <!-- <td>{{ orden.origin_order }}</td> -->
-                                        <td>{{ orden.order_type }}</td>
+                                        <td style="font-weight: bold; color: {% if orden.order_type == 'carga' %}#57c7d4{% else %}#FF4747{% endif %}">{{ orden.order_type|upper  }}</td>
                                         <td>{{ orden.customer_name }}</td>
-                                        <td>{{ orden.buque_name }}</td>
+                                        <td style="font-weight: bold;">{{ orden.buque_name }}</td>
                                         <td>{% for product in orden.product.all %}
                                             {{ product.product_id.name|title }}.
                                             {% endfor %}</td>
                                         <td>{{ orden.user }}</td>
                                         <td>{{ orden.start_date|date:'d/m/Y G:i' }}</td>
                                         <td>
-                                            <a class="btn btn-secondary {% if orden.state == 'En operación' %}disabled{% endif %}" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver</a>
-                                            <a class="btn btn-danger{% if orden.state == 'En operación' %} disabled {% endif %}" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
+                                            <a class="btn btn-success" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver orden</a>
+                                            <a class="btn btn-danger{% if orden.state == 'En operación' or orden.state == 'Finalizado' %} disabled {% endif %} mt-xl-1" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
                                             <br>
-                                            <a class="btn btn-info mt-xl-3 {% if orden.state == 'En operación' %}disabled{% endif %}" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% else %}Comenzar operación{% endif %}</a>
+                                            <a class="btn btn-{% if orden.state == 'En operación' %}info {% else %}danger disabled{% endif %} mt-xl-1" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% elif orden.state == 'Finalizado' %}Finalizado{% else %}Comenzar operación{% endif %}</a>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -66,7 +66,8 @@ Lista de ordenes
     $('#order-datatable').DataTable({
         "order": [[ 6, "desc" ]],
         "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+            searchPlaceholder: "Buscar orden"
         },
     });
 } );

@@ -17,14 +17,24 @@ TRANSACCION REGISTRADA!
                     <p class="mt-xl-2" style="font-size: 20px;">Puede visualizar la orden en los respectivos listados de carga/descarga</p>
                 </div>
                 <div class="text-center">
-                    <a href="{% url 'transactions:order_list_load' %}" class="btn btn-success">Ir al listado de carga</a>
+                    <a href="{% url 'transactions:order_list_load' %}" class="btn btn-info">Ir al listado de carga</a>
                     <a href="{% url 'transactions:order_list_download' %}" class="btn btn-info">Ir al listado de descarga</a>
                 </div>
                 <div class="text-center mt-xl-2">
-                    <a href="{% url 'transactions:add_order_nominal' %}" class="btn btn-secondary">Añadir otra orden</a>
+                    <a href="{% url 'transactions:add_order_nominal' %}" class="btn btn-success">Añadir otra orden</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    setTimeout(function(){
+    window.location = "{% url 'transactions:order_list_nominal' %}"
+}, 3000);
+
+</script>
 {% endblock %}

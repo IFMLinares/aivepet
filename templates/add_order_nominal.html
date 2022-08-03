@@ -12,9 +12,6 @@ Dashboard
     <div class="card">
         <div class="card-body">
             <h2 class="text-center">Registro de buque Nominado</h2>
-            <p class="card-description text-center">
-                Información de la operación:
-            </p>
             <form class="form-sample" id="FORM" method="post" action="">
                 {% csrf_token %}
                 {% if form.errors %}
@@ -32,6 +29,10 @@ Dashboard
                 {% endfor %}
                 {% endif %}
                 <!-- {{ form.as_p }} -->
+                <br>
+                <span>Por favor recuerde que el cliente debe estar previamente registrado en el sistema. Si no está registrado por favor haga <a href="{% url 'account_signup' %}">click aquí.</a> </span>
+                <br>
+                <br>
                 <div class="row">
                     <input type="hidden" class="form-control add-order" readonly placeholder="00001" name="user"
                         id="id_user" value="{{ user.id }}">
@@ -146,6 +147,7 @@ Dashboard
                                         <div class="form-row">
                                             <div class="col mt-xl-1">
                                                 <select class="custom-select add-order" id="id_tipdoc" name="tipdoc">
+                                                    <option value="N/A" selected> </option>
                                                     <option value="V">V</option>
                                                     <option value="E">E</option>
                                                     <option value="J">J</option>
@@ -191,9 +193,10 @@ Dashboard
                                         <div class="form-row">
                                             <div class="col  mt-xl-1">
                                                 <select class="custom-select add-order" id="cliente_recibidor_tipdoc">
+                                                    <option value="N/A"></option>
                                                     <option value="V">V</option>
                                                     <option value="E">E</option>
-                                                    <option value="J">V</option>
+                                                    <option value="J">J</option>
                                                     <option value="G">G</option>
                                                 </select>
                                             </div>
@@ -287,7 +290,7 @@ Dashboard
                                 <div class="col-sm-7">
                                     <select class="form-control add-order" name="unit_measurement" required
                                         id="id_unit_measurement">
-                                        <option selected value="toneladas métricas">Toneladas Métricas</option>
+                                        <option value="toneladas métricas">Toneladas Métricas</option>
                                     </select>
                                 </div>
                             </div>
@@ -431,7 +434,7 @@ Dashboard
                     var val = data[0].pk;
                     var name = data[1].fields.name;
                     var tm = data[0].fields.weight;
-                    $('#id_product').append('<option selected value=' + val + '>' + name + ' Peso: ' + tm + 'TM</option>');
+                    $('#id_product').append('<option selected value=' + val + '>' + name + ' | Peso: ' + tm + 'TM</option>');
                 },
             });
         } else {
@@ -457,18 +460,9 @@ Dashboard
     })
     $('#cliente_recibidor_button').on('click', function () {
         event.preventDefault();
-        if(!$('#cliente_recibidor_comprador').val() || !$('#cliente_recibidor_empresa').val() || !$('#cliente_recibidor_dni').val()){
-            if(!$('#cliente_recibidor_comprador').val()){
-                $('#cliente_recibidor_comprador').css('border-color', 'red')
-            }
+        if( !$('#cliente_recibidor_empresa').val()){
             if(!$('#cliente_recibidor_empresa').val()){
                     $('#cliente_recibidor_empresa').css('border-color', 'red')
-                }
-            if(!$('#cliente_recibidor_dni').val()){
-                    $('#cliente_recibidor_dni').css('border-color', 'red')
-                }
-            if(!$('#cliente_recibidor_tipdoc').val()){
-                    $('#cliente_recibidor_tipdoc').css('border-color', 'red')
                 }
         }else{
             $.ajax({

@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
 from django.shortcuts import render, get_object_or_404
-
+import datetime
 from xhtml2pdf import pisa
 
 from .models import Product, ProductWeight, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport, Weight, Status, MultipleBL
@@ -251,16 +251,29 @@ class TransportAdd(LoginRequiredMixin, CreateView):
         if transaction.transport.count() > 0:
             viaje = transaction.transport.all().last().viaje + 1
 
+
+        id_driver_name = trans['id_driver_name']
+        id_freight_paid_by = trans['id_freight_paid_by']
+        id_comment = trans['id_comment']
+
+        if(id_driver_name == '' or ' ' ):
+            id_driver_name = 'N/A'
+
+        if(id_freight_paid_by == '' or ' ' ):
+            id_freight_paid_by = 'N/A'
+
+        if(id_comment == '' or ' ' ):
+            id_comment = 'N/A'
         customer = ReceivingCustomer.objects.get(pk=trans['id_transport_customer'])
         transport = self.model.objects.create(
             vehicle= trans['id_vehicle'],
             license_plate= trans['id_license_plate'],
-            driver_name= trans['id_driver_name'],
+            driver_name= id_driver_name,
             ficha= trans['id_ficha'],
             direction= trans['id_direction'],
             boat_alm= trans['id_boat_alm'],
-            freight_paid_by= trans['id_freight_paid_by'],
-            comment= trans['id_comment'],
+            freight_paid_by= id_freight_paid_by,
+            comment= id_comment,
             syndicate= trans['id_syndicate'],
             tank_plate= trans['id_tank_plate'],
             port= trans['id_port'],
@@ -292,11 +305,14 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
+        name = self.request.POST['tipodc']
+        if name == '' or name == ' ':
+            name = 'N/A'
         cliente = self.model.objects.create(
             company_name=self.request.POST['empresa'],
-            name=self.request.POST['cliente'],
-            dni=self.request.POST['dni'],
-            tipdoc= self.request.POST['tipodc']
+            name=name,
+            dni=self.request.POST.get('dni', 'N/A'),
+            tipdoc= self.request.POST.get('tipodc', 'N/A')
             )
         query = self.model.objects.get(pk=cliente.pk)
         data = serialize('json', [query,])
@@ -533,7 +549,12 @@ class PDFView1(View):
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
     transaction.state = 'Finalizado'
+    transaction.final_date = datetime.datetime.now()
     transaction.save()
+    
+    transaction_nominal = NominalTransaccion.objects.get(pk=pk)
+    transaction_nominal.state = 'Finalizado'
+    transaction_nominal.save()
     if transaction.order_type == 'carga':
         return redirect('transactions:order_list_load')
     else:
@@ -574,5 +595,5 @@ def NominalTransAcepted(request, pk):
     for p in nominal.receiving_customer.all():
         transaction.receiving_customer.add(p)
     transaction.save()
-    return redirect('transactions:order_list_nominal')
+    return redirect('transactions:update_order', pk=pk)
 

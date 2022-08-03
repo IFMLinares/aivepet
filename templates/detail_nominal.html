@@ -32,7 +32,7 @@ Dashboard
                 </div>
                 {% endfor %}
                 {% endif %}
-                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1 mb-xl-3" style="background-color: #F5F7FF;">
                     <div class="col-md-6 mt-xl-3">
                         <h3 class="mb-xl-4">Tipo de orden: <span style="color: #57B657;"> {{ orden.order_type|title }}</span></h3>
                     </div>
@@ -40,11 +40,11 @@ Dashboard
                         <div class="form-group row">
                             <label for="id_state" class="mt-xl-4 mr-xl-3 ml-xl-3">Estado de la orden:</label>
                             <select class="custom-select add-order mt-xl-3 mr-xl-3" id="id_state" name="state"
-                                style="width: 50%;" disabled>
+                                style="width: 50%;">
                                 <option value="Aceptado" {% if orden.state == 'Aceptado' %} selected {% endif %}>Aceptado
                                 </option>
-                                <option value="Nominado" {% if orden.state == 'En espera' %} selected {% endif %} disabled>
-                                    Nominado (En espera)</option>
+                                <option value="Nominado" {% if orden.state == Nominado %} selected {% endif %} disabled>
+                                    Nominado</option>
                                 <option value="En operación" {% if orden.state == 'En operación' %} selected {% endif %}>
                                     En operación</option>
                                 <option value="Finalizado" {% if orden.state == 'Finalizado' %} selected {% endif %}>
@@ -87,15 +87,6 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Producto:
-                                {% for product in orden.product.all %}
-                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del puerto: <b>{{ orden.port_name }}</b></div>
                         </div>
                     </div>
@@ -113,8 +104,74 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Cliente Suplidor:
+                                <b>{{ orden.company_name }}
+                                    <ul>
+                                        <li> 
+                                            <span>
+                                                Responsable: {{ orden.name }} <br />
+                                                Documento: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
+                                                </span>
+                                        </li>
+                                    </ul>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            {{ form.receiving_customer }}
+                            <div class="col-sm-12 col-form-label">Clientes recibidores:
+                                <b>
+                                    <ul>
+                                        <li> 
+                                            {% for customer in orden.receiving_customer.all %}
+                                            <span
+                                                >Empresa: {{ customer.company_name|title }} <br />
+                                                Responsable: {{ customer.name|title }} <br />
+                                                Documento: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
+                                                {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
+                                                {% else %} Descargado: {{ customer.quantity }} TM
+                                                {% endif %}
+                                            </span>
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Productos:
+                                <ul>
+                                    {% for product in orden.product.all %}
+                                        <li>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight }}TM (Toneladas Métricas).</b>
+                                            <br>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Fecha de registro:
                                 <b>{{ orden.start_date }}</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">
                             </div>
                         </div>
                     </div>

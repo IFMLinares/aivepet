@@ -81,7 +81,7 @@
       </div>
 
       <div class="p-lateral-izq">
-        <p>VSL. " {{ orden.buque_name|title }} " / OCAMAR, VENEZUELA</p>
+        <p>VSL. " {{ orden.buque_name|title }} "</p>
         <div class="p-medio-dos">
           <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}</p>
         </div>
@@ -97,20 +97,20 @@
       <table style="margin-left: 85px;"> 
         <tr>
           <td style="border:none;">VESSEL NAME</td>
-          <td style="border:none;">{{ orden.buque_name|title }}</td> 
+          <td style="border:none;">{{ orden.buque_name|upper }}</td> 
         </tr>
         <tr style="border:none;">
           <td style="border:none;">PORT</td>
-          <td style="border:none;">{{ orden.port_name|title }}</td> 
+          <td style="border:none;">{{ orden.port_name|upper }}</td> 
         </tr>
         <tr style="border:none;">
           <td style="border:none;">DOCK:</td>
-          <td style="border:none;">{{ orden.numero_muelle|title }}</td> 
+          <td style="border:none;">{{ orden.numero_muelle|upper }}</td> 
         </tr>
         {% for product in orden.product.all %}
         <tr style="border:none;">
           <td style="border:none;">CARGO LABELED BY SUPPLIER AS</td>
-          <td style="border:none;">{{ product.product_id.name|title }}</td> 
+          <td style="border:none;">{{ product.product_id.name|upper }}</td> 
         </tr>
         {% endfor %}
 
@@ -139,7 +139,7 @@
         <p>TIME LOG (AS PER TERMINAL LOG)</p>
         <table>
           <tr>
-            <th></th>
+            <th>Status</th>
             <th>TIME</th>
             <th>DATE</th>
           </tr>

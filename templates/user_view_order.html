@@ -156,17 +156,25 @@ Dashboard
                     <div class="col-md-12 pl-xl-5">
                         <div class="form-group row text-center">
                             <li>
-                                <span>BL: {{ orden.bl }} TM (Toneladas Métricas)<br>
+                                <span>BL Total: {{ orden.bl }} TM (Toneladas Métricas)<br>
                                 </span>
                             </li>
                         </div>
                     </div>
+                    
+                    <div class="col-md-12" style="margin-top: 0px;">
+                        <hr>
+                    </div>
+                    <br> <br>
                     {% if orden.multiple_bl.all %}
                     {% for bl in orden.multiple_bl.all %}
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li>
-                                <span>BL: {{ bl.bl }} TM (Toneladas Métricas) <br>
+                                <span>
+                                    BL: {{ bl.bl }} TM (Toneladas Métricas) <br>
+                                    
+                                    °Cliente: {{ bl.receiving_customer.company_name }}
                                 </span>
                             </li>
                         </div>
