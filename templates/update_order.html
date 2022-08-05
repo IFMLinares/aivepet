@@ -14,7 +14,7 @@ Dashboard
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h2 class="text-center">Seguimiento de la orden de {{ orden.order_type }}</h2>
+            <h2 class="text-center">Seguimiento de la orden</h2>
             <p class="card-description text-center">
                 Información de carga:
             </p>
@@ -113,7 +113,7 @@ Dashboard
                                         <li> 
                                             <span>
                                                 Responsable: {{ orden.name }} <br />
-                                                Documento: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
+                                                Nro de Identificación: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
                                                 </span>
                                         </li>
                                     </ul>
@@ -132,7 +132,7 @@ Dashboard
                                             <span
                                                 >Empresa: {{ customer.company_name|title }} <br />
                                                 Responsable: {{ customer.name|title }} <br />
-                                                Documento: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
+                                                Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
                                                 {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
                                                 {% else %} Descargado: {{ customer.quantity }} TM
                                                 {% endif %}
@@ -150,7 +150,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight }}TM (Toneladas Métricas).</b>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:2|intcomma }}TM (Toneladas Métricas).</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -159,9 +159,15 @@ Dashboard
                         </div>
                     </div>
                     
+                    
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">
+                            <div class="col-sm-12 col-form-label">Cantidad total:
+                                <ul>
+                                        <li>
+                                            {{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).
+                                        </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -602,14 +608,14 @@ Dashboard
                                         {{ form.multiple_bl }}
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl }} {% endif %} TM</span>
+                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl|floatformat:2|intcomma }} {% endif %} TM</span>
                                             </li>
                                             {% if orden.multiple_bl.all %}
                                             <br>
                                             Multiples BL:
                                             {% for bl in orden.multiple_bl.all %}
                                             <li>
-                                                <span>BL: {{ bl.bl }}  TM<br>
+                                                <span>BL: {{ bl.bl|floatformat:2|intcomma }}  TM<br>
                                                 </span>
                                             </li>
                                             {% endfor %}
@@ -618,7 +624,7 @@ Dashboard
                                         <ul>
                                             <li>
                                                 {{ form.total_bls }}
-                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls }} {% endif %}</span>  TM<br>
+                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:2|intcomma }} {% endif %}</span>  TM<br>
                                                 </span>
                                             </li>
                                         </ul>
@@ -630,7 +636,7 @@ Dashboard
                                     <div class="col-sm-12 ml-xl-3">
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span>Draft: {% if orden.draft > 0 %} {{ orden.draft }} {% endif %}  TM</span>
+                                                <span>Draft: {% if orden.draft > 0 %} {{ orden.draft|floatformat:2|intcomma }} {% endif %}  TM</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -727,11 +733,11 @@ Dashboard
                                                     <br>
                                                     Placa del deposito: {{ trans.tank_plate|title }}
                                                     <br>
-                                                    Peso de tara: {{ trans.tare_weight|title }} TM (Toneladas Métricas)
+                                                    Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso bruto: {{ trans.gross_weight|title }} TM (Toneladas Métricas)
+                                                    Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso Neto: {{ trans.net_weight|title }} TM (Toneladas Métricas)
+                                                    Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
                                                     Puerto: {{ trans.port|title }}
                                                     <br>

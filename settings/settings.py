@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = db.MYSQL
+DATABASES = db.SQLITE
 
 
 # Password validation
@@ -174,3 +174,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 AUTH_USER_MODEL = 'core.User'
 
 LOGIN_REDIRECT_URL = '/'
+USE_L10N = False
+USE_THOUSAND_SEPARATOR = True

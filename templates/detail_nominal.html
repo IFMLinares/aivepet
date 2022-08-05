@@ -3,6 +3,7 @@
 Dashboard
 {% endblock %}
 {% load static %}
+{% load humanize %}
 {% block extra_css %}
 <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
 <link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
@@ -110,7 +111,7 @@ Dashboard
                                         <li> 
                                             <span>
                                                 Responsable: {{ orden.name }} <br />
-                                                Documento: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
+                                                Nro de Identificación: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
                                                 </span>
                                         </li>
                                     </ul>
@@ -129,7 +130,7 @@ Dashboard
                                             <span
                                                 >Empresa: {{ customer.company_name|title }} <br />
                                                 Responsable: {{ customer.name|title }} <br />
-                                                Documento: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
+                                                Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
                                                 {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
                                                 {% else %} Descargado: {{ customer.quantity }} TM
                                                 {% endif %}
@@ -147,7 +148,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight }}TM (Toneladas Métricas).</b>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:2|intcomma }}TM (Toneladas Métricas).</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -158,7 +159,12 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">
+                            <div class="col-sm-12 col-form-label">Cantidad total:
+                                <ul>
+                                        <li>
+                                            {{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).
+                                        </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

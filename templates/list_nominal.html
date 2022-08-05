@@ -33,7 +33,7 @@ Lista de ordenes
                                     <tr class="text-center">
                                         <td style="font-weight: bold;">000{{ orden.id }}</td>
                                         <!-- <td>{{ orden.origin_order }}</td> -->
-                                        <td style="font-weight: bold; color: {% if orden.order_type == 'carga' %}#57c7d4{% else %}#FF4747{% endif %}">{{ orden.order_type|upper  }}</td>
+                                        <td style="font-weight: bold; color: {% if orden.order_type == 'carga' %}#57c7d4{% else %}#46c35f{% endif %}">{{ orden.order_type|upper  }}</td>
                                         <td>{{ orden.customer_name }}</td>
                                         <td style="font-weight: bold;">{{ orden.buque_name }}</td>
                                         <td>{% for product in orden.product.all %}
@@ -45,7 +45,7 @@ Lista de ordenes
                                             <a class="btn btn-success" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver orden</a>
                                             <a class="btn btn-danger{% if orden.state == 'En operación' or orden.state == 'Finalizado' %} disabled {% endif %} mt-xl-1" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
                                             <br>
-                                            <a class="btn btn-{% if orden.state == 'En operación' %}info {% else %}danger disabled{% endif %} mt-xl-1" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% elif orden.state == 'Finalizado' %}Finalizado{% else %}Comenzar operación{% endif %}</a>
+                                            <a class="btn btn-{% if orden.state == 'En operación' or orden.state == 'Finalizado' %}danger disabled{% else %}info{% endif %} mt-xl-1" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% elif orden.state == 'Finalizado' %}Finalizado{% else %}Comenzar operación{% endif %}</a>
                                         </td>
                                     </tr>
                                     {% endfor %}

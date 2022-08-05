@@ -13,7 +13,7 @@ Dashboard
 <div class="col-12 grid-margin">
     <div class="card">
         <div class="card-body">
-            <h2 class="text-center">Seguimiento de la orden nominada de {{ orden.order_type }}</h2>
+            <h2 class="text-center">Seguimiento de la orden nominada</h2>
             <p class="card-description text-center">
                 Información de carga:
             </p>
@@ -88,21 +88,40 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Producto:
-                                {% for product in orden.product.all %}
-                                <b>{{ product.product_id.name|title }} {{ product.weight }}TM.</b>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del puerto: <b>{{ orden.port_name }}</b></div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <label class="col-sm-12 col-form-label">Número del muelle: <b>{{ orden.numero_muelle }}</b></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Productos:
+                                <ul>
+                                    {% for product in orden.product.all %}
+                                        <li>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:2|intcomma }}TM (Toneladas Métricas).</b>
+                                            <br>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Cantidad total:
+                                <ul>
+                                        <li>
+                                            {{ orden.total_product_weight|floatformat:2|intcomma }} TM(Toneladas Métricas).
+                                        </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
@@ -151,12 +170,12 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Bill of Lading (BL)::</h3>
+                        <h3 class="mb-xl-4 text-center">1 Lading (BL)::</h3>
                     </div>
                     <div class="col-md-12 pl-xl-5">
                         <div class="form-group row text-center">
                             <li>
-                                <span>BL Total: {{ orden.bl }} TM (Toneladas Métricas)<br>
+                                <span>BL Total: {{ orden.bl|floatformat:2|intcomma }} TM (Toneladas Métricas)<br>
                                 </span>
                             </li>
                         </div>
@@ -172,7 +191,7 @@ Dashboard
                         <div class="form-group row">
                             <li>
                                 <span>
-                                    BL: {{ bl.bl }} TM (Toneladas Métricas) <br>
+                                    BL: {{ bl.bl|floatformat:2|intcomma }} TM (Toneladas Métricas) <br>
                                     
                                     °Cliente: {{ bl.receiving_customer.company_name }}
                                 </span>
@@ -193,7 +212,7 @@ Dashboard
                         <div class="form-group row">
                             <li>
                                 <span>{{ winerie.product.name|title }}: {{ winerie.number|title }}:
-                                    {{ winerie.weight }} TM (Toneladas Métricas) <br> Fecha de adición:
+                                    {{ winerie.weight|floatformat:2|intcomma }} TM (Toneladas Métricas) <br> Fecha de adición:
                                     {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                 </span>
                             </li>
@@ -310,9 +329,17 @@ Dashboard
                                     <br>
                                     Placa: {{ trans.license_plate|title }}
                                     <br>
+                                    Placa del deposito: {{ trans.tank_plate|title }}
+                                    <br>
                                     Nombre del chofer: {{ trans.driver_name|title }}
                                     <br>
                                     Guía: {{ trans.ficha|title }}
+                                    <br>
+                                    Sindicato: {{ trans.syndicate|title }}
+                                    <br>
+                                    Puerto: {{ trans.port|title }}
+                                    <br>
+                                    T.Muelle: {{ trans.T_Muelle|title }}
                                     <br>
                                     Barco/ALM: {{ trans.boat_alm|title }}
                                     <br>
@@ -322,19 +349,11 @@ Dashboard
                                     <br>
                                     Comentario: {{ trans.comment|title }}
                                     <br>
-                                    Sindicato: {{ trans.syndicate|title }}
+                                    Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }}TM
                                     <br>
-                                    Placa del deposito: {{ trans.tank_plate|title }}
+                                    Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }}TM
                                     <br>
-                                    Peso de tara: {{ trans.tare_weight|title }}
-                                    <br>
-                                    Peso bruto: {{ trans.gross_weight|title }}
-                                    <br>
-                                    Peso Neto: {{ trans.net_weight|title }}
-                                    <br>
-                                    Puerto: {{ trans.port|title }}
-                                    <br>
-                                    T.Muelle: {{ trans.T_Muelle|title }}
+                                    Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }}TM
                             </li>
                         </div>
                     </div>

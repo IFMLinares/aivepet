@@ -101,6 +101,7 @@ class Transaction(models.Model):
     customer_name = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='customer')
     receiving_customer = models.ManyToManyField(ReceivingCustomer, blank=True)
     product = models.ManyToManyField(ProductWeight, blank=True)
+    total_product_weight = models.FloatField(max_length=150, verbose_name='Total de los productos', blank=True, null=True, default=0)
     buque_name = models.CharField(max_length=150, verbose_name='Nombre del buque', blank=True, null=True)
     port_name = models.CharField(max_length=150, verbose_name='Nombre del puerto', blank=True, null=True)
     numero_muelle =  models.CharField(max_length=150,verbose_name='Número del muelle', blank=True, null=True)
@@ -140,6 +141,7 @@ class Transaction(models.Model):
 
 class NominalTransaccion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,related_name='user_nominal')
+    total_product_weight = models.FloatField(max_length=150, verbose_name='Total de los productos', blank=True, null=True, default=0)
     order_number = models.SlugField(max_length=200, blank=True, null=True)
     order_type = models.CharField(max_length=150, verbose_name='Tipo de orden', blank=True, null=True)
     number_invoice_client = models.CharField(max_length=150, verbose_name='Número de referencia cliente',unique=True, blank=True, null=True)

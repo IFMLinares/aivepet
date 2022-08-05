@@ -305,7 +305,7 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
-        name = self.request.POST['tipodc']
+        name = self.request.POST['cliente']
         if name == '' or name == ' ':
             name = 'N/A'
         cliente = self.model.objects.create(
@@ -568,6 +568,7 @@ def NominalTransAcepted(request, pk):
     transaction = Transaction(
         user = nominal.user,
         order_number = nominal.order_number,
+        total_product_weight = nominal.total_product_weight,
         order_type = nominal.order_type,
         number_invoice_client = nominal.number_invoice_client,
         number_invoice_aivepet = nominal.number_invoice_aivepet,

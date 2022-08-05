@@ -89,7 +89,7 @@ Lista de ordenes
                                                 <td>{{ orden.final_date|date:'d/m/Y G:i' }}</td>
                                                 <td>
                                                     <!-- <a class="btn btn-secondary" onclick="mostrar('{% for history in orden.history.all %}{{ history.act_date|date:'d-m-Y_G:i' }},{% endfor %}')">Ver act</a><br> -->
-                                                    <a class="btn btn-{% if orden.state == 'Finalizado' %}danger disabled {% else %}info{% endif %} mt-xl-1 " href="{% url 'transactions:update_order' pk=orden.pk %}">{% if orden.state == 'Finalizado' %}Finalizado{% else %}Actualizar orden{% endif %}</a>
+                                                    <a class="btn btn-{% if orden.state == 'Finalizado' %}danger disabled{% else %}info{% endif %} mt-xl-1 " href="{% url 'transactions:update_order' pk=orden.pk %}">{% if orden.state == 'Finalizado' %}Finalizado{% else %}Actualizar orden{% endif %}</a>
                                                     <a href="{% url 'transactions:client_view' pk=orden.pk %}" class="btn btn-success mt-xl-1">Ver orden</a>
                                                     {% if orden.state == 'Finalizado' %}
                                                     <a href="{% url 'transactions:pdf_view' pk=orden.pk %}" target="_blank" class="btn btn-danger mt-xl-1">Reporte final</a>
