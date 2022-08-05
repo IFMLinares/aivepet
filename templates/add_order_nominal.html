@@ -267,7 +267,7 @@ Dashboard
                                                     id="add_product_name" placeholder="Producto">
                                             </div>
                                             <div class="col">
-                                                <input class="form-control" type="number" maxlength="150"
+                                                <input class="form-control" type="text" maxlength="150"
                                                     id="add_product_weight" placeholder="Peso nominado">
                                             </div>
                                         </div>
@@ -298,7 +298,7 @@ Dashboard
                                 <div class="col-sm-7">
                                     <input class="form-control add-order" type="text" name="total_product_weight1" min="0"
                                         required id="id_total_product_weight1" disabled>
-                                        <input class="form-control add-order" type="number" name="total_product_weight" min="0"
+                                        <input class="form-control add-order d-none" type="number" name="total_product_weight" min="0"
                                             required id="id_total_product_weight">
                                 </div>
                                 
@@ -418,11 +418,15 @@ Dashboard
     })
     $('#add_product').keypress(function (e) {
         if (e.keyCode == 13) {
+            let weight = $("#add_product_weight").val();
+            weight = weight.replace('.', '')
+            weight = parseFloat(weight)
+            console.log(weight)
             event.preventDefault()
             $.ajax({
                 data: {
                     'product': $("#add_product_name").val(),
-                    'weight': $("#add_product_weight").val(),
+                    'weight': weight,
                 },
                 url: "{% url 'transactions:add_product' %}",
                 type: 'post',
@@ -439,12 +443,16 @@ Dashboard
     })
 
     $('#button_add_product').on('click', function () {
+        let weight = $("#add_product_weight").val();
+        weight = weight.replace('.', '')
+        weight = parseFloat(weight)
+        console.log(weight)
         event.preventDefault();
         if ($("#add_product_name").val() || $("#add_product_weight").val()) {
             $.ajax({
                 data: {
                     'product': $("#add_product_name").val(),
-                    'weight': $("#add_product_weight").val(),
+                    'weight': weight,
                 },
                 url: "{% url 'transactions:add_product' %}",
                 type: 'post',
@@ -581,6 +589,17 @@ Dashboard
             }
         }
     })
+
+    
+$('#add_product_weight').on('keyup', function(){
+    $('#add_product_weight').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
 </script>
 
 
