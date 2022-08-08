@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.db.models.fields import DateField
 from django.template.defaultfilters import slugify
@@ -70,6 +71,7 @@ class Transport(models.Model):
     viaje = models.PositiveIntegerField(blank=True, null=True, default=0)
     acumulado = models.FloatField(blank=False, null=False, default=0)
     acumulado_total = models.FloatField(blank=False, null=False, default=0)
+    bodega = models.CharField(max_length=150, verbose_name='Bodega', blank=True, null=True)
 
     def __str__ (self):
         return self.vehicle

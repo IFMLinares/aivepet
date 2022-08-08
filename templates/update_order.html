@@ -233,7 +233,9 @@ Dashboard
                                         <label class="col-md-4 col-form-label">Bill of Lading (BL):</label>
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
-                                            <input type="number" class="form-control add-order mt-xl-2"
+                                            <input type="text" class="form-control add-order mt-xl-2"
+                                                placeholder="BL del buque" name="bl1" id="id_bl1" {% if orden.bl %} value="{{ orden.bl }}" disabled {% endif %}>
+                                                <input type="number" class="form-control add-order mt-xl-2 d-none"
                                                 placeholder="BL del buque" name="bl" id="id_bl" {% if orden.bl %} value="{{ orden.bl }}" disabled {% endif %}>
                                         </div>
                                         <div class="col-sm-3 mt-xl-2">
@@ -245,7 +247,9 @@ Dashboard
                                                 <label class="col-md-4 col-form-label">Draft Inicial:</label>
                                                 <div class="col-sm-5">
                                                     <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
-                                                    <input type="number" class="form-control add-order mt-xl-2"
+                                                    <input type="text" class="form-control add-order mt-xl-2"
+                                                        placeholder="Draft del buque" name="draft1" id="id_draft1" {% if orden.draft %} disabled value="{{ orden.draft }}" {% endif %}>
+                                                        <input type="number" class="form-control add-order mt-xl-2 d-none"
                                                         placeholder="Draft del buque" name="draft" id="id_draft" {% if orden.draft %} disabled value="{{ orden.draft }}" {% endif %}>
                                                 </div>
                                                 <div class="col-sm-3 mt-xl-2">
@@ -259,7 +263,7 @@ Dashboard
                                         <label class="col-md-4 col-form-label">Añadir Multiples BL:</label>
                                         <div class="col-sm-5">
                                             <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
-                                            <input type="number" class="form-control add-order mt-xl-2"
+                                            <input type="text" class="form-control add-order mt-xl-2"
                                                 placeholder="BL del buque" id="id_bl_multiple" {% if orden.bl %} disabled {% endif %}>
                                         </div>
                                         <label class="col-md-4 col-form-label">Cliente Recibidor:</label>
@@ -313,7 +317,7 @@ Dashboard
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">Peso:</label>
                                         <div class="col-md-7">
-                                            <input type="number" class="form-control mt-xl-2" placeholder="5000"
+                                            <input type="text" class="form-control mt-xl-2" placeholder="5000"
                                                 id="bodega_peso" style=" height: 68%;">
                                         </div>
                                     </div>
@@ -403,6 +407,22 @@ Dashboard
                                             {% for customer in orden.receiving_customer.all %}
                                             <option value="{{ customer.pk }}">{{ customer.company_name }} {% if customer.tipdoc == 'N/A' %}{% else %} - {{ customer.tipdoc }}{{ customer.dni }} - {{ customer.company_name }}{% endif %}</option>
                                             {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">
+                                        <li>Bodega:</li>
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <select class="custom-select add-order mt-xl-2" id="id_bodega_transport">
+                                            {% if orden.Wineries.all %}
+                                            {% for winerie in orden.Wineries.all %}
+                                            <option value="{{ winerie.number|title }}">{{ winerie.product.name|title }}. <strong>Bdga/ALM :</strong> {{ winerie.number|title }}:</option>
+                                            {% endfor %}
+                                        {% endif %}
                                         </select>
                                     </div>
                                 </div>
@@ -519,7 +539,7 @@ Dashboard
                                         <li> Peso bruto TM:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="number" class="form-control add-order" name="gross_weight" id="id_gross_weight" placeholder="peso del camión vacío">
+                                        <input type="text" class="form-control add-order" name="gross_weight" id="id_gross_weight" placeholder="peso del camión vacío">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -527,7 +547,7 @@ Dashboard
                                         <li> Peso de tara TM:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="number" class="form-control add-order" name="tare_weight" id="id_tare_weight" placeholder="peso del camión con la carga">
+                                        <input type="text" class="form-control add-order" name="tare_weight" id="id_tare_weight" placeholder="peso del camión con la carga">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -535,7 +555,7 @@ Dashboard
                                         <li> Peso neto TM:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="number" class="form-control add-order" name="trans_net_weight" id="id_trans_net_weight" placeholder="Peso neto" disabled>
+                                        <input type="text" class="form-control add-order" name="trans_net_weight" id="id_trans_net_weight" placeholder="Peso neto" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -559,7 +579,8 @@ Dashboard
                                         <li>Monto Draft Final:</li>
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="number" class="form-control add-order" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draft > 0 %}disabled {% endif %}>
+                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}"  {% if orden.final_draft and orden.final_draft == 0 %}{% else %}disabled {% endif %}>
+                                        <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}disabled {% endif %}>
                                     </div>
                                     <div class="col-sm-3 mt-xl-1">
                                         (TM)
@@ -849,17 +870,18 @@ Dashboard
 
     function calculate(){
         if($('#id_gross_weight').val() && $('#id_tare_weight').val()){
-            pesoTara = $('#id_tare_weight').val()
-            pesoBruto = $('#id_gross_weight').val()
-            pesoNeto = Math.abs(pesoTara - pesoBruto)
+            pesoTara = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
+            pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
+            pesoNeto = Math.abs(pesoTara - pesoBruto).toFixed(2)
+            // pesoNeto = pesoNeto.replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             $('#id_trans_net_weight').val(pesoNeto)
         }
     }
 
-    $('#id_gross_weight').on('keyup', function(){
+    $('#id_gross_weight').on('change', function(){
         calculate()
     })
-    $('#id_tare_weight').on('keyup', function(){
+    $('#id_tare_weight').on('change', function(){
         calculate()
     })
 
@@ -874,12 +896,16 @@ Dashboard
                     $('#bodega_peso').css('border-color', 'red')
                 }
             }else{
+                
+                let bodega_peso = $("#bodega_peso").val();
+                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
                         'transaccion': $('#id_order_number').val(),
                         'bodega_nueva': $("#bodega_nueva").val(),
                         'producto': $('#bodega_product').val(),
-                        'peso': $('#bodega_peso').val(),
+                        'peso': bodega_peso,
                     },
                     url: "{% url 'transactions:add_wineries' %}",
                     type: 'post',
@@ -891,8 +917,11 @@ Dashboard
                         var name = data[0].fields.number
                         var product = data[1].fields.name
                         var weight = data[0].fields.weight
+                        let weight1 = parseFloat(weight)
+                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight + ' TM</span></li>');
+                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
                         $('#not_winerie').css('display', 'none');
                         var weight_act = $('#id_net_weight').val();
                         weight_act = parseFloat(weight_act)
@@ -917,12 +946,16 @@ Dashboard
                     $('#bodega_peso').css('border-color', 'red')
                 }
             }else{
+                
+                let bodega_peso = $("#bodega_peso").val();
+                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
                         'transaccion': $('#id_order_number').val(),
                         'bodega_nueva': $("#bodega_nueva").val(),
                         'producto': $('#bodega_product').val(),
-                        'peso': $('#bodega_peso').val(),
+                        'peso': bodega_peso,
                     },
                     url: "{% url 'transactions:add_wineries' %}",
                     type: 'post',
@@ -934,8 +967,13 @@ Dashboard
                         var name = data[0].fields.number
                         var product = data[1].fields.name
                         var weight = data[0].fields.weight
+                        
+                        
+                        let weight1 = parseFloat(weight)
+                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' +  name + '; ' + weight + ' TM</span></li>');
+                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' +  name + '; ' + weight1 + ' TM</span></li>');
                         $('#not_winerie').css('display', 'none');
 
                         var weight_act = Number($('#id_net_weight').val());
@@ -965,12 +1003,16 @@ Dashboard
                     $('#bodega_peso').css('border-color', 'red')
                 }
             }else{
+                
+                let bodega_peso = $("#bodega_peso").val();
+                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
                         'transaccion': $('#id_order_number').val(),
                         'bodega_nueva': $("#bodega_nueva").val(),
                         'producto': $('#bodega_product').val(),
-                        'peso': $('#bodega_peso').val(),
+                        'peso': bodega_peso,
                     },
                     url: "{% url 'transactions:add_wineries' %}",
                     type: 'post',
@@ -982,8 +1024,14 @@ Dashboard
                         var name = data[0].fields.number
                         var product = data[1].fields.name
                         var weight = data[0].fields.weight
+                        
+                        
+                        let weight1 = parseFloat(weight)
+                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight + ' TM</span></li>');
+                        
+                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
                         $('#not_winerie').css('display', 'none');
 
                         var weight_act = $('#id_net_weight').val();
@@ -1176,6 +1224,9 @@ Dashboard
     })
     $('#transport_add').on('click', function () {
         event.preventDefault();
+        let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
+        let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
+        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val()).toFixed(2)
         $.ajax({
             data: {
                 'transaction_id' : $('#transaction_id').val(),
@@ -1192,10 +1243,11 @@ Dashboard
                 'id_syndicate': $('#id_syndicate').val(),
                 'id_port': $('#id_port').val(),
                 'id_T_Muelle': $('#id_T_Muelle').val(),
-                'id_gross_weight': $('#id_gross_weight').val(),
-                'id_tare_weight': $('#id_tare_weight').val(),
-                'id_net_weight': $('#id_trans_net_weight').val(),
-                'id_transport_customer': $('#id_transport_customer option:selected').val()
+                'id_gross_weight': id_gross_weight,
+                'id_tare_weight': id_tare_weight,
+                'id_net_weight': id_trans_net_weight,
+                'id_transport_customer': $('#id_transport_customer option:selected').val(),
+                'id_bodega_transport': $('#id_bodega_transport option:selected').val()
             },
             url: "{% url 'transactions:add_transport' %}",
             type: 'post',
@@ -1237,13 +1289,25 @@ Dashboard
                 var gross_weight = data[0].fields.gross_weight
                 var tare_weight = data[0].fields.tare_weight
                 var net_weight = data[0].fields.net_weight
-                var pesoActual = parseInt($('#id_transport_heavy').val())
-                var pesadaActual = pesoActual + parseInt(net_weight)
+                var pesoActual = parseFloat($('#id_transport_heavy').val())
+                var pesadaActual = pesoActual + parseFloat(net_weight)
+
+                
+                let gross_weight1 = parseFloat(gross_weight)
+                gross_weight1 = gross_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+
+                
+                let tare_weight1 = parseFloat(tare_weight)
+                tare_weight1 = tare_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+
+                
+                let net_weight1 = parseFloat(net_weight)
+                net_weight1 = net_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 console.log(data)
-                $('#pesada').text(pesadaActual)
+                $('#pesada').text(pesadaActual + 'TM')
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li style="color: #51A351"> Cliente Recibidor: ' + id_transport_customer + '<br>Viaje: ' + viaje + '<br>Fecha de adición: ' + start_date + 'Tipo de vehículo: ' + id_vehicle + '<br>Placa: ' + license_plate + '<br>Placa del Depósito: ' + tank_plate + '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Sindicato: '+ syndicate +'<br>Puerto: '+ port + '<br> T.Muelle'+ T_Muelle +'<br>Barco/ALM: '+ boat_alm  + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by + '<br>Comentario: ' + comment + '<br>Peso bruto: '+ gross_weight + 'TM <br>Peso de tara: '+ tare_weight + 'TM <br>Peso neto: '+ net_weight+'TM </li>');
+                $("#transport_list").append('<li style="color: #51A351"> Cliente Recibidor: ' + id_transport_customer + '<br>Viaje: ' + viaje + '<br>Fecha de adición: ' + start_date + 'Tipo de vehículo: ' + id_vehicle + '<br>Placa: ' + license_plate + '<br>Placa del Depósito: ' + tank_plate + '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Sindicato: '+ syndicate +'<br>Puerto: '+ port + '<br> T.Muelle'+ T_Muelle +'<br>Barco/ALM: '+ boat_alm  + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by + '<br>Comentario: ' + comment + '<br>Peso bruto: '+ gross_weight1 + 'TM <br>Peso de tara: '+ tare_weight1 + 'TM <br>Peso neto: '+ net_weight1+'TM </li>');
                 $('#not_transport').css('display', 'none');
             },
         });
@@ -1315,9 +1379,14 @@ Dashboard
         if(!$('#id_bl_multiple').val()){
             if(!$('#id_bl_multiple').val()){$('#id_bl_multiple').css('border-color', 'red')}
         }else{
+            
+            let weight_buque = $("#id_bl_multiple").val();
+            weight_buque = weight_buque.replace('.', '')
+            weight_buque = parseFloat(weight_buque)
+            event.preventDefault()
             $.ajax({
             data: {
-                'id_bl_multiple': $('#id_bl_multiple').val(),
+                'id_bl_multiple': weight_buque,
                 'id_bl_customer': $('#id_bl_customer option:selected').val()
             },
             url: "{% url 'transactions:multiple_bl' %}",
@@ -1327,8 +1396,11 @@ Dashboard
                 console.log(data)
                 var val = data[0].pk;
                 var bl = data[0].fields.bl;
+                var bl1 = bl;
+                bl1 = bl1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+
                 $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
-                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2">BL: '+ bl + 'TM. ' + data[1].fields.company_name + '</li>');
+                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2">BL: '+ bl1 + ' TM. ' + data[1].fields.company_name + '</li>');
                 var t = $('#total_bl').text();
                 if(t == '' || t == ' '){
                     t = 0;
@@ -1342,6 +1414,97 @@ Dashboard
     })
 
 $('#id_net_weight').val(parseFloat($('#id_net_weight').val()))
+$('#id_bl1').on('keyup', function(){
+    $('#id_bl1').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+    
+});
+})
+
+$('#id_bl1').on('blur', function(){  
+    let bl_number = $('#id_bl1').val()
+        bl_number = parseFloat(bl_number.replace('.','')).toFixed(2)
+        console.log(bl_number)
+        $('#id_bl').val(bl_number)
+});
+
+
+$('#final_draft1').on('keyup', function(){
+    $('#final_draft1').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+    
+});
+})
+
+$('#final_draft1').on('blur', function(){  
+    let bl_number = $('#final_draft1').val()
+        bl_number = parseFloat(bl_number.replace('.','')).toFixed(2)
+        console.log(bl_number)
+        $('#final_draft').val(bl_number)
+});
+
+
+$('#id_draft1').on('keyup', function(){
+    $('#id_draft1').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+
+$('#id_draft1').on('blur', function(){  
+    let draft_number = $('#id_draft1').val()
+        draft_number = parseFloat(draft_number.replace('.','')).toFixed(2)
+        console.log(draft_number)
+        $('#id_draft').val(draft_number)
+});
+$('#id_bl_multiple').on('keyup', function(){
+    $('#id_bl_multiple').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+$('#bodega_peso').on('keyup', function(){
+    $('#bodega_peso').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+
+$('#id_gross_weight').on('keyup', function(){
+    $('#id_gross_weight').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+$('#id_tare_weight').on('keyup', function(){
+    $('#id_tare_weight').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+
+
 </script>
 <script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
 <script src="{% static 'vendors/select2/select2.min.js' %}"></script>

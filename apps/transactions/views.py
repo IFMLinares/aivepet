@@ -283,6 +283,7 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             net_weight = trans['id_net_weight'],
             customer_name = customer,
             viaje = viaje,
+            bodega = trans['id_bodega_transport'],
             )
         quantity = 0
         quantity = quantity + customer.quantity  

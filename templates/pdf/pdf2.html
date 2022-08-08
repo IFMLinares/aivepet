@@ -41,19 +41,19 @@
         <tr style="border: none;">
           <th style="text-align: center; border: none;"><img src="https://systemtracker.aivepet.com{{ icon }}" alt=""  style="width: 75px;"/></th>
           <th style="text-align: center; border: none;">VESSEL:</th>
-          <th style="text-align: center; border: none;">{{ orden.buque_name|title }}</th>
+          <th style="text-align: center; border: none;">{{ orden.buque_name|upper }}</th>
           <th style="text-align: center; border: none;">PRODUCT:</th>
-          <th style="text-align: center; border: none;">{% for product in orden.product.all %}{{ product.product_id.name|title }},
+          <th style="text-align: center; border: none;">{% for product in orden.product.all %}{{ product.product_id.name|upper }},
             {% endfor %}</th>
           <th style="text-align: center; border: none;">DAILY TRUCK DISPATCH REPORT</th> 
         </tr>
         <tr>
           <th style="text-align: left; border: none; white-space: pre-line;">  </th>
           <th style="text-align: center; border: none;">PORT:</th>
-          <th style="text-align: center; border: none;">{{ orden.port_name|title }}</th>
+          <th style="text-align: center; border: none;">{{ orden.port_name|upper }}</th>
           <th style="text-align: center; border: none;">CLIENT:</th>
-          <th style="text-align: center; border: none;">{{ orden.customer_name.company_name }}</th>
-          <th style="text-align: center; border: none;">{{ orden.number_invoice_aivepet }}</th> 
+          <th style="text-align: center; border: none;">{{ orden.customer_name.company_name|upper }}</th>
+          <th style="text-align: center; border: none;">{{ orden.number_invoice_aivepet|upper }}</th> 
         </tr>
       </table>
       
@@ -63,7 +63,7 @@
           <th style="text-align: center;">VOYAGER</th>
           <th style="text-align: center;">TRUCK ID PLATE</th>
           <th style="text-align: center;">DUMP ID PLATE</th>
-          <th style="text-align: center;">INVOICE</th>
+          <th style="text-align: center; width: 160 px;">INVOICE</th>
           <th style="text-align: center;">METRIC TONS</th>
           <th style="text-align: center;">ACCUMULATED</th>
           <th style="text-align: center;">RECEIVER</th>
@@ -79,7 +79,7 @@
           <th style="text-align: center;">{{ transport.net_weight|floatformat:2|intcomma }}</th>
           <th style="text-align: center;">{{ transport.acumulado_total|floatformat:2|intcomma }}</th>
           <th style="text-align: center;">{{ transport.customer_name.company_name }}</th>
-          <th style="text-align: center;">0</th>
+          <th style="text-align: center;">{{ transport.bodega }}</th>
         </tr>
         {% endfor %}
         <tr>
