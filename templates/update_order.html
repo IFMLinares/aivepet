@@ -579,7 +579,7 @@ Dashboard
                                         <li>Monto Draft Final:</li>
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}"  {% if orden.final_draft and orden.final_draft >= 0 %}{% else %}disabled {% endif %}>
+                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}"  {% if orden.final_draft and orden.final_draft == 0 %}{% else %}disabled {% endif %}>
                                         <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}disabled {% endif %}>
                                     </div>
                                     <div class="col-sm-3 mt-xl-1">
