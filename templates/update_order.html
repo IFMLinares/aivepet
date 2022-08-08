@@ -570,7 +570,7 @@ Dashboard
                         <hr>
                         <div class="border border-secondary rounded mt-xl-3">
                             <div class="col-md-12">
-                                <h2 class="mt-xl-2 text-center mb-xl-4">Draft Final</h2>
+                                <h2 class="mt-xl-2 text-center mb-xl-4">Draft Final {{ orden.final_draft }}</h2>
                                 <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                             </div>
                             <div class="col-md-12">
@@ -579,8 +579,8 @@ Dashboard
                                         <li>Monto Draft Final:</li>
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}"  {% if orden.final_draft and orden.final_draft == 0 %}{% else %}disabled {% endif %}>
-                                        <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}disabled {% endif %}>
+                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}" {% if orden.final_draft == '0' %} {% else %}disabled {% endif %}>
+                                        <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}readonly {% endif %}>
                                     </div>
                                     <div class="col-sm-3 mt-xl-1">
                                         (TM)
