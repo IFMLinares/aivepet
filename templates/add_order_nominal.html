@@ -546,7 +546,7 @@ Dashboard
                     var tipdoc = data[0].fields.tipdoc
                     $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
                     $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
-                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> Documento: '+ tipdoc +': ' + dni + '</li>');
                     $('#not_customer').css('display', 'none');
                 },
             });
