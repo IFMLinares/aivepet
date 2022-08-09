@@ -63,59 +63,43 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Número de referencia (Cliente):
-                                <b>{{ orden.number_invoice_client }}</b>
+                                <b>{{ orden.number_invoice_client|title }}</b>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Número de referencia (Aivepet):
-                                <b>{{ orden.number_invoice_aivepet }}</b>
+                                <b>{{ orden.number_invoice_aivepet|title }}</b>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del Cliente:
-                                <b>{{ orden.customer_name.first_name }}</b>
+                                <b>{{ orden.customer_name.first_name|title }}</b>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Nombre del buque: <b>{{ orden.buque_name }}</b></div>
+                            <div class="col-sm-12 col-form-label">Nombre del buque: <b>{{ orden.buque_name|title }}</b></div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Nombre del puerto: <b>{{ orden.port_name }}</b></div>
+                            <div class="col-sm-12 col-form-label">Nombre del puerto: <b>{{ orden.port_name|title }}</b></div>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <label class="col-sm-12 col-form-label">Número del muelle: <b>{{ orden.numero_muelle }}</b></label>
+                            <label class="col-sm-12 col-form-label">Número del muelle: <b>{{ orden.numero_muelle|title }}</b></label>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Unidad de medida:
-                                <b>{{ orden.unit_measurement }}</b>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Cliente Suplidor:
-                                <b>{{ orden.company_name }}
-                                    <ul>
-                                        <li> 
-                                            <span>
-                                                Responsable: {{ orden.name }} <br />
-                                                Nro de Identificación: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
-                                                </span>
-                                        </li>
-                                    </ul>
-                                </b>
+                                <b>{{ orden.unit_measurement|title }}</b>
                             </div>
                         </div>
                     </div>
@@ -125,17 +109,36 @@ Dashboard
                             <div class="col-sm-12 col-form-label">Clientes recibidores:
                                 <b>
                                     <ul>
-                                        <li> 
                                             {% for customer in orden.receiving_customer.all %}
-                                            <span
-                                                >Empresa: {{ customer.company_name|title }} <br />
+                                            
+                                        <li> 
+                                            <span>Empresa: {{ customer.company_name|title }} <br />
                                                 Responsable: {{ customer.name|title }} <br />
                                                 Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
                                                 {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
                                                 {% else %} Descargado: {{ customer.quantity }} TM
                                                 {% endif %}
+                                                <br>
                                             </span>
+                                            
+                                        </li>
                                             {% endfor %}
+                                    </ul>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <div class="col-sm-12 col-form-label">Cliente Suplidor:
+                                <b>
+                                    <ul>
+                                        <li> 
+                                            <span>
+                                                Empresa: {{ orden.company_name|title }} <br>
+                                                Responsable: {{ orden.name }} <br />
+                                                Nro de Identificación: {% if orden.tipdoc == 'N/A' %} N/A {% else %} {{ orden.tipdoc }}: {{ orden.dni }}{% endif %} <br />
+                                                </span>
                                         </li>
                                     </ul>
                                 </b>
@@ -159,7 +162,7 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Cantidad total:
+                            <div class="col-sm-12 col-form-label"> <strong>Cantidad total:</strong> 
                                 <ul>
                                         <li>
                                             {{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).

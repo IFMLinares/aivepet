@@ -115,7 +115,7 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Cantidad total:
+                            <div class="col-sm-12 col-form-label"> <strong>Cantidad total:</strong> 
                                 <ul>
                                         <li>
                                             {{ orden.total_product_weight|floatformat:2|intcomma }} TM(Toneladas Métricas).
@@ -193,7 +193,7 @@ Dashboard
                                 <span>
                                     BL: {{ bl.bl|floatformat:2|intcomma }} TM (Toneladas Métricas) <br>
                                     
-                                    °Cliente: {{ bl.receiving_customer.company_name }}
+                                    ° Cliente: {{ bl.receiving_customer.company_name }}
                                 </span>
                             </li>
                         </div>
@@ -321,39 +321,41 @@ Dashboard
                                 <span>
                                     Cliente recibidor: {{ trans.customer_name.name|title }} - {{ trans.customer_name.company_name|title }}
                                     <br>
-                                    Viaje: {{ trans.viaje }}
-                                    <br>
-                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
-                                    <br>
-                                    Tipo de vehículo: {{ trans.vehicle|title }}
-                                    <br>
-                                    Placa: {{ trans.license_plate|title }}
-                                    <br>
-                                    Placa del deposito: {{ trans.tank_plate|title }}
-                                    <br>
-                                    Nombre del chofer: {{ trans.driver_name|title }}
-                                    <br>
-                                    Guía: {{ trans.ficha|title }}
-                                    <br>
-                                    Sindicato: {{ trans.syndicate|title }}
-                                    <br>
-                                    Puerto: {{ trans.port|title }}
-                                    <br>
-                                    T.Muelle: {{ trans.T_Muelle|title }}
-                                    <br>
-                                    Barco/ALM: {{ trans.boat_alm|title }}
-                                    <br>
-                                    Dirección: {{ trans.direction|title }}
-                                    <br>
-                                    Flete pagado por: {{ trans.freight_paid_by|title }}
-                                    <br>
-                                    Comentario: {{ trans.comment|title }}
-                                    <br>
-                                    Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }}TM
-                                    <br>
-                                    Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }}TM
-                                    <br>
-                                    Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }}TM
+                                    <ul>
+                                        ° Viaje: {{ trans.viaje }}
+                                        <br>
+                                        ° Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
+                                        <br>
+                                        ° Tipo de vehículo: {{ trans.vehicle|title }}
+                                        <br>
+                                        ° Placa: {{ trans.license_plate|title }}
+                                        <br>
+                                        ° Placa del deposito: {{ trans.tank_plate|title }}
+                                        <br>
+                                        ° Nombre del chofer: {{ trans.driver_name|title }}
+                                        <br>
+                                        ° Guía: {{ trans.ficha|title }}
+                                        <br>
+                                        ° Sindicato: {{ trans.syndicate|title }}
+                                        <br>
+                                        ° Puerto: {{ trans.port|title }}
+                                        <br>
+                                        ° T.Muelle: {{ trans.T_Muelle|title }}
+                                        <br>
+                                        ° Barco/ALM: {{ trans.boat_alm|title }}
+                                        <br>
+                                        ° Dirección: {{ trans.direction|title }}
+                                        <br>
+                                        ° Flete pagado por: {{ trans.freight_paid_by|title }}
+                                        <br>
+                                        ° Comentario: {{ trans.comment|title }}
+                                        <br>
+                                        ° Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }}TM
+                                        <br>
+                                        ° Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }}TM
+                                        <br>
+                                        ° Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }}TM
+                                    </ul>
                             </li>
                         </div>
                     </div>

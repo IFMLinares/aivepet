@@ -162,7 +162,7 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Cantidad total:
+                            <div class="col-sm-12 col-form-label"> <strong>Cantidad total:</strong> 
                                 <ul>
                                         <li>
                                             {{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).
@@ -194,7 +194,7 @@ Dashboard
                                                 <option value="ARRIBO">ARRIBO</option>
                                                 <option value="BUQUE FONDEADO (ANCLO)">BUQUE FONDEADO (ANCLO)</option>
                                                 <option value="ATRACADO">ATRACADO</option>
-                                                <option value="FINALAZIA LA INSPECCIÓN INICIAL">FINALIZA LA INSPECCIÓN INICIAL</option>
+                                                <option value="FINALIZA LA INSPECCIÓN INICIAL">FINALIZA LA INSPECCIÓN INICIAL</option>
                                                 <option value="FINALIZA LA INSPECCIÓN FINAL">FINALIZA LA INSPECCIÓN FINAL</option>
                                                 <option value="FINALIZA CALCULOS">FINALIZA CÁLCULOS</option>
                                                 <option value="PAUSADO">PAUSADO</option>
@@ -445,7 +445,7 @@ Dashboard
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="license_plate"
-                                            id="id_license_plate" placeholder="placa del vehículo">
+                                            id="id_license_plate" placeholder="Placa del vehículo">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -629,7 +629,7 @@ Dashboard
                                         {{ form.multiple_bl }}
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl|floatformat:2|intcomma }} {% endif %} TM</span>
+                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl|floatformat:2|intcomma }}TM {% endif %} </span>
                                             </li>
                                             {% if orden.multiple_bl.all %}
                                             <br>
@@ -645,7 +645,7 @@ Dashboard
                                         <ul>
                                             <li>
                                                 {{ form.total_bls }}
-                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:2|intcomma }} {% endif %}</span>  TM<br>
+                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:2|intcomma }} TM{% endif %}</span>  <br>
                                                 </span>
                                             </li>
                                         </ul>
@@ -730,39 +730,39 @@ Dashboard
                                                 <span>
                                                     Cliente Recibidor: {{ trans.customer_name.name|title }} - {{ trans.customer_name.company_name|title }}
                                                     <br>
-                                                    Viaje: {{ trans.viaje }}
+                                                    ° Viaje: {{ trans.viaje }}
                                                     <br>
-                                                    Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                    ° Fecha de adición: {{ trans.start_date|date:"d/m/Y g:i:a" }}</span>
                                                     <br>
-                                                    Tipo de vehículo: {{ trans.vehicle|title }}
+                                                    ° Tipo de vehículo: {{ trans.vehicle|title }}
                                                     <br>
-                                                    Placa: {{ trans.license_plate|title }}
+                                                    ° Placa: {{ trans.license_plate|title }}
                                                     <br>
-                                                    Nombre del chofer: {{ trans.driver_name|title }}
+                                                    ° Nombre del chofer: {{ trans.driver_name|title }}
                                                     <br>
-                                                    Guía: {{ trans.ficha|title }}
+                                                    ° Guía: {{ trans.ficha|title }}
                                                     <br>
-                                                    Barco/ALM: {{ trans.boat_alm|title }}
+                                                    ° Barco/ALM: {{ trans.boat_alm|title }}
                                                     <br>
-                                                    Dirección: {{ trans.direction|title }}
+                                                    ° Dirección: {{ trans.direction|title }}
                                                     <br>
-                                                    Flete pagado por: {{ trans.freight_paid_by|title }}
+                                                    ° Flete pagado por: {{ trans.freight_paid_by|title }}
                                                     <br>
-                                                    Comentario: {{ trans.comment|title }}
+                                                    ° Comentario: {{ trans.comment|title }}
                                                     <br>
-                                                    Sindicato: {{ trans.syndicate|title }}
+                                                    ° Sindicato: {{ trans.syndicate|title }}
                                                     <br>
-                                                    Placa del deposito: {{ trans.tank_plate|title }}
+                                                    ° Placa del deposito: {{ trans.tank_plate|title }}
                                                     <br>
-                                                    Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
+                                                    ° Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
+                                                    ° Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
+                                                    ° Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }} TM (Toneladas Métricas)
                                                     <br>
-                                                    Puerto: {{ trans.port|title }}
+                                                    ° Puerto: {{ trans.port|title }}
                                                     <br>
-                                                    T.Muelle: {{ trans.T_Muelle|title }}
+                                                    ° T.Muelle: {{ trans.T_Muelle|title }}
                                             </li>
                                             {% endfor %}
                                             {% else %}
@@ -873,8 +873,9 @@ Dashboard
             pesoTara = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
             pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
             pesoNeto = Math.abs(pesoTara - pesoBruto).toFixed(2)
-            // pesoNeto = pesoNeto.replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-            $('#id_trans_net_weight').val(pesoNeto)
+            pesoNeto1 = pesoNeto.toString();
+            pesoNeto1 = pesoNeto1.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+            $('#id_trans_net_weight').val(pesoNeto1)
         }
     }
 
@@ -1028,10 +1029,10 @@ Dashboard
                         
                         let weight1 = parseFloat(weight)
                         weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
+                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
                         
-                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
+                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
                         $('#not_winerie').css('display', 'none');
 
                         var weight_act = $('#id_net_weight').val();
@@ -1226,7 +1227,7 @@ Dashboard
         event.preventDefault();
         let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
         let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
-        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val()).toFixed(2)
+        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val().replace('.','')).toFixed(2)
         $.ajax({
             data: {
                 'transaction_id' : $('#transaction_id').val(),
@@ -1290,7 +1291,7 @@ Dashboard
                 var tare_weight = data[0].fields.tare_weight
                 var net_weight = data[0].fields.net_weight
                 var pesoActual = parseFloat($('#id_transport_heavy').val())
-                var pesadaActual = pesoActual + parseFloat(net_weight)
+                var pesadaActual = (pesoActual + parseFloat(net_weight)).toFixed(2)
 
                 
                 let gross_weight1 = parseFloat(gross_weight)
@@ -1304,10 +1305,10 @@ Dashboard
                 let net_weight1 = parseFloat(net_weight)
                 net_weight1 = net_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 console.log(data)
-                $('#pesada').text(pesadaActual + 'TM')
+                $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li style="color: #51A351"> Cliente Recibidor: ' + id_transport_customer + '<br>Viaje: ' + viaje + '<br>Fecha de adición: ' + start_date + 'Tipo de vehículo: ' + id_vehicle + '<br>Placa: ' + license_plate + '<br>Placa del Depósito: ' + tank_plate + '<br>Nombre del chofer: ' + driver_name + '<br>Ficha: ' + ficha + '<br>Sindicato: '+ syndicate +'<br>Puerto: '+ port + '<br> T.Muelle'+ T_Muelle +'<br>Barco/ALM: '+ boat_alm  + '<br>Dirección: ' + direction + '<br>Flete pagador por: ' + freight_paid_by + '<br>Comentario: ' + comment + '<br>Peso bruto: '+ gross_weight1 + 'TM <br>Peso de tara: '+ tare_weight1 + 'TM <br>Peso neto: '+ net_weight1+'TM </li>');
+                $("#transport_list").append('<li style="color: #51A351"> Cliente Recibidor: ' + id_transport_customer + '<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + 'TM <br>° Peso de tara: '+ tare_weight1 + 'TM <br>° Peso neto: '+ net_weight1+'TM </li>');
                 $('#not_transport').css('display', 'none');
             },
         });
@@ -1406,8 +1407,8 @@ Dashboard
                     t = 0;
                 }
                 t = parseFloat(bl) + parseFloat(t)
-                $('#total_bl').text(t)
-                $('#id_total_bls').val(t)
+                $('#total_bl').text(t.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+                $('#id_total_bls').val(t.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
             },
         });
         }

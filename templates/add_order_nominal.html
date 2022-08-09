@@ -30,8 +30,11 @@ Dashboard
                 {% endif %}
                 <!-- {{ form.as_p }} -->
                 <br>
-                <span>Por favor recuerde que el cliente debe estar previamente registrado en el sistema. Si no está registrado por favor haga click aquí. </span>
+                <span>Por favor recuerde que el cliente debe estar previamente registrado en el sistema. </span>
                 <br>
+                <br>
+                <span class="text-center mx-auto" style="display: flex; 
+                justify-content: center"> Si no está registrado por favor haga click aquí.</span>
                 <span class="text-center mx-auto" style="display: flex; 
                 justify-content: center">
                     <a href="{% url 'account_signup' %}">
@@ -150,20 +153,18 @@ Dashboard
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-5 col-form-label"><li>Rif/Cédula:</li></label>
+                                        <label class="col-md-5 col-form-label"><li>Nro de Identificación: </li></label>
                                         <div class="form-row ml-xl-2">
                                             <div class="col-sm-7 mt-xl-1">
                                                 <select class="custom-select add-order" id="id_tipdoc" name="tipdoc">
                                                     <option value="N/A" selected> </option>
-                                                    <option value="V">V</option>
                                                     <option value="E">E</option>
-                                                    <option value="J">J</option>
                                                     <option value="G">G</option>
                                                 </select>
                                             </div>
                                             <div class="col mt-xl-1">
                                                 <input type="number" class="form-control add-order"
-                                                placeholder="Rif/CI" id="id_dni" name="dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                                                placeholder="Nro de Identificación: " id="id_dni" name="dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </div>
                                         </div>
                                     </div>
@@ -196,20 +197,18 @@ Dashboard
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-5 col-form-label"><li>Rif/Cédula:</li></label>
+                                        <label class="col-md-5 col-form-label"><li>Nro de Identificación: :</li></label>
                                         <div class="form-row  ml-xl-2">
                                             <div class="col-md-7  mt-xl-1">
                                                 <select class="custom-select add-order" id="cliente_recibidor_tipdoc">
                                                     <option value="N/A"></option>
-                                                    <option value="V">V</option>
                                                     <option value="E">E</option>
-                                                    <option value="J">J</option>
                                                     <option value="G">G</option>
                                                 </select>
                                             </div>
                                             <div class="col mt-xl-1">
                                                 <input type="number" class="form-control add-order"
-                                                placeholder="Rif/CI" id="cliente_recibidor_dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+                                                placeholder="Nro de Identificación: " id="cliente_recibidor_dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                             </div>
                                         </div>
                                     </div>
@@ -446,7 +445,6 @@ Dashboard
         let weight = $("#add_product_weight").val();
         weight = weight.replace('.', '')
         weight = parseFloat(weight)
-        console.log(weight)
         event.preventDefault();
         if ($("#add_product_name").val() || $("#add_product_weight").val()) {
             $.ajax({
@@ -458,23 +456,20 @@ Dashboard
                 type: 'post',
                 beforeSend: function () { },
                 success: function (data) {
-                    console.log(data)
                     $('#add_product_name').val('');
                     $('#add_product_weight').val('');
                     var val = data[0].pk;
                     var name = data[1].fields.name;
                     var tm = parseFloat(data[0].fields.weight);
                     var tm1 = parseFloat(data[0].fields.weight);
-                    tm1 = tm1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-                    $('#id_product').append('<option selected value=' + val + '>' + name + ' | Peso: ' + tm1 + 'TM</option>');
-                    tmw = $('#id_total_product_weight').val()
+                    tm1 = tm1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");tmw = $('#id_total_product_weight').val()
                     if(tmw == ''){
                         tmw = 0
                     }else{
                         tmw.slice(-1, -2)
                     }
-                    console.log(tmw)
                     let tmww = parseFloat(tmw) + parseFloat(tm)
+                    $('#id_product').append('<option selected value=' + val + ' peso='+ tm +' >' + name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() + ' | Peso: ' + tm1 + 'TM</option>');
                     $('#id_total_product_weight').val(tmww)
                     $('#id_total_product_weight1').val((tmww).toFixed(2))
                     $('#id_total_product_weight1').val(function(index, value) {
@@ -495,6 +490,30 @@ Dashboard
             }
         }
     })
+
+    
+$('#id_product').on('change', function(){
+    var val = $('#id_product');
+    let weight = 0 
+    $("#id_product option:selected").each(function (){
+                    console.log(parseFloat($(this).attr('peso')))
+                    weight = weight + parseFloat($(this).attr('peso'))
+    });
+    console.log(weight)
+    $('#id_total_product_weight').val(weight)
+    $('#id_total_product_weight1').val((weight).toFixed(2))
+                    $('#id_total_product_weight1').val(function(index, value) {
+                        return value
+                            .replace(/\D/g, "")
+                            .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+                            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                    });
+    $('#id_total_product_weight1').val($('#id_total_product_weight1').val() + 'TM')
+  // te muestra un array de todos los seleccionados
+
+})
+
+
 
     const formatoMexico = (number) => {
   const exp = /(\d)(?=(\d{3})+(?!\d))/g;
@@ -599,7 +618,6 @@ $('#add_product_weight').on('keyup', function(){
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
-
 </script>
 
 
