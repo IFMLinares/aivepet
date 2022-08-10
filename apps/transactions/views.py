@@ -597,5 +597,5 @@ def NominalTransAcepted(request, pk):
     for p in nominal.receiving_customer.all():
         transaction.receiving_customer.add(p)
     transaction.save()
-    return redirect('transactions:update_order', pk=pk)
+    return redirect('transactions:update_order', transaction.pk)
 
