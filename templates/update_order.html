@@ -127,19 +127,18 @@ Dashboard
                             <div class="col-sm-12 col-form-label">Clientes recibidores:
                                 <b>
                                     <ul>
-                                            {% for customer in orden.receiving_customer.all %}
+                                        {% for customer in orden.receiving_customer.all %}
                                             <li> 
-                                            <span
-                                                >Empresa: {{ customer.company_name|title }} <br />
-                                                Responsable: {{ customer.name|title }} <br />
-                                                Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
-                                                {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
-                                                {% else %} Descargado: {{ customer.quantity }} TM
-                                                {% endif %}
-                                            </span>
-                                            <br>
-                                        </li>
-                                            {% endfor %}
+                                                <span
+                                                    >Empresa: {{ customer.company_name|title }} <br />
+                                                    Responsable: {{ customer.name|title }} <br />
+                                                    Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
+                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
+                                                    {% else %} Descargado: {{ customer.quantity }} TM
+                                                    {% endif %}
+                                                </span>
+                                            </li>
+                                        {% endfor %}
                                     </ul>
                                 </b>
                             </div>
