@@ -127,8 +127,8 @@ Dashboard
                             <div class="col-sm-12 col-form-label">Clientes recibidores:
                                 <b>
                                     <ul>
-                                        <li> 
                                             {% for customer in orden.receiving_customer.all %}
+                                            <li> 
                                             <span
                                                 >Empresa: {{ customer.company_name|title }} <br />
                                                 Responsable: {{ customer.name|title }} <br />
@@ -137,8 +137,9 @@ Dashboard
                                                 {% else %} Descargado: {{ customer.quantity }} TM
                                                 {% endif %}
                                             </span>
-                                            {% endfor %}
+                                            <br>
                                         </li>
+                                            {% endfor %}
                                     </ul>
                                 </b>
                             </div>
