@@ -94,6 +94,7 @@ class MultipleBL(models.Model):
 # transaction model
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,related_name='user')
+    nominal_id = models.CharField(max_length=150, verbose_name='nominal id', blank=True, null=True)
     status = models.ManyToManyField(Status, blank=True)
     order_number = models.SlugField(max_length=200, blank=True, null=True)
     order_type = models.CharField(max_length=150, verbose_name='Tipo de orden', blank=True, null=True)

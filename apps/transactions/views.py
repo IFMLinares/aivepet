@@ -553,7 +553,7 @@ def FinishTransaction(request,pk):
     transaction.final_date = datetime.datetime.now()
     transaction.save()
     
-    transaction_nominal = NominalTransaccion.objects.get(pk=pk)
+    transaction_nominal = NominalTransaccion.objects.get(pk=transaction.nominal_id)
     transaction_nominal.state = 'Finalizado'
     transaction_nominal.save()
     if transaction.order_type == 'carga':
@@ -585,6 +585,7 @@ def NominalTransAcepted(request, pk):
         name = nominal.name,
         tipdoc = nominal.tipdoc,
         dni = nominal.dni,
+        nominal_id = str(pk)
     )
     product = nominal.product
     # customer_name = nominal.customer_name

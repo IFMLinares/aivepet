@@ -676,7 +676,7 @@ Dashboard
                                                 {% for winerie in orden.Wineries.all %}
                                                 <li>
                                                     <span>{{ winerie.product.name|title }}. <strong>Bdga/ALM :</strong> {{ winerie.number|title }}:
-                                                        {{ winerie.weight }} TM: <br> Fecha de adición:
+                                                        {{ winerie.weight|floatformat:2|intcomma }} TM: <br> Fecha de adición:
                                                         {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                                     </span>
 
@@ -817,6 +817,7 @@ Dashboard
                 <input type="hidden" name="numero_muelle" id="id_numero_muelle" value="{{ orden.numero_muelle }}">
                 <input type="hidden" name="transport_heavy" id="id_transport_heavy" value="{% if orden.transport_heavy %}{{ orden.transport_heavy }}{% else %}0{% endif %}">
                 <input type="hidden" name="start_date" id="id_start_date" value="{{ orden.start_date }}">
+                <input type="hidden" name="nominal_id" id="id_nominal_id" value="{{ orden.nominal_id }}">
             </form>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
