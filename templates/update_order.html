@@ -1582,12 +1582,14 @@ remanante()
 $('#add_draft').on('click', function(){
     let draft = $('#id_draft1').val()
     $('#draft-span').text(draft)
+    remanante()
 })
 
 
 $('#add_final_draft').on('click', function(){
     let draft = $('#final_draft1').val()
     $('#final-draft-span').text(draft)
+    remanante()
 })
 
 
