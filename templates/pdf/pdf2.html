@@ -59,8 +59,8 @@
       
       <table>
         <tr>
-          <th style="text-align: center;">DATE</th>
-          <th style="text-align: center;">VOYAGER</th>
+          <th style="text-align: center;width: 70px;">DATE</th>
+          <th style="text-align: center;width: 65px;">VOYAGER</th>
           <th style="text-align: center;">TRUCK ID PLATE</th>
           <th style="text-align: center;">DUMP ID PLATE</th>
           <th style="text-align: center; width: 160 px;">INVOICE</th>
@@ -79,7 +79,8 @@
           <th style="text-align: center;">{{ transport.net_weight|floatformat:2|intcomma }}</th>
           <th style="text-align: center;">{{ transport.acumulado_total|floatformat:2|intcomma }}</th>
           <th style="text-align: center;">{{ transport.customer_name.company_name }}</th>
-          <th style="text-align: center;">{{ transport.bodega }}</th>
+          <th style="text-align: center;">Bdga: {{ transport.bodega }} <br> Product: {{ transport.bodega_fk.product }}</th>
+          <!-- <th style="text-align: center;">{{ transport.bodega_fk.product }}</th> -->
         </tr>
         {% endfor %}
         <tr>

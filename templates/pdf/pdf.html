@@ -114,27 +114,16 @@
         </tr>
         {% endfor %}
 
-        {% if orden.multiple_bl|length > 0 %}
           {% for bl in orden.multiple_bl.all %}
             <tr style="border:none;">
-              <td style="border:none;">BILL OF LADING</td>
+              <td style="border:none;">BILL OF LADING ({{ bl.receiving_customer.company_name|upper }})</td>
               <td style="border:none;">{{ bl.bl }} TM</td> 
             </tr>
-            <tr style="border:none;">
+            <!-- <tr style="border:none;">
               <td style="border:none;">FOR THE ACCOUNT OF</td>
               <td style="border:none;">{{ bl.receiving_customer.company_name }}</td> 
-            </tr>
+            </tr> -->
           {% endfor %}
-        {% else %}
-            <tr style="border:none;">
-              <td style="border:none;">BILL OF LADING</td>
-              <td style="border:none;">{{ orden.bl }} TM</td> 
-            </tr>
-            <tr style="border:none;">
-              <td style="border:none;">FOR THE ACCOUNT OF</td>
-              <td style="border:none;">{{ orden.customer_name.company_name }}</td> 
-            </tr>
-        {% endif %}
       </table> 
         <p>TIME LOG (AS PER TERMINAL LOG)</p>
         <table>
@@ -218,7 +207,7 @@
           </tr>
           <tr style="background-color: #dddddd">
             <td>SHORE FIGURES (ONLY REFERENCES)</td>
-            <td>{{ orden.final_draft|floatformat:2|intcomma }}</td>
+            <td>{{ orden.total_weighing|floatformat:2|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr>

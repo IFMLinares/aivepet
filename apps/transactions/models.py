@@ -1,3 +1,4 @@
+from itertools import product
 from pyexpat import model
 from django.db import models
 from django.db.models.fields import DateField
@@ -72,6 +73,7 @@ class Transport(models.Model):
     acumulado = models.FloatField(blank=False, null=False, default=0)
     acumulado_total = models.FloatField(blank=False, null=False, default=0)
     bodega = models.CharField(max_length=150, verbose_name='Bodega', blank=True, null=True)
+    bodega_fk = models.ForeignKey(Winerie, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__ (self):
         return self.vehicle
@@ -90,7 +92,7 @@ class Status(models.Model):
 class MultipleBL(models.Model):
     bl = models.FloatField(verbose_name='Bill of Lading del buque', blank=True, null=True)
     receiving_customer = models.ForeignKey(ReceivingCustomer,on_delete=models.CASCADE, blank=True, null=True,related_name='user')
-
+    product = models.ForeignKey(Product,on_delete=models.CASCADE, blank=True, null=True)
 # transaction model
 class Transaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,related_name='user')

@@ -204,6 +204,14 @@
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
+                    
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="toast">
+                        <div class="checkicon "> <i class="fas fa-check-square"></i> </div>
+                    <p class="alert alert-{{ message.tags }}"> {{ message }}</p></div>
+                {% endfor %}
+            {% endif %}
                     {% block content %}
                     {% endblock %}
                 </div>
@@ -243,7 +251,12 @@
     <!-- Custom js for this page-->
     <script src="{% static 'js/dashboard.js' %}"></script>
     <script src="{% static 'js/Chart.roundedBarCharts.js' %}"></script>
-
+    
+    {% if messages %}
+    <script>
+        $('#toast').fadeOut(3000);
+    </script>
+    {% endif %}
     <!-- End custom js for this page-->
     {% block extra_js %}
     {% endblock %}

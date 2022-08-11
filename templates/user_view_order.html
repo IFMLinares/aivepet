@@ -170,12 +170,12 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">1 Lading (BL)::</h3>
+                        <h3 class="mb-xl-4 text-center">Bill Lading (BL)::</h3>
                     </div>
                     <div class="col-md-12 pl-xl-5">
                         <div class="form-group row text-center">
                             <li>
-                                <span>BL Total: {{ orden.bl|floatformat:2|intcomma }} TM (Toneladas Métricas)<br>
+                                <span>BL Total: {{ orden.total_bls|floatformat:2|intcomma }} TM (Toneladas Métricas)<br>
                                 </span>
                             </li>
                         </div>
@@ -244,7 +244,7 @@ Dashboard
                                 </span>
                             </li>
                             <li class="ml-xl-4 mr-xl-4">
-                                <span>{{ orden.tipdoc }}: {{ orden.dni }}
+                                <span> Nro de Identificación: {{ orden.dni }}
                                 </span>
                             </li>
                         </div>
@@ -262,7 +262,7 @@ Dashboard
                             <li>
                                 <span>Empresa: {{ customer.company_name }} <br>
                                     Responsable: {{ customer.name }} <br>
-                                    {{ customer.tipdoc }}: {{ customer.dni }} <br>
+                                    {{ customer.dni }} <br>
                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }} <br>
                                     {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM (Toneladas Métricas)
                                                     {% else %}
@@ -370,11 +370,98 @@ Dashboard
                     </div>
                     {% endif %}
                 </div>
+                
+                <hr>
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-12 mt-xl-3">
+                        <h3 class="mb-xl-4 text-center">Draft surveys: TM</h3>
+                    </div>
+                    {% if orden.draft %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Draft Inicial: {{ orden.draft|floatformat:2|intcomma }} TM</span>
+                            </li>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li id="not_draft">
+                                No hay draft registrado
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if orden.final_draft == '0' %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li id="not_final_draft">
+                                No hay draft registrado
+                            </li>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Draft Final: {{ orden.final_draft|floatformat:2|intcomma }}</span> TM
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <hr>
+                <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
+                    <div class="col-md-12 mt-xl-3">
+                        <h3 class="mb-xl-4 text-center">Totales: TM</h3>
+                    </div>
+                    {% if orden.state == 'En operación' %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Remanente por {% if orden.order_type == 'carga' %} cargar: TM{% else %} descargar: TM{% endif %} 
+                                    <span id="remanente">
+                                    </span>
+                            </li>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Diferencia: {{ orden.difference|floatformat:2|intcomma }} TM
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Total de la pesada: {{ orden.transport_heavy|floatformat:2|intcomma }}</span> TM
+                            </li>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    let draft =  '{{ orden.draft }}';
+    let pesada =  '{{ orden.transport_heavy }}';
+    let remanente = 0;
+    console.log(draft)
+    console.log(pesada)
+    remanente = (parseFloat(draft) - parseFloat(pesada)).toFixed(2)
+    $('#remanente').text(remanente.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+</script>
+{% endblock %}
+
 <script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
 <script src="{% static 'vendors/select2/select2.min.js' %}"></script>
 <script src="{% static 'js/typeahead.js' %}"></script>

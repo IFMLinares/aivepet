@@ -30,9 +30,8 @@ Dashboard
                 {% endif %}
                 <!-- {{ form.as_p }} -->
                 <br>
-                <span>Por favor recuerde que el cliente debe estar previamente registrado en el sistema. </span>
-                <br>
-                <br>
+                <span class="text-center mx-auto" style="display: flex; 
+                justify-content: center">Por favor recuerde que el cliente debe estar previamente registrado en el sistema. </span>
                 <span class="text-center mx-auto" style="display: flex; 
                 justify-content: center"> Si no está registrado por favor haga click aquí.</span>
                 <span class="text-center mx-auto" style="display: flex; 
@@ -154,18 +153,9 @@ Dashboard
                                 <div class="col-md-12">
                                     <div class="form-group row">
                                         <label class="col-md-5 col-form-label"><li>Nro de Identificación: </li></label>
-                                        <div class="form-row ml-xl-2">
-                                            <div class="col-sm-7 mt-xl-1">
-                                                <select class="custom-select add-order" id="id_tipdoc" name="tipdoc">
-                                                    <option value="N/A" selected> </option>
-                                                    <option value="E">E</option>
-                                                    <option value="G">G</option>
-                                                </select>
-                                            </div>
-                                            <div class="col mt-xl-1">
-                                                <input type="number" class="form-control add-order"
-                                                placeholder="Nro de Identificación: " id="id_dni" name="dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-                                            </div>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control add-order"
+                                            placeholder="Nro de Identificación: " id="id_dni" name="dni" maxlength="20" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                         </div>
                                     </div>
                                 </div>
@@ -188,28 +178,20 @@ Dashboard
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-5 col-form-label"><li>Comprador:</li></label>
+                                        <label class="col-md-5 col-form-label"><li>Responsable:</li></label>
                                         <div class="col-sm-7">
                                             <input type="text" class="form-control add-order"
                                                 placeholder="Nombre del responsable" id="cliente_recibidor_comprador">
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-12">
                                     <div class="form-group row">
-                                        <label class="col-md-5 col-form-label"><li>Nro de Identificación: :</li></label>
-                                        <div class="form-row  ml-xl-2">
-                                            <div class="col-md-7  mt-xl-1">
-                                                <select class="custom-select add-order" id="cliente_recibidor_tipdoc">
-                                                    <option value="N/A"></option>
-                                                    <option value="E">E</option>
-                                                    <option value="G">G</option>
-                                                </select>
-                                            </div>
-                                            <div class="col mt-xl-1">
-                                                <input type="number" class="form-control add-order"
-                                                placeholder="Nro de Identificación: " id="cliente_recibidor_dni" maxlength="9" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
-                                            </div>
+                                        <label class="col-md-5 col-form-label"><li>Nro de Identificación: </li></label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control add-order"
+                                            placeholder="Nro de Identificación: " id="cliente_recibidor_dni" name="cliente_recibidor_dni" maxlength="20" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
                                         </div>
                                     </div>
                                 </div>
@@ -335,7 +317,7 @@ Dashboard
                                     <li>
                                         <span>Empresa:{{ customer.company_name }} <br>
                                             Responsable: {{ customer.name }} <br>
-                                            {{ customer.tipdoc }}: {{ customer.dni }} <br>
+                                           {{ customer.dni }} <br>
                                             Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }}
                                         </span>
                                     </li>
@@ -533,9 +515,6 @@ $('#id_product').on('change', function(){
     $('#cliente_recibidor_dni').on('click', function(){
         $(this).css('border-color', '')
     })
-    $('#cliente_recibidor_tipdoc').on('click', function(){
-        $(this).css('border-color', '')
-    })
     $('#cliente_recibidor_button').on('click', function () {
         event.preventDefault();
         if( !$('#cliente_recibidor_empresa').val()){
@@ -548,7 +527,6 @@ $('#id_product').on('change', function(){
                     'cliente': $('#cliente_recibidor_comprador').val(),
                     'empresa': $('#cliente_recibidor_empresa').val(),
                     'dni': $('#cliente_recibidor_dni').val(),
-                    'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
                 },
                 url: "{% url 'transactions:add_reciving_customers' %}",
                 type: 'post',
@@ -562,10 +540,9 @@ $('#id_product').on('change', function(){
                     var name = data[0].fields.name
                     var company = data[0].fields.company_name
                     var dni = data[0].fields.dni
-                    var tipdoc = data[0].fields.tipdoc
                     $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
                     $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
-                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> Documento: '+ tipdoc +': ' + dni + '</li>');
+                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> Documento: ' + dni + '</li>');
                     $('#not_customer').css('display', 'none');
                 },
             });
@@ -585,7 +562,6 @@ $('#id_product').on('change', function(){
                         'cliente': $('#cliente_recibidor_comprador').val(),
                         'empresa': $('#cliente_recibidor_empresa').val(),
                         'dni': $('#cliente_recibidor_dni').val(),
-                        'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
                     },
                     url: "{% url 'transactions:add_reciving_customers' %}",
                     type: 'post',
@@ -598,10 +574,9 @@ $('#id_product').on('change', function(){
                         var name = data[0].fields.name
                         var company = data[0].fields.company_name
                         var dni = data[0].fields.dni
-                        var tipdoc = data[0].fields.tipdoc
                         $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
                         $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
-                        $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                        $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> : ' + dni + '</li>');
                         $('#not_customer').css('display', 'none');
                     },
                 });

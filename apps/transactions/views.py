@@ -1,6 +1,8 @@
 # from django.shortcuts import render
 from asyncio.trsock import TransportSocket
+from itertools import product
 import os
+from django.contrib import messages
 from django.core.serializers import serialize
 from django.conf import settings
 from django.http import HttpResponse
@@ -14,6 +16,7 @@ from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.contrib.staticfiles import finders
 from django.shortcuts import render, get_object_or_404
+from django.contrib.messages.views import SuccessMessageMixin
 import datetime
 from xhtml2pdf import pisa
 
@@ -112,12 +115,13 @@ class OrderListCustomers(LoginRequiredMixin,ListView):
         return self.model.objects.all()
 
 # Actualiazación de ordenes carga/descarga
-class OrderUpdate(LoginRequiredMixin, UpdateView):
+class OrderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
     model = Transaction
     fields = '__all__'
     template_name = 'update_order.html'
     # success_url = reverse_lazy('core:index')
     context_object_name = 'orden'
+    success_message = 'Cambios guardados exitosamente'
 
     def get_success_url(self):
         if(self.object.order_type == 'carga'):
@@ -265,6 +269,7 @@ class TransportAdd(LoginRequiredMixin, CreateView):
         if(id_comment == '' or ' ' ):
             id_comment = 'N/A'
         customer = ReceivingCustomer.objects.get(pk=trans['id_transport_customer'])
+        winerie = Winerie.objects.get(pk=trans['id_bodega_transport'])
         transport = self.model.objects.create(
             vehicle= trans['id_vehicle'],
             license_plate= trans['id_license_plate'],
@@ -283,7 +288,8 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             net_weight = trans['id_net_weight'],
             customer_name = customer,
             viaje = viaje,
-            bodega = trans['id_bodega_transport'],
+            bodega = winerie.number,
+            bodega_fk = winerie,
             )
         quantity = 0
         quantity = quantity + customer.quantity  
@@ -309,11 +315,14 @@ class ReceivingCustomerAdd(LoginRequiredMixin, CreateView):
         name = self.request.POST['cliente']
         if name == '' or name == ' ':
             name = 'N/A'
+        
+        dni = self.request.POST['dni']
+        if dni == '' or dni == ' ':
+            dni = 'N/A'
         cliente = self.model.objects.create(
             company_name=self.request.POST['empresa'],
             name=name,
-            dni=self.request.POST.get('dni', 'N/A'),
-            tipdoc= self.request.POST.get('tipodc', 'N/A')
+            dni=dni,
             )
         query = self.model.objects.get(pk=cliente.pk)
         data = serialize('json', [query,])
@@ -331,12 +340,14 @@ class MultipleBLAdd(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         receiving_customer = ReceivingCustomer.objects.get(id=self.request.POST['id_bl_customer'])
+        product = Product.objects.get(id=self.request.POST['id_bl_product'])
         bl = self.model.objects.create(
             bl=self.request.POST['id_bl_multiple'],
             receiving_customer=receiving_customer,
+            product=product,
         )
         query = self.model.objects.get(pk=bl.pk)
-        data = serialize('json', [query,receiving_customer])
+        data = serialize('json', [query,receiving_customer, product])
         return HttpResponse(data, 'application/json')
 
 class UserViewTransaction(LoginRequiredMixin,DetailView):
@@ -444,7 +455,7 @@ class PDFView(View):
                 receiving_customer.total = acumulado[receiving_customer.company_name]
                 receiving_customer.total_viajes = viajes[receiving_customer.company_name]
                 receiving_customer.save()
-            transaction.difference = float(transaction.final_draft) - float(transaction.net_weight)
+            transaction.difference = float(transaction.draft) - float(transaction.transport_heavy)
             transaction.save()
             context = {
                 'orden': transaction,
@@ -556,10 +567,12 @@ def FinishTransaction(request,pk):
     transaction_nominal = NominalTransaccion.objects.get(pk=transaction.nominal_id)
     transaction_nominal.state = 'Finalizado'
     transaction_nominal.save()
+    messages.success(request, 'Orden finalizada exitosamente')
     if transaction.order_type == 'carga':
         return redirect('transactions:order_list_load')
     else:
         return redirect('transactions:order_list_download')
+
 
 def NominalTransAcepted(request, pk):
     nominal = NominalTransaccion.objects.filter(pk=pk)[0]
@@ -567,6 +580,7 @@ def NominalTransAcepted(request, pk):
     nominal.save()
 
     transaction = Transaction(
+        pk = pk,
         user = nominal.user,
         order_number = nominal.order_number,
         total_product_weight = nominal.total_product_weight,
@@ -598,5 +612,6 @@ def NominalTransAcepted(request, pk):
     for p in nominal.receiving_customer.all():
         transaction.receiving_customer.add(p)
     transaction.save()
+    messages.success(request, 'Orden Aceptada exitosamente')
     return redirect('transactions:update_order', transaction.pk)
 
