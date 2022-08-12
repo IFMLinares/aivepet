@@ -680,7 +680,7 @@ Dashboard
                                     <div class="col-sm-12 ml-xl-3">
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span style="font-size: 20px;"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:2|intcomma }} {% endif %}</span>  TM</strong></span>
+                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:2|intcomma }} {% endif %}</span>  TM</strong></span><span id="button-draft_span"></span>
                                             </li>
                                             <li>
                                                 <span style="font-size: 20px;"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:2|intcomma }} {% endif %}</span>  TM</strong></span>
@@ -825,7 +825,7 @@ Dashboard
                                     </div>
                                     <div class="col-sm-12">
                                         <li style="font-weight: bold;">
-                                            Remanente por {% if orden.order_type == 'carga' %} Cargar: TM{% else %} Descargar: TM{% endif %} <span id="remanante"></span> TM
+                                            Remanente por {% if orden.order_type == 'carga' %} Cargar:{% else %} Descargar: {% endif %} <span id="remanante"></span> TM
                                         </li>
                                     </div>
                                 </div>
@@ -1082,14 +1082,15 @@ Dashboard
                         
                         let weight1 = parseFloat(weight)
                         weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
-                        
-                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
-                        $('#not_winerie').css('display', 'none');
 
                         var weight_act = $('#id_net_weight').val();
                         weight_act = parseFloat(weight_act)
+                        
+                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
+                        
+                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
+                        $('#not_winerie').css('display', 'none');
                         $('#id_net_weight').val(weight_act + parseFloat(weight));
                         $('#net_weight').text($('#id_net_weight').val())
                         $('#id_net_weight').val($('#id_net_weight').val())
@@ -1129,7 +1130,7 @@ Dashboard
                     var customer = data[1].fields.name
                     var product = data[2].fields.name
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
-                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12"">Nombre del cliente: '+ customer +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
+                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12" id="destiny-'+ val +'"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteDestiny(this.id,)" ><span aria-hidden="true">&times;</span></button>Nombre del cliente: '+ customer +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
                     $('#not_destiny').css('display', 'none');
                 },
             });
@@ -1359,7 +1360,7 @@ Dashboard
                 $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li style="color: #51A351"> Cliente Recibidor: ' + id_transport_customer + ' <br>Bodega: '+ bodega +'<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + 'TM <br>° Peso de tara: '+ tare_weight1 + 'TM <br>° Peso neto: '+ net_weight1+'TM </li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
+                $("#transport_list").append('<li style="color: #51A351" id="transport-'+ val +'"> <button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteTransport(this.id,'+ net_weight +')" ><span aria-hidden="true">&times;</span></button> Cliente Recibidor: ' + id_transport_customer + ' <br>Bodega: '+ bodega +'<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + 'TM <br>° Peso de tara: '+ tare_weight1 + 'TM <br>° Peso neto: '+ net_weight1+'TM </li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
                 $('#not_transport').css('display', 'none');
                 remanante()
             },
@@ -1420,7 +1421,7 @@ Dashboard
                 var state = data[0].fields.state;
                 var comment = data[0].fields.comment;
                 $('#id_status').append('<option selected value=' + val + '></option>');
-                $("#status_list").append('<li style="color: #51A351">Estado: '+ state+'<br>Fecha: '+date+'<br>Comentario: '+comment +'</li>');
+                $("#status_list").append('<li style="color: #51A351" id=status-'+ val +' ><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deleteState(this.id)" >&times;</span></button> Estado: '+ state+'<br>Fecha: '+date+'<br>Comentario: '+comment +'</li>');
                 $('#not_status').css('display', 'none');
             },
         });
@@ -1454,16 +1455,16 @@ Dashboard
                 product_bl = product_bl.toUpperCase()
                 var bl1 = bl;
                 bl1 = bl1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-
-                $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
-                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2">BL: '+ bl1 + ' TM. ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
                 var t = $('#id_total_bls').val();
                 if(t == '' || t == ' '){
                     t = 0;
                 }
                 t = (parseFloat(bl) + parseFloat(t))
                 console.log(t)
-                $('#total_bl').text(t.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+                
+                $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
+                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + ' TM. ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
+                $('#total_bl').text(t.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
                 $('#id_total_bls').val(t)
             },
         });
@@ -1582,15 +1583,68 @@ remanante()
 $('#add_draft').on('click', function(){
     let draft = $('#id_draft1').val()
     $('#draft-span').text(draft)
+    $('#draft-span1').css('color','#51A351')
+    // $('#button-draft_span').append('<button type="button" class="close" id="button-draft-delete"><span aria-hidden="true">&times;</span></button>')
     remanante()
 })
-
 
 $('#add_final_draft').on('click', function(){
     let draft = $('#final_draft1').val()
     $('#final-draft-span').text(draft)
     remanante()
 })
+
+function deleteState(id){
+    let pk = id.replace('button-','')
+    let status_list = $('#status-'+ pk)
+    status_list.remove()
+    $("#id_status option[value="+ pk +"]").remove()
+}
+
+
+function deletebl(id,total, bl){
+    let pk = id.replace('button-','')
+    let bl_list = $('#bl-'+ pk)
+    bl_list.remove()
+    let totalbl = ($('#id_total_bls').val() - bl).toFixed(2)
+    $("#id_multiple_bl option[value="+ pk +"]").remove()
+    $('#id_total_bls').val(totalbl)
+    $('#total_bl').text(totalbl.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
+}
+function deleteWinerie(id,w_act, w){
+    let pk = id.replace('button-','')
+    let winerie = $('#winerie-'+ pk)
+    winerie.remove()
+    let totalw = ($('#id_net_weight').val() - w).toFixed(2)
+    console.log(w)
+    console.log(totalw)
+    $("#id_Wineries option[value="+ pk +"]").remove()
+    $('#id_net_weight').val(totalw)
+    $('#net_weight').text(totalw)
+}
+
+
+function deleteDestiny(id){
+    let pk = id.replace('button-','')
+    let destiny_list = $('#destiny-'+ pk)
+    destiny_list.remove()
+    $("#id_destinations option[value="+ pk +"]").remove()
+}
+
+function deleteTransport(id, w){
+    let pk = id.replace('button-','')
+    let transpot = $('#transport-'+ pk)
+    transpot.remove()
+    let totalt = ($('#id_transport_heavy').val() - w).toFixed(2)
+    console.log(totalt)
+    $("#id_transport option[value="+ pk +"]").remove()
+    $('#id_transport_heavy').val(totalt)
+    $('#pesada').text((totalt.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
+    remanante()
+}
+deleteTransport
+
+
 
 
 </script>
