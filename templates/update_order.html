@@ -818,7 +818,7 @@ Dashboard
                                         <hr>
                                     </div>
                                     <div class="col-sm-12">
-                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy }} TM</span></li>
+                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy|floatformat:2|intcomma }} TM</span></li>
                                     </div>
                                     <div class="col-md-12" style="margin-top: 0px;">
                                         <hr>
