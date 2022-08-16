@@ -151,7 +151,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:2|intcomma }}TM (Toneladas Métricas).</b>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }}TM (Toneladas Métricas).</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -166,7 +166,7 @@ Dashboard
                             <div class="col-sm-12 col-form-label"> Cantidad total: 
                                 <ul>
                                         <li>
-                                            <strong>{{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).</strong>
+                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }}TM(Toneladas Métricas).</strong>
                                         </li>
                                 </ul>
                             </div>
@@ -558,7 +558,7 @@ Dashboard
                                         <li> Peso bruto TM:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control add-order" name="gross_weight" id="id_gross_weight" placeholder="peso del camión vacío">
+                                        <input type="text" class="form-control add-order" name="gross_weight" id="id_gross_weight" placeholder="Peso del camión vacío">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -566,7 +566,7 @@ Dashboard
                                         <li> Peso de tara TM:</li>
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control add-order" name="tare_weight" id="id_tare_weight" placeholder="peso del camión con la carga">
+                                        <input type="text" class="form-control add-order" name="tare_weight" id="id_tare_weight" placeholder="Peso del camión con la carga">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -598,7 +598,7 @@ Dashboard
                                         <li>Monto Draft Final:</li>
                                     </label>
                                     <div class="col-sm-5">
-                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:2|intcomma }}" {% if orden.final_draft == '0' %} {% else %}disabled {% endif %}>
+                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:3|intcomma }}" {% if orden.final_draft == '0' %} {% else %}disabled {% endif %}>
                                         <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}readonly {% endif %}>
                                     </div>
                                     <div class="col-sm-3 mt-xl-1">
@@ -648,18 +648,32 @@ Dashboard
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                         <hr>
                                     </div>
+                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Draft surveys: TM</label>
+                                    <div class="col-sm-12 ml-xl-3">
+                                        <ul id="bl_list" style="margin-bottom: 0px;">
+                                            <li>
+                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>  TM</strong></span><span id="button-draft_span"></span>
+                                            </li>
+                                            <li>
+                                                <span style="font-size: 20px;"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:3|intcomma }} {% endif %}</span>  TM</strong></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
+                                        <hr>
+                                    </div>
                                     <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Bill of Lading (BL):</label>
                                     <div class="col-sm-12 ml-xl-3">
                                         {{ form.multiple_bl }}
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <!-- <li>
-                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl|floatformat:2|intcomma }}TM {% endif %} </span>
+                                                <span>BL: {% if orden.bl > 0 %} {{ orden.bl|floatformat:3|intcomma }}TM {% endif %} </span>
                                             </li> -->
                                             {% if orden.multiple_bl.all %}
                                             <br>
                                             {% for bl in orden.multiple_bl.all %}
                                             <li>
-                                                <span>BL: {{ bl.bl|floatformat:2|intcomma }} TM. ({{ bl.product.name|upper }}) {{ bl.receiving_customer.company_name }}<br>
+                                                <span>BL: {{ bl.bl|floatformat:3|intcomma }} TM. ({{ bl.product.name|upper }}) {{ bl.receiving_customer.company_name }}<br>
                                                 </span>
                                             </li>
                                             {% endfor %}
@@ -668,22 +682,8 @@ Dashboard
                                         <ul>
                                             <li>
                                                 {{ form.total_bls }}
-                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:2|intcomma }} TM{% endif %}</span>  <br>
+                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:3|intcomma }} TM{% endif %}</span>  <br>
                                                 </span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
-                                        <hr>
-                                    </div>
-                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Draft surveys: TM</label>
-                                    <div class="col-sm-12 ml-xl-3">
-                                        <ul id="bl_list" style="margin-bottom: 0px;">
-                                            <li>
-                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:2|intcomma }} {% endif %}</span>  TM</strong></span><span id="button-draft_span"></span>
-                                            </li>
-                                            <li>
-                                                <span style="font-size: 20px;"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:2|intcomma }} {% endif %}</span>  TM</strong></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -700,11 +700,12 @@ Dashboard
                                                 <li>
                                                     <span>
                                                         {{ winerie.product.name|upper }}. <strong>(Bdga/ALM :{{ winerie.number|title }})</strong> <br>
-                                                        {{ winerie.weight|floatformat:2|intcomma }} TM <br> Fecha de adición:
+                                                        {{ winerie.weight|floatformat:3|intcomma }} TM <br> Fecha de adición:
                                                         {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                                     </span>
 
                                                 </li>
+                                                <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div> 
                                                 {% endfor %}
                                             {% else %}
                                                 <li id="not_winerie">
@@ -719,8 +720,8 @@ Dashboard
                                     </div>
                                     <div class="col-sm-12 ml-xl-3">
                                         <br>
-                                        <b style="font-size: 18px;">Total en bodegas: <span id="net_weight">{{ orden.net_weight|floatformat:2|intcomma }}</span> TM</b>
-                                        <input type="text" step="0.01" name="net_weight" id="id_net_weight" value="{% if orden.net_weight %}{{ orden.net_weight|floatformat:2}}{% else %} 0 {% endif %}" class="d-none">
+                                        <b style="font-size: 18px;">Total en bodegas: <span id="net_weight">{{ orden.net_weight|floatformat:3|intcomma }}</span> TM</b>
+                                        <input type="text" step="0.01" name="net_weight" id="id_net_weight" value="{% if orden.net_weight %}{{ orden.net_weight|floatformat:3}}{% else %} 0 {% endif %}" class="d-none">
                                     </div>
 
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
@@ -736,7 +737,7 @@ Dashboard
                                             {% if orden.destinations.all %}
                                             {% for destiny in orden.destinations.all %}
                                             <li class="col-md-12">
-                                                <span>Nombre del cliente: {{ destiny.customer_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                <span>Nombre del cliente: {{ destiny.customer_name.company_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
                                             </li>
                                             <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                                 <hr>
@@ -792,11 +793,11 @@ Dashboard
                                                     <br>
                                                     ° Placa del deposito: {{ trans.tank_plate|title }}
                                                     <br>
-                                                    ° Peso de tara: {{ trans.tare_weight|title|floatformat:2|intcomma }} TM
+                                                    ° Peso de tara: {{ trans.tare_weight|title|floatformat:3|intcomma }} TM
                                                     <br>
-                                                    ° Peso bruto: {{ trans.gross_weight|title|floatformat:2|intcomma }} TM
+                                                    ° Peso bruto: {{ trans.gross_weight|title|floatformat:3|intcomma }} TM
                                                     <br>
-                                                    ° <strong> Peso Neto: {{ trans.net_weight|title|floatformat:2|intcomma }} TM</strong>
+                                                    ° <strong> Peso Neto: {{ trans.net_weight|title|floatformat:3|intcomma }} TM</strong>
                                                     <br>
                                                     ° Puerto: {{ trans.port|title }}
                                                     <br>
@@ -818,15 +819,19 @@ Dashboard
                                         <hr>
                                     </div>
                                     <div class="col-sm-12">
-                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy|floatformat:2|intcomma }} TM</span></li>
+                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy|floatformat:3|intcomma }} TM</span></li>
                                     </div>
                                     <div class="col-md-12" style="margin-top: 0px;">
                                         <hr>
                                     </div>
                                     <div class="col-sm-12">
                                         <li style="font-weight: bold;">
-                                            Remanente por {% if orden.order_type == 'carga' %} Cargar:{% else %} Descargar: {% endif %} <span id="remanante"></span> TM
+                                            Remanente  {% if orden.order_type == 'carga' %}por Cargar:{% else %}a bordo: {% endif %} <span id="remanante"></span> TM
                                         </li>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="margin-top: 0px;">
+                                        <hr>
                                     </div>
                                 </div>
                             </div>
@@ -852,7 +857,7 @@ Dashboard
                     value="{{ orden.unit_measurement }}">
                 <input type="hidden" name="comment_initial" id="id_comment_initial" value="{{ orden.comment_initial }}">
                 <input type="hidden" name="updates" id="id_updates" value="{{ orden.updates }}">
-                <input type="number" name="total_weighing" id="id_total_weighing" value="{% if orden.total_weighing %}{{ orden.total_weighing|floatformat:2 }}{% else %} 0 {% endif %}" class="d-none">
+                <input type="number" name="total_weighing" id="id_total_weighing" value="{% if orden.total_weighing %}{{ orden.total_weighing|floatformat:3 }}{% else %} 0 {% endif %}" class="d-none">
                 <!-- <input type="hidden" name="customer_name" id="id_customer_name" value="{{ orden.customer_name }}"> -->
                 {{ form.product }}
                 {{ form.transport }}
@@ -923,11 +928,11 @@ Dashboard
 
     function calculate(){
         if($('#id_gross_weight').val() && $('#id_tare_weight').val()){
-            pesoTara = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
-            pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
-            pesoNeto = Math.abs(pesoTara - pesoBruto).toFixed(2)
+            pesoTara = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(3)
+            pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(3)
+            pesoNeto = Math.abs(pesoTara - pesoBruto).toFixed(3)
             pesoNeto1 = pesoNeto.toString();
-            pesoNeto1 = pesoNeto1.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+            pesoNeto1 = pesoNeto1.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             $('#id_trans_net_weight').val(pesoNeto1)
         }
     }
@@ -972,7 +977,7 @@ Dashboard
                         var product = data[1].fields.name
                         var weight = data[0].fields.weight
                         let weight1 = parseFloat(weight)
-                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        weight1 = weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
                         $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
@@ -1024,7 +1029,7 @@ Dashboard
                         
                         
                         let weight1 = parseFloat(weight)
-                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        weight1 = weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
                         $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' +  name + '; ' + weight1 + ' TM</span></li>');
@@ -1081,7 +1086,7 @@ Dashboard
                         
                         
                         let weight1 = parseFloat(weight)
-                        weight1 = weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                        weight1 = weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 
                         var weight_act = $('#id_net_weight').val();
                         weight_act = parseFloat(weight_act)
@@ -1089,10 +1094,12 @@ Dashboard
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
                         
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
+                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
                         $('#not_winerie').css('display', 'none');
+                        let net = (weight_act + parseFloat(weight)).toFixed(3)
+                        console.log(net)
                         $('#id_net_weight').val(weight_act + parseFloat(weight));
-                        $('#net_weight').text($('#id_net_weight').val())
+                        $('#net_weight').text(net.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
                         $('#id_net_weight').val($('#id_net_weight').val())
                         
                         $('#id_net_weight').val(parseFloat($('#id_net_weight').val()))
@@ -1124,13 +1131,15 @@ Dashboard
                 type: 'post',
                 beforeSend: function () { },
                 success: function (data) {
+                    console.log(data)
                     $('#destino_input').val('')
                     var val = data[0].pk
                     var destiny = data[0].fields.destiny
-                    var customer = data[1].fields.name
+                    var customer_company = data[1].fields.company_name
+                    var customer_name = data[1].fields.company_name
                     var product = data[2].fields.name
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
-                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12" id="destiny-'+ val +'"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteDestiny(this.id,)" ><span aria-hidden="true">&times;</span></button>Nombre del cliente: '+ customer +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
+                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12" id="destiny-'+ val +'"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteDestiny(this.id,)" ><span aria-hidden="true">&times;</span></button>Nombre del cliente: '+ customer_company +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
                     $('#not_destiny').css('display', 'none');
                 },
             });
@@ -1279,9 +1288,9 @@ Dashboard
     })
     $('#transport_add').on('click', function () {
         event.preventDefault();
-        let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(2)
-        let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(2)
-        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val().replace('.','')).toFixed(2)
+        let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(3)
+        let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(3)
+        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val().replace('.','')).toFixed(3)
         $.ajax({
             data: {
                 'transaction_id' : $('#transaction_id').val(),
@@ -1343,21 +1352,21 @@ Dashboard
                 var net_weight = data[0].fields.net_weight
                 var bodega = data[0].fields.bodega
                 var pesoActual = parseFloat($('#id_transport_heavy').val())
-                var pesadaActual = (pesoActual + parseFloat(net_weight)).toFixed(2)
+                var pesadaActual = (pesoActual + parseFloat(net_weight)).toFixed(3)
 
                 let gross_weight1 = parseFloat(gross_weight)
-                gross_weight1 = gross_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                gross_weight1 = gross_weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 
                 let tare_weight1 = parseFloat(tare_weight)
-                tare_weight1 = tare_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                tare_weight1 = tare_weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 
                 
                 let net_weight1 = parseFloat(net_weight)
-                net_weight1 = net_weight1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                net_weight1 = net_weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 console.log('ok')
                 console.log(data)
                 
-                $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
+                $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
                 $("#transport_list").append('<li style="color: #51A351" id="transport-'+ val +'"> <button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteTransport(this.id,'+ net_weight +')" ><span aria-hidden="true">&times;</span></button> Cliente Recibidor: ' + id_transport_customer + ' <br>Bodega: '+ bodega +'<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + 'TM <br>° Peso de tara: '+ tare_weight1 + 'TM <br>° Peso neto: '+ net_weight1+'TM </li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
@@ -1454,7 +1463,7 @@ Dashboard
                 var product_bl = data[2].fields.name;
                 product_bl = product_bl.toUpperCase()
                 var bl1 = bl;
-                bl1 = bl1.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+                bl1 = bl1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                 var t = $('#id_total_bls').val();
                 if(t == '' || t == ' '){
                     t = 0;
@@ -1464,7 +1473,7 @@ Dashboard
                 
                 $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
                 $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + ' TM. ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
-                $('#total_bl').text(t.toFixed(2).replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
+                $('#total_bl').text(t.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
                 $('#id_total_bls').val(t)
             },
         });
@@ -1476,7 +1485,7 @@ $('#id_bl1').on('keyup', function(){
     $('#id_bl1').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
     
 });
@@ -1484,7 +1493,7 @@ $('#id_bl1').on('keyup', function(){
 
 $('#id_bl1').on('blur', function(){  
     let bl_number = $('#id_bl1').val()
-        bl_number = parseFloat(bl_number.replace('.','')).toFixed(2)
+        bl_number = parseFloat(bl_number.replace('.','')).toFixed(3)
         console.log(bl_number)
         $('#id_bl').val(bl_number)
 });
@@ -1494,7 +1503,7 @@ $('#final_draft1').on('keyup', function(){
     $('#final_draft1').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
     
 });
@@ -1502,7 +1511,7 @@ $('#final_draft1').on('keyup', function(){
 
 $('#final_draft1').on('blur', function(){  
     let bl_number = $('#final_draft1').val()
-        bl_number = parseFloat(bl_number.replace('.','')).toFixed(2)
+        bl_number = parseFloat(bl_number.replace('.','')).toFixed(3)
         console.log(bl_number)
         $('#final_draft').val(bl_number)
 });
@@ -1512,7 +1521,7 @@ $('#id_draft1').on('keyup', function(){
     $('#id_draft1').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
@@ -1520,7 +1529,7 @@ $('#id_draft1').on('keyup', function(){
 
 $('#id_draft1').on('blur', function(){  
     let draft_number = $('#id_draft1').val()
-        draft_number = parseFloat(draft_number.replace('.','')).toFixed(2)
+        draft_number = parseFloat(draft_number.replace('.','')).toFixed(3)
         console.log(draft_number)
         $('#id_draft').val(draft_number)
 });
@@ -1528,7 +1537,7 @@ $('#id_bl_multiple').on('keyup', function(){
     $('#id_bl_multiple').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
@@ -1537,7 +1546,7 @@ $('#bodega_peso').on('keyup', function(){
     $('#bodega_peso').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
@@ -1547,7 +1556,7 @@ $('#id_gross_weight').on('keyup', function(){
     $('#id_gross_weight').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
@@ -1556,7 +1565,7 @@ $('#id_tare_weight').on('keyup', function(){
     $('#id_tare_weight').val(function(index, value) {
     return value
         .replace(/\D/g, "")
-        .replace(/([0-9])([0-9]{2})$/, '$1,$2')
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
         .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
 });
 })
@@ -1574,8 +1583,8 @@ function remanante(){
     }
 
     let remanante = 0
-    remanante = (draft - pesada).toFixed(2)
-    $('#remanante').text(remanante.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+    remanante = (draft - pesada).toFixed(3)
+    $('#remanante').text(remanante.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
 }
 
 remanante()
@@ -1606,16 +1615,16 @@ function deletebl(id,total, bl){
     let pk = id.replace('button-','')
     let bl_list = $('#bl-'+ pk)
     bl_list.remove()
-    let totalbl = ($('#id_total_bls').val() - bl).toFixed(2)
+    let totalbl = ($('#id_total_bls').val() - bl).toFixed(3)
     $("#id_multiple_bl option[value="+ pk +"]").remove()
     $('#id_total_bls').val(totalbl)
-    $('#total_bl').text(totalbl.replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
+    $('#total_bl').text(totalbl.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
 }
 function deleteWinerie(id,w_act, w){
     let pk = id.replace('button-','')
     let winerie = $('#winerie-'+ pk)
     winerie.remove()
-    let totalw = ($('#id_net_weight').val() - w).toFixed(2)
+    let totalw = ($('#id_net_weight').val() - w).toFixed(3)
     console.log(w)
     console.log(totalw)
     $("#id_Wineries option[value="+ pk +"]").remove()
@@ -1635,11 +1644,11 @@ function deleteTransport(id, w){
     let pk = id.replace('button-','')
     let transpot = $('#transport-'+ pk)
     transpot.remove()
-    let totalt = ($('#id_transport_heavy').val() - w).toFixed(2)
+    let totalt = ($('#id_transport_heavy').val() - w).toFixed(3)
     console.log(totalt)
     $("#id_transport option[value="+ pk +"]").remove()
     $('#id_transport_heavy').val(totalt)
-    $('#pesada').text((totalt.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{2})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
+    $('#pesada').text((totalt.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
     remanante()
 }
 deleteTransport
