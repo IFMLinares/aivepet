@@ -84,11 +84,11 @@
         </tr>
         {% endfor %}
         <tr>
-            <th style="text-align: center; border: none;">TOTAL RECEIVED:</th>
-            <th style="text-align: center; border: none;">{{ orden.total_weight|floatformat:2|intcomma }}</th>
-            <th style="text-align: center; border: none;">TM</th>
             <th style="text-align: center; border: none;">TOTAL TRUCKS:</th>
             <th style="text-align: center; border: none;">{{ orden.transport.all|length }}</th> 
+            <th style="text-align: center; border: none;">TOTAL RECEIVED:</th>
+            <th style="text-align: center; border: none;">{{ orden.transport_heavy|floatformat:2|intcomma }} TM</th>
+            <!-- <th style="text-align: center; border: none;">TM</th> -->
           </tr>
       </table>
     </div>
