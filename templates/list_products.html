@@ -26,7 +26,7 @@ Lista de ordenes
                                     {% for product in products %}
                                     <tr class="text-center">
                                         <td>{{ product.pk }} </td>
-                                        <td>{{ product.name }} </td>
+                                        <td>{{ product.name|upper }} </td>
                                         <td>{{ product.start_date }} </td>
                                         <!-- <td>000{{ orden.id }}</td> -->
                                     </tr>
