@@ -76,22 +76,22 @@ Dashboard
             <h2 class="text-center">Resumen general de operaciones:</h2>
         </div>
         <div class="row">
-            <div class="col-md-3 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4 stretch-card transparent">
                 <div class="card card-green">
                     <div class="card-body">
-                        <p class="mb-4"><b>Buques Nominados</b></p>
-                        <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ nominalTrans }}</span></p>
+                        <p class="mb-4"><b> Nominados</b></p>
+                        <p class="fs-25">Nominados: <span class="stats-span">{{ total }}</span></p>
+                        
+                        <p class="mb-2 fs-25">En espera: <span class="stats-span">{{ nominalTransToday }}</span></p>
                         <p class="mb-2 fs-25">En operación: <span class="stats-span">{{ acepted }}</span></p>
                         <!-- <p class="mb-2 fs-25">En espera: <span class="stats-span"></span></p> -->
-                        <br>
-                        <p class="fs-25">Total: <span class="stats-span">{{ total }}</span></p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4 stretch-card transparent">
                 <div class="card card-tale">
                     <div class="card-body">
-                        <p class="mb-4"><b>Barcos en descarga</b></p>
+                        <p class="mb-4"><b>Descarga</b></p>
                         <p class="mb-2 fs-25">En operación: <span class="stats-span">{{ unload }}</span></p>
                         <p class="mb-2 fs-25">Finalizados: <span class="stats-span">{{ unloadFinish }}</span></p>
                         <br>
@@ -100,30 +100,15 @@ Dashboard
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 mb-4 stretch-card transparent">
+            <div class="col-md-4 mb-4 stretch-card transparent">
                 <div class="card card-tale">
                     <div class="card-body">
-                        <p class="mb-4"><b>Barcos en Carga</b></p>
+                        <p class="mb-4"><b>Carga</b></p>
                         <p class="mb-2 fs-25">En operación: <span class="stats-span">{{ load }}</span></p>
                         <p class="mb-2 fs-25">Finalizados: <span class="stats-span">{{ loadFinish }}</span></p>
                         <br>
                         <!-- <p class="mb-2 fs-25">En espera: <span class="stats-span">2</span></p> -->
                         <p class="fs-25">Total: <span class="stats-span">{{ totalLoad }}</span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4 stretch-card transparent">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <p class="mb-4"><b>Estadísticas del día</b></p>
-                        <!-- <p class="mb-2 fs-25">Arribaron: <span class="stats-span"></span></p> -->
-                        <p class="mb-2 fs-25">Aceptados: <span class="stats-span">{{ nominalTransToday }}</span></p>
-                        <!-- <p class="mb-2 fs-25">En descarga: <span class="stats-span">2</span></p> -->
-                        <!-- <p class="mb-2 fs-25">En Carga: <span class="stats-span">2</span></p> -->
-                        <p class="mb-2 fs-25">Finalizados: <span class="stats-span">
-                            {{ totalFinshedToday }}</span></p>
-                        <br>
-                        <p class="fs-25">Total:<span class="stats-span">{{ totalToday }}</span></p>
                     </div>
                 </div>
             </div>

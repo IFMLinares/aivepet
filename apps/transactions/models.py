@@ -127,6 +127,7 @@ class Transaction(models.Model):
     multiple_bl = models.ManyToManyField(MultipleBL, blank=True, default=0)
     total_bls = models.FloatField(verbose_name='total bls', blank=True, null=True, default=0)
     draft = models.FloatField(verbose_name='Draft del buque', blank=True, null=True, default=0)
+    cant_carg = models.FloatField(verbose_name='Cantidad cargada', blank=True, null=True, default=0)
     final_draft = models.CharField(max_length=150,verbose_name='Draft final', blank=True, null=True, default='0')
     company_name = models.CharField(max_length=150, verbose_name='nombre de la empresa', blank=True, null=True, default='N/A')
     name = models.CharField(max_length=150, verbose_name='Nombre del cliente recibidor', blank=True, null=True, default='N/A')

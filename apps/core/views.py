@@ -38,7 +38,7 @@ class Index(LoginRequiredMixin,ListView):
         context['totalUnload'] = context['unload'] + context['unloadFinish']
 
         context['nominalTrans'] = (NominalTransaccion.objects.filter(state='Aceptado')).count() + (NominalTransaccion.objects.filter(state='En operación')).count()
-        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='Aceptado', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count() + (NominalTransaccion.objects.filter(state='En operación', start_date__day=date.strftime('%d'), start_date__month=date.strftime('%m'), start_date__year=date.strftime('%Y'))).count()
+        context['nominalTransToday'] = (NominalTransaccion.objects.filter(state='Aceptado')).count()
 
         context['acepted'] = (self.model.objects.filter(state='En operación')).count()
         context['total'] = context['acepted'] + context['nominalTrans']

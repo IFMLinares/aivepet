@@ -134,8 +134,8 @@ Dashboard
                                                     >Empresa: {{ customer.company_name|title }} <br />
                                                     Responsable: {{ customer.name|title }} <br />
                                                     Nro de Identificación: {% if customer.dni %}: {{ customer.dni }}{% else %}  N/A  {% endif %}<br />
-                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
-                                                    {% else %} Descargado: {{ customer.quantity }} TM
+                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }}  (TM) 
+                                                    {% else %} Descargado: {{ customer.quantity }}  (TM) 
                                                     {% endif %}
                                                 </span>
                                             </li>
@@ -151,7 +151,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }}TM (Toneladas Métricas).</b>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }} (TM)  .</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -166,7 +166,7 @@ Dashboard
                             <div class="col-sm-12 col-form-label"> Cantidad total: 
                                 <ul>
                                         <li>
-                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }}TM(Toneladas Métricas).</strong>
+                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }} (TM) .</strong>
                                         </li>
                                 </ul>
                             </div>
@@ -242,7 +242,7 @@ Dashboard
                                                 placeholder="BL del buque" name="bl" id="id_bl" {% if orden.bl %} value="{{ orden.bl }}" disabled {% endif %}>
                                         </div>
                                         <div class="col-sm-3 mt-xl-2">
-                                            (TM)
+                                             (TM) 
                                         </div> -->
                                         
                                         <div class="col-md-12">
@@ -251,17 +251,53 @@ Dashboard
                                                 <div class="col-sm-5">
                                                     <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                                     <input type="text" class="form-control add-order mt-xl-2"
-                                                        placeholder="Draft del buque" name="draft1" id="id_draft1" {% if orden.draft %} disabled value="{{ orden.draft }}" {% endif %}>
+                                                        placeholder="Draft del buque" name="draft1" id="id_draft1" {% if orden.draft %} disabled value="{{ orden.draft|floatformat:3|intcomma }}" {% endif %}>
                                                         <input type="number" class="form-control add-order mt-xl-2 d-none"
                                                         placeholder="Draft del buque" name="draft" id="id_draft" {% if orden.draft %} disabled value="{{ orden.draft }}" {% endif %}>
                                                 </div>
                                                 <div class="col-sm-3 mt-xl-2">
-                                                    (TM)
+                                                     (TM) 
                                                 </div>
                                                 
                                                 <div class="col-12">
                                                     <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 {% if orden.draft %} disabled {% endif %} float-right" type="button"
                                                     id="add_draft">Añadir</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if orden.order_type == 'carga' %}
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-md-4 col-form-label"> <strong> Draft Puerto de Carga:</strong></label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control add-order" id="cant_carg1" name="cant_carg1" placeholder="Monto del draft final" value="{{ orden.cant_carg|floatformat:3|intcomma }}" {% if orden.cant_carg == 0 %}{% else %}disabled {% endif %}>
+                                                    <input type="number" class="form-control add-order d-none" id="cant_carg" name="cant_carg" placeholder="Monto del puerto de carga" value="{{ orden.cant_carg }}"  {% if orden.cant_carg and orden.cant_carg == 0 %}{% else %}readonly {% endif %}>
+                                                </div>
+                                                <div class="col-sm-3 mt-xl-1">
+                                                     (TM) 
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 float-right" type="button"
+                                                    id="add-cant-cargada">Añadir</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-md-4 col-form-label"> <strong> Draft Final:</strong></label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:3|intcomma }}" {% if orden.final_draft == '0' %} {% else %}disabled {% endif %}>
+                                                    <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}readonly {% endif %}>
+                                                </div>
+                                                <div class="col-sm-3 mt-xl-1">
+                                                     (TM) 
+                                                </div>
+                                                
+                                                <div class="col-12">
+                                                    <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 float-right" type="button"
+                                                    id="add_final_draft">Añadir</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -342,7 +378,7 @@ Dashboard
                                     </div>
                                 </div>
                                 <div class="col-sm-3 mt-xl-1">
-                                    Toneladas Métricas (TM)
+                                      (TM) 
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group row">
@@ -555,7 +591,7 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li> Peso bruto TM:</li>
+                                        <li> Peso bruto  (TM) :</li>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="gross_weight" id="id_gross_weight" placeholder="Peso del camión vacío">
@@ -563,7 +599,7 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li> Peso de tara TM:</li>
+                                        <li> Peso de tara  (TM) :</li>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="tare_weight" id="id_tare_weight" placeholder="Peso del camión con la carga">
@@ -571,7 +607,7 @@ Dashboard
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">
-                                        <li> <strong> Peso neto TM:</strong></li>
+                                        <li> <strong> Peso neto  (TM) :</strong></li>
                                     </label>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control add-order" name="trans_net_weight" id="id_trans_net_weight" placeholder="Peso neto" disabled>
@@ -582,32 +618,6 @@ Dashboard
                                         <button class="btn btn-sm btn-success mt-xl-1" type="button"
                                             style="float: right;" id="transport_add">Añadir
                                         </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="border border-secondary rounded mt-xl-3">
-                            <div class="col-md-12">
-                                <h2 class="mt-xl-2 text-center mb-xl-4">Draft Final</h2>
-                                <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">
-                                        <li>Monto Draft Final:</li>
-                                    </label>
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control add-order" id="final_draft1" name="final_draft1" placeholder="Monto del draft final" value="{{ orden.final_draft|floatformat:3|intcomma }}" {% if orden.final_draft == '0' %} {% else %}disabled {% endif %}>
-                                        <input type="number" class="form-control add-order d-none" id="final_draft" name="final_draft" placeholder="Monto del draft final" value="{{ orden.final_draft }}"  {% if orden.final_draft and orden.final_draf == 0 %}{% else %}readonly {% endif %}>
-                                    </div>
-                                    <div class="col-sm-3 mt-xl-1">
-                                        (TM)
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 float-right" type="button"
-                                        id="add_final_draft">Añadir</button>
                                     </div>
                                 </div>
                             </div>
@@ -648,14 +658,37 @@ Dashboard
                                     <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                         <hr>
                                     </div>
-                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Draft surveys: TM</label>
+                                    <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Draft surveys:  (TM) </label>
                                     <div class="col-sm-12 ml-xl-3">
                                         <ul id="bl_list" style="margin-bottom: 0px;">
                                             <li>
-                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>  TM</strong></span><span id="button-draft_span"></span>
+                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
                                             </li>
                                             <li>
-                                                <span style="font-size: 20px;"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:3|intcomma }} {% endif %}</span>  TM</strong></span>
+                                                <span style="font-size: 20px;" id="span-draft-final"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
+                                            </li>
+                                            {% if orden.draft > orden.total_product_weight %}
+                                                <li>
+                                                    <span style="font-size: 10pxx;">
+                                                        <strong>
+                                                            El draft inicial es superior a la cantidad total de la nominación.
+                                                        </strong>
+                                                </span>
+                                            </li>
+                                            {% endif %}
+                                                <li>
+                                                    <span style="font-size: 15px;" id="span-draft-final">
+                                                        <strong> 
+                                                            
+                                            {% if orden.order_type == 'descarga' %}Total descargado: 
+                                            
+                                            <span id="total-unloaded"></span>   (TM) 
+                                                        </strong>
+                                                    </span>
+
+                                            {% else %}
+                                                <span id="span-load-draft1"> Cantidad cargada: <span id="span-load-draft">{{ orden.cant_carg|floatformat:3|intcomma }}</span> TM</span>   
+                                            {% endif %}
                                             </li>
                                         </ul>
                                     </div>
@@ -673,7 +706,7 @@ Dashboard
                                             <br>
                                             {% for bl in orden.multiple_bl.all %}
                                             <li>
-                                                <span>BL: {{ bl.bl|floatformat:3|intcomma }} TM. ({{ bl.product.name|upper }}) {{ bl.receiving_customer.company_name }}<br>
+                                                <span>BL: {{ bl.bl|floatformat:3|intcomma }}  (TM) . ({{ bl.product.name|upper }}) {{ bl.receiving_customer.company_name }}<br>
                                                 </span>
                                             </li>
                                             {% endfor %}
@@ -682,7 +715,7 @@ Dashboard
                                         <ul>
                                             <li>
                                                 {{ form.total_bls }}
-                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:3|intcomma }} TM{% endif %}</span>  <br>
+                                                <span style="font-weight: bold;">Total BL: <span id="total_bl"> {% if orden.total_bls > 0 %} {{ orden.total_bls|floatformat:3|intcomma }}  (TM) {% endif %}</span>  <br>
                                                 </span>
                                             </li>
                                         </ul>
@@ -691,7 +724,7 @@ Dashboard
                                         <hr>
                                     </div>
                                     <label class="col-sm-12 col-form-label mt-xl-3 text-center fs-20"
-                                        style="padding-top: 0px;font-weight: bold;" >Bodegas: TM</label>
+                                        style="padding-top: 0px;font-weight: bold;" >Bodegas:  (TM) </label>
                                     <div class="col-sm-12 ml-xl-3">
                                         {{ form.Wineries }}
                                         <ul id="wineries_list" style="margin-bottom: 0px;">
@@ -700,7 +733,7 @@ Dashboard
                                                 <li>
                                                     <span>
                                                         {{ winerie.product.name|upper }}. <strong>(Bdga/ALM :{{ winerie.number|title }})</strong> <br>
-                                                        {{ winerie.weight|floatformat:3|intcomma }} TM <br> Fecha de adición:
+                                                        {{ winerie.weight|floatformat:3|intcomma }}  (TM)  <br> Fecha de adición:
                                                         {{ winerie.start_date|date:"d/m/Y g:i:a" }}
                                                     </span>
 
@@ -715,12 +748,9 @@ Dashboard
                                         </ul>
                                     </div>
                                     
-                                    <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
-                                        <hr>
-                                    </div>
                                     <div class="col-sm-12 ml-xl-3">
                                         <br>
-                                        <b style="font-size: 18px;">Total en bodegas: <span id="net_weight">{{ orden.net_weight|floatformat:3|intcomma }}</span> TM</b>
+                                        <b style="font-size: 18px;">Total en bodegas: <span id="net_weight">{{ orden.net_weight|floatformat:3|intcomma }}</span>  (TM) </b>
                                         <input type="text" step="0.01" name="net_weight" id="id_net_weight" value="{% if orden.net_weight %}{{ orden.net_weight|floatformat:3}}{% else %} 0 {% endif %}" class="d-none">
                                     </div>
 
@@ -793,11 +823,11 @@ Dashboard
                                                     <br>
                                                     ° Placa del deposito: {{ trans.tank_plate|title }}
                                                     <br>
-                                                    ° Peso de tara: {{ trans.tare_weight|title|floatformat:3|intcomma }} TM
+                                                    ° Peso de tara: {{ trans.tare_weight|title|floatformat:3|intcomma }}  (TM) 
                                                     <br>
-                                                    ° Peso bruto: {{ trans.gross_weight|title|floatformat:3|intcomma }} TM
+                                                    ° Peso bruto: {{ trans.gross_weight|title|floatformat:3|intcomma }}  (TM) 
                                                     <br>
-                                                    ° <strong> Peso Neto: {{ trans.net_weight|title|floatformat:3|intcomma }} TM</strong>
+                                                    ° <strong> Peso Neto: {{ trans.net_weight|title|floatformat:3|intcomma }}  (TM) </strong>
                                                     <br>
                                                     ° Puerto: {{ trans.port|title }}
                                                     <br>
@@ -814,19 +844,16 @@ Dashboard
                                             {% endif %}
                                         </ul>
                                     </div>
-                                    
-                                    <div class="col-md-12" style="margin-top: 0px;">
-                                        <hr>
-                                    </div>
+    
                                     <div class="col-sm-12">
-                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy|floatformat:3|intcomma }} TM</span></li>
+                                        <li style="font-weight: bold;">Total de la Pesada: <span id="pesada">{{ orden.transport_heavy|floatformat:3|intcomma }}  (TM) </span></li>
                                     </div>
                                     <div class="col-md-12" style="margin-top: 0px;">
                                         <hr>
                                     </div>
                                     <div class="col-sm-12">
                                         <li style="font-weight: bold;">
-                                            Remanente  {% if orden.order_type == 'carga' %}por Cargar:{% else %}a bordo: {% endif %} <span id="remanante"></span> TM
+                                              {% if orden.order_type == 'carga' %}Volumen cargado:{% else %} Remanente a bordo: {% endif %} <span id="remanante"></span>  (TM) 
                                         </li>
                                     </div>
                                     
@@ -978,9 +1005,9 @@ Dashboard
                         var weight = data[0].fields.weight
                         let weight1 = parseFloat(weight)
                         weight1 = weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
-                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
+                        $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' TM</option>');
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + '  (TM) </span></li>');
                         $('#not_winerie').css('display', 'none');
                         var weight_act = $('#id_net_weight').val();
                         weight_act = parseFloat(weight_act)
@@ -1032,7 +1059,7 @@ Dashboard
                         weight1 = weight1.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product + '; Peso: ' + weight + ' Toneladas</option>');
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' +  name + '; ' + weight1 + ' TM</span></li>');
+                        $("#wineries_list").append('<li><span style="color: #51A351">' + product + '.  <strong>Bdga/ALM :</strong> ' +  name + '; ' + weight1 + '  (TM) </span></li>');
                         $('#not_winerie').css('display', 'none');
 
                         var weight_act = Number($('#id_net_weight').val());
@@ -1094,7 +1121,7 @@ Dashboard
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
                         
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + ' TM</span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
+                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + '  (TM) </span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
                         $('#not_winerie').css('display', 'none');
                         let net = (weight_act + parseFloat(weight)).toFixed(3)
                         console.log(net)
@@ -1366,10 +1393,10 @@ Dashboard
                 console.log('ok')
                 console.log(data)
                 
-                $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
+                $('#pesada').text((pesadaActual.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + ' (TM) ')
                 $('#id_transport_heavy').val(pesadaActual)
                 $('#id_transport').append('<option selected value=' + val + '> </option>');
-                $("#transport_list").append('<li style="color: #51A351" id="transport-'+ val +'"> <button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteTransport(this.id,'+ net_weight +')" ><span aria-hidden="true">&times;</span></button> Cliente Recibidor: ' + id_transport_customer + ' <br>Bodega: '+ bodega +'<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + 'TM <br>° Peso de tara: '+ tare_weight1 + 'TM <br>° Peso neto: '+ net_weight1+'TM </li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
+                $("#transport_list").append('<li style="color: #51A351" id="transport-'+ val +'"> <button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteTransport(this.id,'+ net_weight +')" ><span aria-hidden="true">&times;</span></button> Cliente Recibidor: ' + id_transport_customer + ' <br>Bodega: '+ bodega +'<br>° Viaje: ' + viaje + '<br>° Fecha de adición: ' + start_date + '<br>° Tipo de vehículo: ' + id_vehicle + '<br>° Placa: ' + license_plate + '<br>° Placa del Depósito: ' + tank_plate + '<br>° Nombre del chofer: ' + driver_name + '<br>° Ficha: ' + ficha + '<br>° Sindicato: '+ syndicate +'<br>° Puerto: '+ port + '<br>°  T.Muelle:'+ T_Muelle +'<br>° Barco/ALM: '+ boat_alm  + '<br>° Dirección: ' + direction + '<br>° Flete pagador por: ' + freight_paid_by + '<br>° Comentario: ' + comment + '<br>° Peso bruto: '+ gross_weight1 + ' (TM)  <br>° Peso de tara: '+ tare_weight1 + ' (TM)  <br>° Peso neto: '+ net_weight1+' (TM)  </li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
                 $('#not_transport').css('display', 'none');
                 remanante()
             },
@@ -1472,8 +1499,8 @@ Dashboard
                 console.log(t)
                 
                 $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
-                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + ' TM. ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
-                $('#total_bl').text(t.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
+                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + '  (TM) . ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
+                $('#total_bl').text(t.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + '  (TM) ')
                 $('#id_total_bls').val(t)
             },
         });
@@ -1583,25 +1610,80 @@ function remanante(){
     }
 
     let remanante = 0
-    remanante = (draft - pesada).toFixed(3)
+    remanante = (parseFloat(draft - pesada)).toFixed(3)
     $('#remanante').text(remanante.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
 }
 
 remanante()
 
+$('#add-cant-cargada').on('click', function(){
+    let cant_carg = $('#cant_carg1').val()
+    $('#span-load-draft').text(cant_carg)
+    $('#span-load-draft').append('<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteDraftload()"><span aria-hidden="true">&times;</span></button>')
+    $('#span-load-draft1').css('color','#51A351')
+    // $('#button-draft_span').append('<button type="button" class="close" id="button-draft-delete"><span aria-hidden="true">&times;</span></button>')
+})
+
+$('#cant_carg1').on('keyup', function(){
+    $('#cant_carg1').val(function(index, value) {
+    return value
+        .replace(/\D/g, "")
+        .replace(/([0-9])([0-9]{3})$/, '$1,$2')
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+});
+})
+
+
+$('#cant_carg1').on('blur', function(){  
+    let draft_number_load = $('#cant_carg1').val()
+        draft_number_load = parseFloat(draft_number_load.replace('.','')).toFixed(3)
+        console.log(draft_number_load)
+        $('#cant_carg').val(draft_number_load)
+});
+
 $('#add_draft').on('click', function(){
     let draft = $('#id_draft1').val()
     $('#draft-span').text(draft)
+    $('#draft-span').append('<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteDraft()"><span aria-hidden="true">&times;</span></button>')
     $('#draft-span1').css('color','#51A351')
     // $('#button-draft_span').append('<button type="button" class="close" id="button-draft-delete"><span aria-hidden="true">&times;</span></button>')
     remanante()
+    totalUnloaded()
 })
 
 $('#add_final_draft').on('click', function(){
     let draft = $('#final_draft1').val()
     $('#final-draft-span').text(draft)
+    $('#final-draft-span').append('<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteDraftFinal()"><span aria-hidden="true">&times;</span></button>')
+    $('#span-draft-final').css('color', '#51A351')
     remanante()
+    totalUnloaded()
 })
+
+function deleteDraft(){
+    $('#draft-span').text('0.000')
+    $('#id_draft1').val(0)
+    $('#id_draft').val(0)
+    $('#span-load-draft').css('color', 'black')
+    $('#final_draft').val(0)
+    remanante()
+}
+
+
+function deleteDraftload(){
+    $('#span-load-draft').text('0.000')
+    $('#cant_carg1').val(0)
+    $('#cant_carg').val(0)
+    $('#span-draft-final').css('color', 'black')
+}
+
+
+function deleteDraftFinal(){
+    $('#final-draft-span').text('0.000')
+    $('#span-draft-final').css('color', 'black')
+    $('#final_draft').val(0)
+    remanante()
+}
 
 function deleteState(id){
     let pk = id.replace('button-','')
@@ -1618,7 +1700,7 @@ function deletebl(id,total, bl){
     let totalbl = ($('#id_total_bls').val() - bl).toFixed(3)
     $("#id_multiple_bl option[value="+ pk +"]").remove()
     $('#id_total_bls').val(totalbl)
-    $('#total_bl').text(totalbl.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + ' TM')
+    $('#total_bl').text(totalbl.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + '  (TM) ')
 }
 function deleteWinerie(id,w_act, w){
     let pk = id.replace('button-','')
@@ -1648,11 +1730,21 @@ function deleteTransport(id, w){
     console.log(totalt)
     $("#id_transport option[value="+ pk +"]").remove()
     $('#id_transport_heavy').val(totalt)
-    $('#pesada').text((totalt.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + 'TM')
+    $('#pesada').text((totalt.toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".")) + ' (TM) ')
     remanante()
 }
 deleteTransport
 
+function totalUnloaded(){
+    let dratinicial = (parseFloat($('#id_draft').val()))
+    let draftfinal = parseFloat($('#final_draft').val())
+    if (dratinicial > 0 && draftfinal >0 ){
+
+        let totalUnloaded = ((dratinicial - draftfinal).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+        $('#total-unloaded').text(totalUnloaded)
+    }
+}
+totalUnloaded()
 
 
 

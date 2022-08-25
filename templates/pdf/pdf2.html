@@ -76,10 +76,10 @@
           <th style="text-align: center;">{{ transport.license_plate }}</th>
           <th style="text-align: center;">{{ transport.tank_plate }}</th>
           <th style="text-align: center;">{{ orden.number_invoice_client }}</th>
-          <th style="text-align: center;">{{ transport.net_weight|floatformat:2|intcomma }}</th>
-          <th style="text-align: center;">{{ transport.acumulado_total|floatformat:2|intcomma }}</th>
+          <th style="text-align: center;">{{ transport.net_weight|floatformat:3|intcomma }}</th>
+          <th style="text-align: center;">{{ transport.acumulado_total|floatformat:3|intcomma }}</th>
           <th style="text-align: center;">{{ transport.customer_name.company_name }}</th>
-          <th style="text-align: center;">Bdga: {{ transport.bodega }} <br> Product: {{ transport.bodega_fk.product }}</th>
+          <th style="text-align: center;">Bdga: {{ transport.bodega_fk.number }} <br> Product: {{ transport.bodega_fk.product }}</th>
           <!-- <th style="text-align: center;">{{ transport.bodega_fk.product }}</th> -->
         </tr>
         {% endfor %}
@@ -87,7 +87,7 @@
             <th style="text-align: center; border: none;">TOTAL TRUCKS:</th>
             <th style="text-align: center; border: none;">{{ orden.transport.all|length }}</th> 
             <th style="text-align: center; border: none;">TOTAL RECEIVED:</th>
-            <th style="text-align: center; border: none;">{{ orden.transport_heavy|floatformat:2|intcomma }} TM</th>
+            <th style="text-align: center; border: none;">{{ orden.transport_heavy|floatformat:3|intcomma }} TM</th>
             <!-- <th style="text-align: center; border: none;">TM</th> -->
           </tr>
       </table>

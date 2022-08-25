@@ -457,11 +457,28 @@ class PDFView(View):
                 receiving_customer.save()
             transaction.difference = float(transaction.draft) - float(transaction.transport_heavy)
             transaction.save()
-            context = {
-                'orden': transaction,
-                'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
-                'total_w': total_w,
-                }
+            if transaction.order_type == 'descarga':
+                a1 = float(transaction.transport_heavy) - float(transaction.total_bls)
+                b = float(transaction.transport_heavy) - float(transaction.total_product_weight)
+                c = float(transaction.transport_heavy) - float(transaction.draft)
+                d = float(transaction.total_product_weight) - float(transaction.draft)
+                context = {
+                    'orden': transaction,
+                    'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
+                    'total_w': total_w,
+                    'a1': a1,
+                    'b': b,
+                    'c': c,
+                    'd': d,
+                    }
+            else:
+                f = float(transaction.cant_carg) - float(transaction.total_product_weight)
+                context = {
+                    'orden': transaction,
+                    'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
+                    'total_w': total_w,
+                    'f': f,
+                    }
 
             html = template.render(context)
             response = HttpResponse(content_type='application/pdf')

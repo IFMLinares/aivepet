@@ -115,8 +115,8 @@ Dashboard
                                             <span>Empresa: {{ customer.company_name|title }} <br />
                                                 Responsable: {{ customer.name|title }} <br />
                                                 Nro de Identificación: {% if customer.tipdoc == 'N/A' %} N/A {% else %}  {{ customer.tipdoc }}: {{ customer.dni }} {% endif %}<br />
-                                                {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }} TM
-                                                {% else %} Descargado: {{ customer.quantity }} TM
+                                                {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }}  (TM) 
+                                                {% else %} Descargado: {{ customer.quantity }}  (TM) 
                                                 {% endif %}
                                                 <br>
                                             </span>
@@ -151,7 +151,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:2|intcomma }}TM (Toneladas Métricas).</b>
+                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }} (TM)  .</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -165,7 +165,7 @@ Dashboard
                             <div class="col-sm-12 col-form-label"> Cantidad total:
                                 <ul>
                                         <li>
-                                            <strong>{{ orden.total_product_weight|floatformat:2|intcomma }}TM(Toneladas Métricas).</strong>
+                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }} (TM) .</strong>
                                         </li>
                                 </ul>
                             </div>

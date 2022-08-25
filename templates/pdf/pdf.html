@@ -153,13 +153,13 @@
           <tr>
             <td></td>
             <td>{{ winerie.number }}</td>
-            <td>{{ winerie.weight|floatformat:2|intcomma }}</td>
+            <td>{{ winerie.weight|floatformat:3|intcomma }}</td>
           </tr>
           {% endfor %}
           <tr style="background-color: #dddddd">
             <th></th>
             <th>TOTAL CARGO</th>
-            <th>{{ total_w|floatformat:2|intcomma }}</th>
+            <th>{{ total_w|floatformat:3|intcomma }}</th>
           </tr>
         </table>
         {% for customer in orden.receiving_customer.all %}
@@ -175,15 +175,15 @@
             {% if transport.customer_name.company_name == customer.company_name %}
             <tr>
               <td>{{ transport.start_date|date:"d-m-Y G:i:s" }}</td>
-              <td>{{ transport.net_weight|floatformat:2|intcomma }}</td>
-              <td>{{ transport.acumulado|floatformat:2|intcomma }}</td>
+              <td>{{ transport.net_weight|floatformat:3|intcomma }}</td>
+              <td>{{ transport.acumulado|floatformat:3|intcomma }}</td>
               <td>{{ transport.viaje }}</td>
             </tr> 
             {% endif %}
           {% endfor %}
           <tr>
             <th>TOTAL</th>
-            <th>{{ customer.total|floatformat:2|intcomma }}</th>
+            <th>{{ customer.total|floatformat:3|intcomma }}</th>
             <th></th>
             <th>{{ customer.total_viajes }}</th>
           </tr>
@@ -197,26 +197,63 @@
         <table>
           <tr style="background-color: #dddddd">
             <td>QUANTITY DATA (BOL FIGURES)</td>
-            <td>{{ orden.net_weight }}</td>
+            <td>{{ orden.net_weight|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr>
             <td>QUANTITY ACCORDING DRAFT.</td>
-            <td>{{ orden.draft|floatformat:2|intcomma }}</td>
+            <td>{{ orden.draft|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr style="background-color: #dddddd">
             <td>SHORE FIGURES (ONLY REFERENCES)</td>
-            <td>{{ orden.transport_heavy|floatformat:2|intcomma }}</td>
+            <td>{{ orden.transport_heavy|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr>
             <td>DIFERENCE</td>
-              <td>{{ orden.difference|floatformat:2|intcomma }}</td>
+              <td>{{ orden.difference|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
         </table>
         <br /><br />
+        {% if orden.order_type == 'descarga' %}
+          <table>
+            <tr style="background-color: #dddddd">
+              <td>Cantidad despachada - BL (Puerto de Carga)</td>
+              <td>{{ a1|floatformat:3|intcomma }}</td>
+              <td>METRIC TONS</td>
+            </tr>
+            <tr>
+              <td>Cantidad despachada - Draft (Puerto de Carga)</td>
+              <td>{{ b|floatformat:3|intcomma }}</td>
+              <td>METRIC TONS</td>
+            </tr>
+            <tr style="background-color: #dddddd">
+              <td>Cantidad despachada - BL (Puerto de Descarga)</td>
+              <td>{{ c|floatformat:3|intcomma }}</td>
+              <td>METRIC TONS</td>
+            </tr>
+            <tr>
+              <td>Cantidad despachada - Draft (Puerto de Descarga)</td>
+                <td>{{ d|floatformat:3|intcomma }}</td>
+              <td>METRIC TONS</td>
+            </tr>
+          </table>
+          
+        <br /><br />
+        {% endif %}
+
+
+        {% if orden.order_type == 'carga' %}
+        <table>
+          <tr style="background-color: #dddddd">
+            <td>Cantidad cargada - Draft (Puerto de Carga)</td>
+            <td>{{ f|floatformat:3|intcomma }}</td>
+            <td>METRIC TONS</td>
+          </tr>
+        </table>
+        {% endif %}
         <div class="p-lateral-izq">
           <p>BEST REGARDS,</p>
           <p>AIVEPET C.A.</p>
