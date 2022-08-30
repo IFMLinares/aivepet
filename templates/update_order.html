@@ -265,7 +265,6 @@ Dashboard
                                                 </div>
                                             </div>
                                         </div>
-                                        {% if orden.order_type == 'carga' %}
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label class="col-md-4 col-form-label"> <strong> Draft Puerto de Carga:</strong></label>
@@ -283,7 +282,6 @@ Dashboard
                                                 </div>
                                             </div>
                                         </div>
-                                        {% endif %}
                                         <div class="col-md-12">
                                             <div class="form-group row">
                                                 <label class="col-md-4 col-form-label"> <strong> Draft Final:</strong></label>
@@ -660,7 +658,7 @@ Dashboard
                                     </div>
                                     <label class="col-sm-12 col-form-label text-center fs-20 mt-xl-3" style="font-weight: bold;">Draft surveys:  (TM) </label>
                                     <div class="col-sm-12 ml-xl-3">
-                                        <ul id="bl_list" style="margin-bottom: 0px;">
+                                        <ul id="" style="margin-bottom: 0px;">
                                             <li>
                                                 <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
                                             </li>
@@ -838,7 +836,7 @@ Dashboard
                                             </div>
                                             {% endfor %}
                                             {% else %}
-                                            <li id="not_transport">
+                                            <li id="not_transport" class="mb-xl-3">
                                                 No hay transportes registrados
                                             </li>
                                             {% endif %}
@@ -1499,7 +1497,7 @@ Dashboard
                 console.log(t)
                 
                 $('#id_multiple_bl').append('<option selected value=' + val + '></option>');
-                $("#bl_list").append('<li style="color: #51A351" class="ml-xl-2" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + '  (TM) . ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
+                $("#bl_list").append('<li style="color: #51A351" id=bl-'+ val +'><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" id="button-'+ val +'" onclick="deletebl(this.id,'+ t +', '+ bl +')" >&times;</span></button> BL: '+ bl1 + '  (TM) . ('+ product_bl +') ' + data[1].fields.company_name + '</li>');
                 $('#total_bl').text(t.toFixed(3).replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".") + '  (TM) ')
                 $('#id_total_bls').val(t)
             },

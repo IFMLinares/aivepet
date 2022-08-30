@@ -42,10 +42,10 @@ Lista de ordenes
                                         <td>{{ orden.user }}</td>
                                         <td>{{ orden.start_date|date:'d/m/Y G:i' }}</td>
                                         <td>
-                                            <a class="btn btn-success" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver orden</a>
-                                            <a class="btn btn-danger{% if orden.state == 'En operación' or orden.state == 'Finalizado' %} disabled {% endif %} mt-xl-1" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
+                                            <a class="btn btn-info" href="{% url 'transactions:detail_nominal' pk=orden.pk %}">Ver orden</a>
+                                            <a class="btn btn-danger {% if orden.state == 'En operación' or orden.state == 'Finalizado' %} disabled {% endif %} mt-xl-1" href="{% url 'transactions:delete_nominal_trans' pk=orden.pk %}">Eliminar</a>
                                             <br>
-                                            <a class="btn btn-{% if orden.state == 'En operación' or orden.state == 'Finalizado' %}danger disabled{% else %}info{% endif %} mt-xl-1" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% elif orden.state == 'Finalizado' %}Finalizado{% else %}Comenzar operación{% endif %}</a>
+                                            <a class="btn btn-{% if orden.state == 'En operación' %}warning disabled {% elif orden.state == 'Finalizado' %}primary disabled {% else %}success {% endif %}mt-xl-1" href="{% url 'transactions:acepted_nominal_trans' pk=orden.pk %}">{% if orden.state == 'En operación' %} EN OPERACIÓN {% elif orden.state == 'Finalizado' %}Finalizado{% else %}Comenzar operación{% endif %}</a>
                                         </td>
                                     </tr>
                                     {% endfor %}

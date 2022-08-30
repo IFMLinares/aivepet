@@ -291,6 +291,7 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             bodega = winerie.number,
             bodega_fk = winerie,
             )
+        print(trans['id_bodega_transport'])
         quantity = 0
         quantity = quantity + customer.quantity  
         customer.quantity = float(quantity) + float(transport.net_weight)
