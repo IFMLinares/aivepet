@@ -355,6 +355,41 @@ class UserViewTransaction(LoginRequiredMixin,DetailView):
     model = Transaction
     template_name = 'user_view_order.html'
     context_object_name = 'orden'
+    
+    def get_context_data(self, **kwargs):
+        ctx = super(UserViewTransaction, self).get_context_data(**kwargs)
+        print(ctx['orden'].pk)
+        transaction = Transaction.objects.get(pk=ctx['orden'].pk)
+        if transaction.order_type == 'descarga':
+            try:
+                a1 = float(transaction.transport_heavy) - float(transaction.total_bls)
+                ctx['a1'] = a1
+            except:
+                ctx['a1'] = 0
+            try:
+                b = float(transaction.transport_heavy) - float(transaction.total_product_weight)
+                ctx['b'] = b
+            except:
+                ctx['b'] = 0
+                
+            try:
+                c = float(transaction.transport_heavy) - float(transaction.draft)
+                ctx['c'] = c
+            except:
+                ctx['c'] = 0
+            try:
+                d = float(transaction.total_product_weight) - float(transaction.draft)
+                ctx['d'] = d
+            except:
+                ctx['d'] = 0
+        else:
+            try:
+                f = float(transaction.cant_carg) - float(transaction.total_product_weight)
+                ctx['f'] = f
+            except:
+                ctx['f'] = 0
+        return ctx
+
 
 # Nominar nuevo barco
 class AddOrderNominal(LoginRequiredMixin,CreateView):

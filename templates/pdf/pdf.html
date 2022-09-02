@@ -125,6 +125,27 @@
             </tr> -->
           {% endfor %}
       </table> 
+      <p>DRAFT LIST</p>
+      <table>
+        <tr>
+          <th>Draft</th>
+          <th>QUANTITY</th>
+        </tr>
+        <tr style="background-color: #dddddd">
+          <td>DRAFT EN PUERTO DE CARGA</td>
+          <td>{{ orden.cant_carg|floatformat:3|intcomma }}</td>
+        </tr>
+        <tr style="background-color: #dddddd">
+          <td>DRAFT INICIAL + CONSTANTE</td>
+          <td>{{ orden.draft|floatformat:3|intcomma }}</td>
+        </tr>
+        <tr style="background-color: #dddddd">
+          <td>DRAFT FINAL</td>
+          <td>{{ orden.final_draft|floatformat:3|intcomma }}</td>
+        </tr>
+      </table>
+      <br />
+
         <p>TIME LOG (AS PER TERMINAL LOG)</p>
         <table>
           <tr>
@@ -217,7 +238,7 @@
           </tr>
         </table>
         <br /><br />
-        {% if orden.order_type == 'descarga' %}
+        <!-- {% if orden.order_type == 'descarga' %}
           <table>
             <tr style="background-color: #dddddd">
               <td>Cantidad despachada - BL (Puerto de Carga)</td>
@@ -242,10 +263,10 @@
           </table>
           
         <br /><br />
-        {% endif %}
+        {% endif %} -->
 
 
-        {% if orden.order_type == 'carga' %}
+        <!-- {% if orden.order_type == 'carga' %}
         <table>
           <tr style="background-color: #dddddd">
             <td>Cantidad cargada - Draft (Puerto de Carga)</td>
@@ -253,7 +274,7 @@
             <td>METRIC TONS</td>
           </tr>
         </table>
-        {% endif %}
+        {% endif %} -->
         <div class="p-lateral-izq">
           <p>BEST REGARDS,</p>
           <p>AIVEPET C.A.</p>

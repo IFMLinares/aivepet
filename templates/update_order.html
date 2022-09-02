@@ -134,8 +134,8 @@ Dashboard
                                                     >Empresa: {{ customer.company_name|title }} <br />
                                                     Responsable: {{ customer.name|title }} <br />
                                                     Nro de Identificación: {% if customer.dni %}: {{ customer.dni }}{% else %}  N/A  {% endif %}<br />
-                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity }}  (TM) 
-                                                    {% else %} Descargado: {{ customer.quantity }}  (TM) 
+                                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity|floatformat:3|intcomma }}  (TM) 
+                                                    {% else %} Descargado: {{ customer.quantity|floatformat:3|intcomma }}  (TM) 
                                                     {% endif %}
                                                 </span>
                                             </li>
@@ -244,10 +244,27 @@ Dashboard
                                         <div class="col-sm-3 mt-xl-2">
                                              (TM) 
                                         </div> -->
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-md-4 col-form-label"> <strong> Draft Puerto de Carga:</strong></label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control add-order" id="cant_carg1" name="cant_carg1" placeholder="Monto del draft final" value="{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}" {% if orden.cant_carg == 0 %} {% else %}disabled {% endif %}>
+                                                    <input type="number" class="form-control add-order d-none" id="cant_carg" name="cant_carg" placeholder="Monto del puerto de carga" value="{{ orden.cant_carg }}"  {% if orden.cant_carg and orden.cant_carg == 0 %}{% else %}readonly {% endif %}>
+                                                </div>
+                                                <div class="col-sm-3 mt-xl-1">
+                                                     (TM) 
+                                                </div>
+                                                 
+                                                <div class="col-12">
+                                                    <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 float-right " type="button"
+                                                    id="add-cant-cargada">Añadir</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                         
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong> Draft Inicial:</strong></label>
+                                                <label class="col-md-4 col-form-label"> <strong> Draft Inicial + Constante:</strong></label>
                                                 <div class="col-sm-5">
                                                     <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                                     <input type="text" class="form-control add-order mt-xl-2"
@@ -262,23 +279,6 @@ Dashboard
                                                 <div class="col-12">
                                                     <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 {% if orden.draft %} disabled {% endif %} float-right" type="button"
                                                     id="add_draft">Añadir</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong> Draft Puerto de Carga:</strong></label>
-                                                <div class="col-sm-5">
-                                                    <input type="text" class="form-control add-order" id="cant_carg1" name="cant_carg1" placeholder="Monto del draft final" value="{{ orden.cant_carg|floatformat:3|intcomma }}" {% if orden.cant_carg == 0 %}{% else %}disabled {% endif %}>
-                                                    <input type="number" class="form-control add-order d-none" id="cant_carg" name="cant_carg" placeholder="Monto del puerto de carga" value="{{ orden.cant_carg }}"  {% if orden.cant_carg and orden.cant_carg == 0 %}{% else %}readonly {% endif %}>
-                                                </div>
-                                                <div class="col-sm-3 mt-xl-1">
-                                                     (TM) 
-                                                </div>
-                                                
-                                                <div class="col-12">
-                                                    <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 float-right" type="button"
-                                                    id="add-cant-cargada">Añadir</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -660,14 +660,17 @@ Dashboard
                                     <div class="col-sm-12 ml-xl-3">
                                         <ul id="" style="margin-bottom: 0px;">
                                             <li>
-                                                <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
+                                                <span style="font-size: 18px;"><strong> Draft Puerto de carga: <span id="load_port">{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
                                             </li>
+                                                <li>
+                                                    <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial + Constante: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
+                                                </li>
                                             <li>
                                                 <span style="font-size: 20px;" id="span-draft-final"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
                                             </li>
                                             {% if orden.draft > orden.total_product_weight %}
                                                 <li>
-                                                    <span style="font-size: 10pxx;">
+                                                    <span style="font-size: 10pxx; color:red">
                                                         <strong>
                                                             El draft inicial es superior a la cantidad total de la nominación.
                                                         </strong>
@@ -1617,6 +1620,7 @@ remanante()
 $('#add-cant-cargada').on('click', function(){
     let cant_carg = $('#cant_carg1').val()
     $('#span-load-draft').text(cant_carg)
+    $('#load_port').text(cant_carg)
     $('#span-load-draft').append('<button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="deleteDraftload()"><span aria-hidden="true">&times;</span></button>')
     $('#span-load-draft1').css('color','#51A351')
     // $('#button-draft_span').append('<button type="button" class="close" id="button-draft-delete"><span aria-hidden="true">&times;</span></button>')

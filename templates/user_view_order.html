@@ -388,7 +388,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li id="not_draft">
-                                No hay draft registrado
+                                No hay draft inicial registrado
                             </li>
                         </div>
                     </div>
@@ -397,7 +397,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li id="not_final_draft">
-                                No hay draft registrado
+                                No hay draft final registrado
                             </li>
                         </div>
                     </div>
@@ -406,6 +406,24 @@ Dashboard
                         <div class="form-group row">
                             <li class="col-md-12">
                                 <span>Draft Final: {{ orden.final_draft|floatformat:3|intcomma }}</span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if orden.cant_carg == '0' or  orden.cant_carg == ''  %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li id="not_final_draft">
+                                No hay draft en puerto de carga registrado
+                            </li>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Draft en puerto de carga: {{ orden.cant_carg|floatformat:3|intcomma }}</span> (TM) 
                             </li>
                         </div>
                     </div>
@@ -443,6 +461,46 @@ Dashboard
                             </li>
                         </div>
                     </div>
+                    {% if orden.order_type == 'carga' %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Cantidad cargada - Draft (Puerto de Carga): {{ f|floatformat:3|intcomma }} </span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if orden.order_type == 'descarga' %}
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Cantidad despachada - BL (Puerto de Carga): {{ a1|floatformat:3|intcomma }} </span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Cantidad despachada - Draft (Puerto de Carga): {{ b|floatformat:3|intcomma }} </span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Cantidad despachada - BL (Puerto de Descarga): {{ c|floatformat:3|intcomma }} </span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li class="col-md-12">
+                                <span>Cantidad despachada - Draft (Puerto de Descarga): {{ d|floatformat:3|intcomma }} </span> (TM) 
+                            </li>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </form>
         </div>
