@@ -238,43 +238,43 @@
           </tr>
         </table>
         <br /><br />
-        <!-- {% if orden.order_type == 'descarga' %}
+        {% if orden.order_type == 'descarga' %}
           <table>
             <tr style="background-color: #dddddd">
-              <td>Cantidad despachada - BL (Puerto de Carga)</td>
+              <td>BL (Puerto de Carga)</td>
               <td>{{ a1|floatformat:3|intcomma }}</td>
               <td>METRIC TONS</td>
             </tr>
             <tr>
-              <td>Cantidad despachada - Draft (Puerto de Carga)</td>
+              <td>Draft (Puerto de Carga)</td>
               <td>{{ b|floatformat:3|intcomma }}</td>
               <td>METRIC TONS</td>
             </tr>
             <tr style="background-color: #dddddd">
-              <td>Cantidad despachada - BL (Puerto de Descarga)</td>
+              <td>BL (Puerto de Descarga)</td>
               <td>{{ c|floatformat:3|intcomma }}</td>
               <td>METRIC TONS</td>
             </tr>
             <tr>
-              <td>Cantidad despachada - Draft (Puerto de Descarga)</td>
+              <td>Draft (Puerto de Descarga)</td>
                 <td>{{ d|floatformat:3|intcomma }}</td>
               <td>METRIC TONS</td>
             </tr>
           </table>
           
         <br /><br />
-        {% endif %} -->
+        {% endif %}
 
 
-        <!-- {% if orden.order_type == 'carga' %}
+        {% if orden.order_type == 'carga' %}
         <table>
           <tr style="background-color: #dddddd">
-            <td>Cantidad cargada - Draft (Puerto de Carga)</td>
+            <td>Draft (Puerto de Carga)</td>
             <td>{{ f|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
         </table>
-        {% endif %} -->
+        {% endif %}
         <div class="p-lateral-izq">
           <p>BEST REGARDS,</p>
           <p>AIVEPET C.A.</p>
