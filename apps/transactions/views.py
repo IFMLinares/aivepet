@@ -145,7 +145,9 @@ class WineriesAdd(LoginRequiredMixin, CreateView):
         producto = self.request.POST['producto']
         peso = self.request.POST['peso']
         orden = self.request.POST['transaccion']
-        winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto))
+        remaining_in_warehouse = float(peso)
+
+        winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto), remaining_in_warehouse=remaining_in_warehouse)
         trans = Transaction.objects.get(order_number=orden)
         trans.save()
         query = Winerie.objects.get(pk=winerie.pk)
@@ -270,6 +272,9 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             id_comment = 'N/A'
         customer = ReceivingCustomer.objects.get(pk=trans['id_transport_customer'])
         winerie = Winerie.objects.get(pk=trans['id_bodega_transport'])
+        remaining_in_warehouse_transport = float(winerie.weight) - float(trans['id_net_weight'])
+        winerie.remaining_in_warehouse = abs(remaining_in_warehouse_transport)
+        winerie.save()
         transport = self.model.objects.create(
             vehicle= trans['id_vehicle'],
             license_plate= trans['id_license_plate'],
@@ -290,6 +295,7 @@ class TransportAdd(LoginRequiredMixin, CreateView):
             viaje = viaje,
             bodega = winerie.number,
             bodega_fk = winerie,
+            remaining_in_warehouse_transport = remaining_in_warehouse_transport,
             )
         print(trans['id_bodega_transport'])
         quantity = 0
@@ -491,22 +497,31 @@ class PDFView(View):
                 receiving_customer.total = acumulado[receiving_customer.company_name]
                 receiving_customer.total_viajes = viajes[receiving_customer.company_name]
                 receiving_customer.save()
-            transaction.difference = float(transaction.draft) - float(transaction.transport_heavy)
+                
+            quantity_darft = float(transaction.final_draft) - float(transaction.draft)
+            transaction.difference = float(transaction.total_bls) - float(quantity_darft)
             transaction.save()
             if transaction.order_type == 'descarga':
-                a1 = float(transaction.transport_heavy) - float(transaction.total_bls)
-                b = float(transaction.transport_heavy) - float(transaction.total_product_weight)
-                c = float(transaction.transport_heavy) - float(transaction.draft)
-                d = float(transaction.total_product_weight) - float(transaction.draft)
+                cant_desp = float(transaction.transport_heavy)
+                bl_pc = float(transaction.total_bls)
+                draft_pc = float(transaction.draft)
+                draft_pd = float(transaction.draft) - float(transaction.final_draft)
                 context = {
                     'orden': transaction,
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
-                    'a1': a1,
-                    'b': b,
-                    'c': c,
-                    'd': d,
+                    'quantity_darft': quantity_darft,
+                    '1': (cant_desp - bl_pc),
+                    '1p': ((cant_desp - bl_pc)/bl_pc),
+                    '2': (cant_desp - draft_pc),
+                    '2p': ((cant_desp - draft_pc)/draft_pc),
+                    '3': (cant_desp - draft_pd),
+                    '3p': ((cant_desp - draft_pd)/draft_pd),
+                    '4': (draft_pc - draft_pd),
+                    '4p': ((draft_pc - draft_pd)/draft_pd),
                     }
+                
+                print(context)
             else:
                 f = float(transaction.cant_carg) - float(transaction.total_product_weight)
                 context = {
@@ -514,6 +529,7 @@ class PDFView(View):
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
                     'f': f,
+                    'quantity_darft': quantity_darft,
                     }
 
             html = template.render(context)

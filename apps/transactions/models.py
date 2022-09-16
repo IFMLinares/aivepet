@@ -23,8 +23,10 @@ class ProductWeight(models.Model):
 class Winerie(models.Model):
     number = models.CharField(max_length=150, verbose_name='Bodega')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-    weight = models.CharField(max_length=150, verbose_name='Bodega')
+    weight = models.CharField(max_length=150, verbose_name='peso')
     start_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    remaining_in_warehouse = models.FloatField(blank=False, null=False, default=0)
+
     def __str__ (self):
         return self.number + self.weight
 
@@ -74,6 +76,7 @@ class Transport(models.Model):
     acumulado_total = models.FloatField(blank=False, null=False, default=0)
     bodega = models.CharField(max_length=150, verbose_name='Bodega', blank=True, null=True)
     bodega_fk = models.ForeignKey(Winerie, on_delete=models.CASCADE, blank=True, null=True)
+    remaining_in_warehouse_transport = models.FloatField(blank=False, null=False, default=0)
 
     def __str__ (self):
         return self.vehicle

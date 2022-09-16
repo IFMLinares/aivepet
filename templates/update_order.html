@@ -78,8 +78,8 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Nombre del Cliente:
-                                <b>{{ orden.customer_name.first_name }}</b>
+                            <div class="col-sm-12 col-form-label">Proveedor:
+                                <b>{{ orden.customer_name.first_name }} {{ orden.customer_name.last_name }}</b>
                             </div>
                         </div>
                     </div>
@@ -196,6 +196,8 @@ Dashboard
                                                 <option value="BUQUE FONDEADO (ANCLO)">BUQUE FONDEADO (ANCLO)</option>
                                                 <option value="INICIO DE {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}">INICIO DE {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}</option>
                                                 <option value="FIN DE {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}">FIN DE {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}</option>
+                                                <option value="SUSPENCIÓN DE LA {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}">SUSPENCIÓN DE LA {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}</option>
+                                                <option value="REANUDACIÓN DE LA {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}">REANUDACIÓN DE LA {% if orden.order_type == 'carga' %} CARGA {% else %}DESCARGA{% endif %}</option>
                                                 <option value="ATRACADO">ATRACADO</option>
                                                 <option value="FINALIZA LA INSPECCIÓN INICIAL">FINALIZA LA INSPECCIÓN INICIAL</option>
                                                 <option value="FINALIZA LA INSPECCIÓN FINAL">FINALIZA LA INSPECCIÓN FINAL</option>
@@ -246,7 +248,7 @@ Dashboard
                                         </div> -->
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong> Draft Puerto de Carga:</strong></label>
+                                                <label class="col-md-4 col-form-label"> <strong>Puerto de Carga:</strong></label>
                                                 <div class="col-sm-5">
                                                     <input type="text" class="form-control add-order" id="cant_carg1" name="cant_carg1" placeholder="Monto del draft final" value="{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}" {% if orden.cant_carg == 0 %} {% else %}disabled {% endif %}>
                                                     <input type="number" class="form-control add-order d-none" id="cant_carg" name="cant_carg" placeholder="Monto del puerto de carga" value="{{ orden.cant_carg }}"  {% if orden.cant_carg and orden.cant_carg == 0 %}{% else %}readonly {% endif %}>
@@ -264,7 +266,7 @@ Dashboard
                                         
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong> Draft Inicial + Constante:</strong></label>
+                                                <label class="col-md-4 col-form-label"> <strong> {% if orden.order_type == 'descarga' %} Draft Inicial +  {% endif %}Constante:</strong></label>
                                                 <div class="col-sm-5">
                                                     <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                                     <input type="text" class="form-control add-order mt-xl-2"
@@ -768,7 +770,7 @@ Dashboard
                                             {% if orden.destinations.all %}
                                             {% for destiny in orden.destinations.all %}
                                             <li class="col-md-12">
-                                                <span>Nombre del cliente: {{ destiny.customer_name.company_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                <span>Proveedor: {{ destiny.customer_name.company_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
                                             </li>
                                             <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                                 <hr>
@@ -857,7 +859,6 @@ Dashboard
                                               {% if orden.order_type == 'carga' %}Volumen cargado:{% else %} Remanente a bordo: {% endif %} <span id="remanante"></span>  (TM) 
                                         </li>
                                     </div>
-                                    
                                     <div class="col-md-12" style="margin-top: 0px;">
                                         <hr>
                                     </div>
@@ -1167,7 +1168,7 @@ Dashboard
                     var customer_name = data[1].fields.company_name
                     var product = data[2].fields.name
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
-                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12" id="destiny-'+ val +'"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteDestiny(this.id,)" ><span aria-hidden="true">&times;</span></button>Nombre del cliente: '+ customer_company +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
+                    $("#destinations_list").append('<li style="color: #51A351" class="col-md-12" id="destiny-'+ val +'"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteDestiny(this.id,)" ><span aria-hidden="true">&times;</span></button>Proveedor: '+ customer_company +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li><div class="col-md-12 mt-xl-3" style="margin-top: 0px;"> <hr> </div> ');
                     $('#not_destiny').css('display', 'none');
                 },
             });
@@ -1204,7 +1205,7 @@ Dashboard
                     var customer = data[1].fields.customer_name
                     var product = data[2].fields.product
                     $('#id_destinations').append('<option selected value=' + val + '>' + destiny + ' Toneladas</option>');
-                    $("#destinations_list").append('<li class="col-md-12" style="color: #51A351">Nombre del cliente: '+ customer +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li>');
+                    $("#destinations_list").append('<li class="col-md-12" style="color: #51A351">Proveedor: '+ customer +'<br>Dirección: ' + destiny + '<br> Producto: '+ product+'</li>');
                     $('#not_destiny').css('display', 'none');
                 },
             });
@@ -1599,10 +1600,16 @@ $('#id_tare_weight').on('keyup', function(){
 })
 
 function remanante(){
-    let pesada = parseFloat($('#id_transport_heavy').val())
+    let type = '{{ orden.order_type }}'
+    let pesada = 0
+    if (type == 'carga'){
+        pesada = parseFloat($('#final_draft').val())
+    }else{
+        pesada = parseFloat($('#id_transport_heavy').val())
+    }
+
     let draft = parseFloat($('#id_draft').val())
-    console.log(pesada)
-    console.log(draft)
+    if(pesada > 0 && draft>0){
     if(draft == '' || draft == ' '){
         draft = 0
     }
@@ -1613,6 +1620,7 @@ function remanante(){
     let remanante = 0
     remanante = (parseFloat(draft - pesada)).toFixed(3)
     $('#remanante').text(remanante.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+    }
 }
 
 remanante()

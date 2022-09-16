@@ -131,17 +131,24 @@
           <th>Draft</th>
           <th>QUANTITY</th>
         </tr>
+        {% if orden.order_type == 'carga' %} 
+        <tr style="background-color: #dddddd">
+          <td>TOTAL CARGADO</td>
+          <td>{{ orden.transport_heavy|floatformat:3|intcomma }} TM</td>
+        </tr>
+        {% else %}
         <tr style="background-color: #dddddd">
           <td>DRAFT EN PUERTO DE CARGA</td>
-          <td>{{ orden.cant_carg|floatformat:3|intcomma }}</td>
+          <td>{{ orden.cant_carg|floatformat:3|intcomma }} TM</td>
         </tr>
+        {% endif %}
         <tr style="background-color: #dddddd">
           <td>DRAFT INICIAL + CONSTANTE</td>
-          <td>{{ orden.draft|floatformat:3|intcomma }}</td>
+          <td>{{ orden.draft|floatformat:3|intcomma }} TM</td>
         </tr>
         <tr style="background-color: #dddddd">
           <td>DRAFT FINAL</td>
-          <td>{{ orden.final_draft|floatformat:3|intcomma }}</td>
+          <td>{{ orden.final_draft|floatformat:3|intcomma }} TM </td>
         </tr>
       </table>
       <br />
@@ -218,12 +225,12 @@
         <table>
           <tr style="background-color: #dddddd">
             <td>QUANTITY DATA (BOL FIGURES)</td>
-            <td>{{ orden.net_weight|floatformat:3|intcomma }}</td>
+            <td>{{ orden.total_bls|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr>
             <td>QUANTITY ACCORDING DRAFT.</td>
-            <td>{{ orden.draft|floatformat:3|intcomma }}</td>
+            <td>{{ quantity_darft|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
           <tr style="background-color: #dddddd">
@@ -231,50 +238,43 @@
             <td>{{ orden.transport_heavy|floatformat:3|intcomma }}</td>
             <td>METRIC TONS</td>
           </tr>
-          <tr>
-            <td>DIFERENCE</td>
-              <td>{{ orden.difference|floatformat:3|intcomma }}</td>
-            <td>METRIC TONS</td>
-          </tr>
         </table>
         <br /><br />
-        {% if orden.order_type == 'descarga' %}
-          <table>
-            <tr style="background-color: #dddddd">
-              <td>BL (Puerto de Carga)</td>
-              <td>{{ a1|floatformat:3|intcomma }}</td>
-              <td>METRIC TONS</td>
-            </tr>
-            <tr>
-              <td>Draft (Puerto de Carga)</td>
-              <td>{{ b|floatformat:3|intcomma }}</td>
-              <td>METRIC TONS</td>
-            </tr>
-            <tr style="background-color: #dddddd">
-              <td>BL (Puerto de Descarga)</td>
-              <td>{{ c|floatformat:3|intcomma }}</td>
-              <td>METRIC TONS</td>
-            </tr>
-            <tr>
-              <td>Draft (Puerto de Descarga)</td>
-                <td>{{ d|floatformat:3|intcomma }}</td>
-              <td>METRIC TONS</td>
-            </tr>
-          </table>
-          
-        <br /><br />
-        {% endif %}
-
-
-        {% if orden.order_type == 'carga' %}
         <table>
           <tr style="background-color: #dddddd">
-            <td>Draft (Puerto de Carga)</td>
-            <td>{{ f|floatformat:3|intcomma }}</td>
-            <td>METRIC TONS</td>
+            <td>DIFERENCE</td>
+            <td>{{ orden.difference|floatformat:3|intcomma }}</td>
+            <td style="width: 50px;"></td>
+            <td style="width: 150px;">METRIC TONS</td>
           </tr>
+          {% if orden.order_type == 'descarga' %}
+            <tr style="background-color: #dddddd">
+              <td>Cantidad Despachada - Bl (Puerto De Carga)</td>
+              <td>{{ 1|floatformat:3|intcomma }}</td>
+              <td style="width: 50px;">{{ 1p|floatformat:3|intcomma }}%</td>
+              <td style="width: 150px;">METRIC TONS</td>
+            </tr>
+            <tr>
+              <td>Cantidad Despachada - Draft (Puerto De Carga)</td>
+              <td>{{ 2|floatformat:3|intcomma }}</td>
+              <td style="width: 50px;">{{ 2p|floatformat:3|intcomma }}%</td>
+              <td style="width: 150px;">METRIC TONS</td>
+            </tr>
+            <tr style="background-color: #dddddd">
+              <td>Cantidad Despachada - Bl (Puerto De Descarga)</td>
+              <td>{{ 3|floatformat:3|intcomma }}</td>
+              <td style="width: 50px;">{{ 3p|floatformat:3|intcomma }}%</td>
+              <td style="width: 150px;">METRIC TONS</td>
+            </tr>
+            <tr>
+              <td>Cantidad Despachada - Draft (Puerto De Descarga)</td>
+                <td>{{ 4|floatformat:3|intcomma }}</td>
+                <td style="width: 50px;">{{ 4p|floatformat:3|intcomma }}%</td>
+              <td style="width: 150px;">METRIC TONS</td>
+            </tr>
+            {% endif %}
         </table>
-        {% endif %}
+        <br>
         <div class="p-lateral-izq">
           <p>BEST REGARDS,</p>
           <p>AIVEPET C.A.</p>
