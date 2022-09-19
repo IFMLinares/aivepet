@@ -506,12 +506,13 @@ class PDFView(View):
                 bl_pc = float(transaction.total_bls)
                 draft_pc = float(transaction.draft)
                 draft_pd = float(transaction.draft) - float(transaction.final_draft)
+                p1 = cant_desp - bl_pc
                 context = {
                     'orden': transaction,
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
                     'quantity_darft': quantity_darft,
-                    '1': (cant_desp - bl_pc),
+                    '1': (p1),
                     '1p': ((cant_desp - bl_pc)/bl_pc),
                     '2': (cant_desp - draft_pc),
                     '2p': ((cant_desp - draft_pc)/draft_pc),
