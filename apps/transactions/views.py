@@ -519,6 +519,9 @@ class PDFView(View):
                     '3p': ((cant_desp - draft_pd)/draft_pd),
                     '4': (draft_pc - draft_pd),
                     '4p': ((draft_pc - draft_pd)/draft_pd),
+                    'cant_desp': cant_desp,
+                    'bl_pc': bl_pc,
+
                     }
                 
                 print(context)
