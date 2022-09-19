@@ -139,7 +139,7 @@
         {% else %}
         <tr style="background-color: #dddddd">
           <td>DRAFT EN PUERTO DE CARGA</td>
-          <td>{{ orden.cant_carg|floatformat:3|intcomma }} TM</td>
+          <td>{{ orden.total_product_weight|floatformat:3|intcomma }} TM</td>
         </tr>
         {% endif %}
         <tr style="background-color: #dddddd">
