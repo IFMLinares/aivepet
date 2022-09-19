@@ -502,8 +502,8 @@ class PDFView(View):
             transaction.difference = float(transaction.total_bls) - float(quantity_darft)
             transaction.save()
             if transaction.order_type == 'descarga':
-                cant_desp = (transaction.transport_heavy)
-                bl_pc = (transaction.total_bls)
+                cant_desp = float(transaction.transport_heavy)
+                bl_pc = float(transaction.total_bls)
                 draft_pc = float(transaction.draft)
                 draft_pd = float(transaction.draft) - float(transaction.final_draft)
                 p1 = cant_desp - bl_pc
