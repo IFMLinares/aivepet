@@ -512,7 +512,7 @@ class PDFView(View):
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
                     'quantity_darft': quantity_darft,
-                    '1': (p1),
+                    '1': (transaction.transport_heavy - transaction.total_bls),
                     '1p': ((cant_desp - bl_pc)/bl_pc),
                     '2': (cant_desp - draft_pc),
                     '2p': ((cant_desp - draft_pc)/draft_pc),
