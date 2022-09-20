@@ -81,17 +81,20 @@
       </div>
 
       <div class="p-lateral-izq">
-        <p>VSL. " {{ orden.buque_name|title }} "</p>
         <div class="p-medio-dos">
-          <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}</p>
+          <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}. 
+            DATE: {{ orden.start_date|date:"d/m/Y"  }}. 
+            REF AIVEPET: {{ orden.number_invoice_aivepet }}.
+            INSPECTION RESULTS (UNLOADING)
+          </p>
         </div>
-        <div class="p-medio-dos">
-          <p>DATE: {{ orden.start_date|date:"d/m/Y"  }}</p>
-        </div>
-        <div class="p-medio-dos">
-          <p>REF AIVEPET: {{ orden.number_invoice_aivepet }}</p>
-        </div>
-        <p>INSPECTION RESULTS (UNLOADING)</p>
+        <!-- <div class="p-medio-dos">
+          <p></p>
+        </div> -->
+        <!-- <div class="p-medio-dos">
+          <p></p>
+        </div> -->
+        <!-- <p></p> -->
       </div>
 
       <table style="margin-left: 85px;"> 
