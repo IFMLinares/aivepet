@@ -526,7 +526,7 @@ class PDFView(View):
                 
                 print(context)
             else:
-                f = float(transaction.transport_heavy) -  float(transaction.cant_carg) 
+                f = float(transaction.total_bls) -  float(transaction.cant_carg) 
                 fp = (f /float(transaction.cant_carg) )*100
                 context = {
                     'orden': transaction,
