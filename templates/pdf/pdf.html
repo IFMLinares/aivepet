@@ -81,43 +81,43 @@
       </div>
 
       <div class="p-lateral-izq">
-        <p>VSL. " {{ orden.buque_name|title }} "</p>
           <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}</p>
           <p>DATE: {{ orden.start_date|date:"d/m/Y"  }}</p>
           <p>REF AIVEPET: {{ orden.number_invoice_aivepet }}</p>
         <p>INSPECTION RESULTS (UNLOADING)</p>
       </div>
 
+      
+      <div class="p-lateral-izq">
+        <p>VESSEL NAME: {{ orden.buque_name|upper }}</p>
+        <p>PORT: {{ orden.port_name|upper }}</p>
+        <p>DOCK: {{ orden.numero_muelle|upper }}</p>
+        
+        <p>CARGO LABELED BY SUPPLIER AS:</p>
+        {% for product in orden.product.all %}
+          <p>{{ product.product_id.name|upper }}</p>
+        {% endfor %}
+        
+        {% for bl in orden.multiple_bl.all %}
+          <p>BILL OF LADING ({{ bl.receiving_customer.company_name|upper }}): {{ bl.bl }} TM</p>
+        {% endfor %}
+      </div>
+
+
       <table style="margin-left: 85px;"> 
         <tr>
-          <td style="border:none;">VESSEL NAME</td>
-          <td style="border:none;">{{ orden.buque_name|upper }}</td> 
+          <td style="border:none;"></td>
+          <td style="border:none;"></td> 
         </tr>
         <tr style="border:none;">
-          <td style="border:none;">PORT</td>
-          <td style="border:none;">{{ orden.port_name|upper }}</td> 
+          <td style="border:none;"></td>
+          <td style="border:none;"></td> 
         </tr>
         <tr style="border:none;">
-          <td style="border:none;">DOCK:</td>
-          <td style="border:none;">{{ orden.numero_muelle|upper }}</td> 
+          <td style="border:none;"></td>
+          <td style="border:none;"></td> 
         </tr>
-        {% for product in orden.product.all %}
-        <tr style="border:none;">
-          <td style="border:none;">CARGO LABELED BY SUPPLIER AS</td>
-          <td style="border:none;">{{ product.product_id.name|upper }}</td> 
-        </tr>
-        {% endfor %}
 
-          {% for bl in orden.multiple_bl.all %}
-            <tr style="border:none;">
-              <td style="border:none;">BILL OF LADING ({{ bl.receiving_customer.company_name|upper }})</td>
-              <td style="border:none;">{{ bl.bl }} TM</td> 
-            </tr>
-            <!-- <tr style="border:none;">
-              <td style="border:none;">FOR THE ACCOUNT OF</td>
-              <td style="border:none;">{{ bl.receiving_customer.company_name }}</td> 
-            </tr> -->
-          {% endfor %}
       </table> 
       <p>DRAFT LIST</p>
       <table>
