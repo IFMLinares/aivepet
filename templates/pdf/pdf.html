@@ -250,25 +250,25 @@
           {% if orden.order_type == 'descarga' %}
             <tr style="background-color: #dddddd">
               <td>Cantidad Despachada - Bl (Puerto De Carga)</td>
-              <td>{{ a|floatformat:3|intcomma }}</td>
+              <td>{{ a|floatformat:2|intcomma }}</td>
               <td style="width: 50px;">{{ 1p|floatformat:3|intcomma }}%</td>
               <td style="width: 150px;">METRIC TONS</td>
             </tr>
             <tr>
               <td>Cantidad Despachada - Draft (Puerto De Carga)</td>
-              <td>{{ b|floatformat:3|intcomma }}</td>
+              <td>{{ b|floatformat:2|intcomma }}</td>
               <td style="width: 50px;">{{ 2p|floatformat:3|intcomma }}%</td>
               <td style="width: 150px;">METRIC TONS</td>
             </tr>
             <tr style="background-color: #dddddd">
               <td>Cantidad Despachada - Draft (Puerto De Descarga)</td>
-              <td>{{ c|floatformat:3|intcomma }}</td>
+              <td>{{ c|floatformat:2|intcomma }}</td>
               <td style="width: 50px;">{{ 3p|floatformat:3|intcomma }}%</td>
               <td style="width: 150px;">METRIC TONS</td>
             </tr>
             <tr>
               <td>Draft (Puerto De Carga) - Draft (Puerto De Descarga)</td>
-                <td>{{ d|floatformat:3|intcomma }}</td>
+                <td>{{ d|floatformat:2|intcomma }}</td>
                 <td style="width: 50px;">{{ 4p|floatformat:3|intcomma }}%</td>
               <td style="width: 150px;">METRIC TONS</td>
             </tr>
