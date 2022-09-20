@@ -199,7 +199,7 @@
               <td>{{ transport.start_date|date:"d-m-Y G:i:s" }}</td>
               <td>{{ transport.net_weight|floatformat:3|intcomma }}</td>
               <td>{{ transport.acumulado|floatformat:3|intcomma }}</td>
-              <td>{{ transport.viaje }}</td>
+              <td>{{ forloop.counter }}</td>
             </tr> 
             {% endif %}
           {% endfor %}
