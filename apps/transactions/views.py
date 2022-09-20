@@ -526,13 +526,15 @@ class PDFView(View):
                 
                 print(context)
             else:
-                f = float(transaction.cant_carg) - float(transaction.total_product_weight)
+                f = float(transaction.transport_heavy) -  float(transaction.cant_carg) 
+                fp = (f /float(transaction.cant_carg) )*100
                 context = {
                     'orden': transaction,
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
                     'f': f,
                     'quantity_darft': quantity_darft,
+                    'fp': fp,
                     }
 
             html = template.render(context)

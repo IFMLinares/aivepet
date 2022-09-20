@@ -266,6 +266,13 @@
                 <td style="width: 50px;">{{ 4p|floatformat:2|intcomma }}%</td>
               <td style="width: 150px;">METRIC TONS</td>
             </tr>
+            {% else %}
+            <tr>
+              <td>Cantidad cargada - Draft (Puerto De Carga)</td>
+                <td>{{ f|floatformat:3|intcomma }}</td>
+                <td style="width: 50px;">{{ fp|floatformat:2|intcomma }}%</td>
+              <td style="width: 150px;">METRIC TONS</td>
+            </tr>
             {% endif %}
         </table>
         <br>
