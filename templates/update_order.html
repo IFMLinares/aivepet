@@ -957,8 +957,12 @@ Dashboard
 
     function calculate(){
         if($('#id_gross_weight').val() && $('#id_tare_weight').val()){
-            pesoTara = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(3)
-            pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(3)
+            pesoTara = parseFloat($('#id_tare_weight').val().replace('.','').replace(',','.'))
+            pesoBruto = parseFloat($('#id_gross_weight').val().replace('.','').replace(',','.'))
+            console.log($('#id_tare_weight').val().replace('.','').replace(',','.'))
+            console.log($('#id_gross_weight').val().replace('.','').replace(',','.'))
+            console.log(pesoTara)
+            console.log(pesoBruto)
             pesoNeto = Math.abs(pesoTara - pesoBruto).toFixed(3)
             pesoNeto1 = pesoNeto.toString();
             pesoNeto1 = pesoNeto1.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
@@ -986,7 +990,7 @@ Dashboard
             }else{
                 
                 let bodega_peso = $("#bodega_peso").val();
-                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = bodega_peso.replace('.', '').replace(',','.')
                 bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
@@ -1036,7 +1040,7 @@ Dashboard
             }else{
                 
                 let bodega_peso = $("#bodega_peso").val();
-                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = bodega_peso.replace('.', '').replace(',','.')
                 bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
@@ -1093,7 +1097,7 @@ Dashboard
             }else{
                 
                 let bodega_peso = $("#bodega_peso").val();
-                bodega_peso = bodega_peso.replace('.', '')
+                bodega_peso = bodega_peso.replace('.', '').replace(',','.')
                 bodega_peso = parseFloat(bodega_peso)
                 $.ajax({
                     data: {
@@ -1317,9 +1321,9 @@ Dashboard
     })
     $('#transport_add').on('click', function () {
         event.preventDefault();
-        let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','')).toFixed(3)
-        let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','')).toFixed(3)
-        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val().replace('.','')).toFixed(3)
+        let id_gross_weight = parseFloat($('#id_gross_weight').val().replace('.','').replace(',','.')).toFixed(3)
+        let id_tare_weight = parseFloat($('#id_tare_weight').val().replace('.','').replace(',','.')).toFixed(3)
+        let id_trans_net_weight = parseFloat($('#id_trans_net_weight').val().replace('.','').replace(',','.')).toFixed(3)
         $.ajax({
             data: {
                 'transaction_id' : $('#transaction_id').val(),
@@ -1473,7 +1477,7 @@ Dashboard
         }else{
             
             let weight_buque = $("#id_bl_multiple").val();
-            weight_buque = weight_buque.replace('.', '')
+            weight_buque = weight_buque.replace('.', '').replace(',','.')
             weight_buque = parseFloat(weight_buque)
             event.preventDefault()
             $.ajax({
@@ -1522,7 +1526,7 @@ $('#id_bl1').on('keyup', function(){
 
 $('#id_bl1').on('blur', function(){  
     let bl_number = $('#id_bl1').val()
-        bl_number = parseFloat(bl_number.replace('.','')).toFixed(3)
+        bl_number = parseFloat(bl_number.replace('.','').replace(',','.')).toFixed(3)
         console.log(bl_number)
         $('#id_bl').val(bl_number)
 });
@@ -1540,7 +1544,7 @@ $('#final_draft1').on('keyup', function(){
 
 $('#final_draft1').on('blur', function(){  
     let bl_number = $('#final_draft1').val()
-        bl_number = parseFloat(bl_number.replace('.','')).toFixed(3)
+        bl_number = parseFloat(bl_number.replace('.','').replace(',','.')).toFixed(3)
         console.log(bl_number)
         $('#final_draft').val(bl_number)
 });
@@ -1558,7 +1562,7 @@ $('#id_draft1').on('keyup', function(){
 
 $('#id_draft1').on('blur', function(){  
     let draft_number = $('#id_draft1').val()
-        draft_number = parseFloat(draft_number.replace('.','')).toFixed(3)
+        draft_number = parseFloat(draft_number.replace('.','').replace(',','.')).toFixed(3)
         console.log(draft_number)
         $('#id_draft').val(draft_number)
 });
@@ -1646,7 +1650,7 @@ $('#cant_carg1').on('keyup', function(){
 
 $('#cant_carg1').on('blur', function(){  
     let draft_number_load = $('#cant_carg1').val()
-        draft_number_load = parseFloat(draft_number_load.replace('.','')).toFixed(3)
+        draft_number_load = parseFloat(draft_number_load.replace('.','').replace(',','.')).toFixed(3)
         console.log(draft_number_load)
         $('#cant_carg').val(draft_number_load)
 });
