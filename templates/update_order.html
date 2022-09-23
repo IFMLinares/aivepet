@@ -1127,7 +1127,7 @@ Dashboard
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
                         
                         $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
-                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight +')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + '  (TM) </span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
+                        $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight+')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + '  (TM) </span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
                         $('#not_winerie').css('display', 'none');
                         let net = (weight_act + parseFloat(weight)).toFixed(3)
                         console.log(net)
@@ -1719,13 +1719,21 @@ function deletebl(id,total, bl){
 function deleteWinerie(id,w_act, w){
     let pk = id.replace('button-','')
     let winerie = $('#winerie-'+ pk)
-    winerie.remove()
-    let totalw = ($('#id_net_weight').val() - w).toFixed(3)
-    console.log(w)
-    console.log(totalw)
-    $("#id_Wineries option[value="+ pk +"]").remove()
-    $('#id_net_weight').val(totalw)
-    $('#net_weight').text(totalw)
+    $.ajax({
+        data: {
+            'id_bodega': pk,
+        },
+        url: "{% url 'transactions:delte_wineries' %}",
+        type: 'post',
+        beforeSend: function () {},
+        success: function (data) {
+        },
+    });
+        winerie.remove()
+        let totalw = ($('#id_net_weight').val() - w).toFixed(3)
+        $("#id_Wineries option[value="+ pk +"]").remove()
+        $('#id_net_weight').val(totalw)
+        $('#net_weight').text(totalw)
 }
 
 

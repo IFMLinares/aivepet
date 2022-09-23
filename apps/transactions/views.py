@@ -149,11 +149,34 @@ class WineriesAdd(LoginRequiredMixin, CreateView):
 
         winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto), remaining_in_warehouse=remaining_in_warehouse)
         trans = Transaction.objects.get(order_number=orden)
+        trans.Wineries.add(winerie)
         trans.save()
         query = Winerie.objects.get(pk=winerie.pk)
         producto = Product.objects.get(pk=query.product.pk)
         data = serialize('json', [query,producto])
         return HttpResponse(data, 'application/json')
+
+
+class WineriesDelete(LoginRequiredMixin, CreateView):
+    model = Winerie
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        id = self.request.POST['id_bodega']
+        winerie = Winerie.objects.get(pk=id)
+        winerie.delete()
+        winerie.save()
+        # trans = Transaction.Wineries.delete(id)
+        # print(trans)
+        # winerie.delete()
+        return ('Bodega eliminada')
+        
 
 # Vista para añadir internamente los productos (no visible para el usuario, solo para registro de datos)
 class ProductAdd(LoginRequiredMixin, CreateView):
