@@ -1110,6 +1110,7 @@ Dashboard
                     type: 'post',
                     beforeSend: function () { },
                     success: function (data) {
+                        console.log(data)
                         $('#bodega_nueva').val('')
                         $('#bodega_peso').val('')
                         var val = data[0].pk
@@ -1126,7 +1127,7 @@ Dashboard
                         
                         $('#id_Wineries').append('<option selected value=' + val + '>' + name + ': ' + product.toUpperCase()  + '; Peso: ' + weight + ' Toneladas</option>');
                         
-                        $('#id_bodega_transport').append('<option selected value=' + name + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
+                        $('#id_bodega_transport').append('<option value=' + val + '>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '</option>');
                         $("#wineries_list").append('<li id="winerie-'+ val +'"><span style="color: #51A351"><button type="button" class="close" data-dismiss="alert" id="button-'+ val +'" onclick="deleteWinerie(this.id,'+ weight_act +','+ weight+')" ><span aria-hidden="true">&times;</span></button>' + product.toUpperCase()  + '.  <strong>Bdga/ALM :</strong> ' + name + '; ' + weight1 + '  (TM) </span></li> <div class="col-md-12 mt-xl-3" style="margin-top: 0px; margin-left: -8%;"> <hr> </div>  ');
                         $('#not_winerie').css('display', 'none');
                         let net = (weight_act + parseFloat(weight)).toFixed(3)

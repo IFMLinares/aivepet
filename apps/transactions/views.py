@@ -148,9 +148,12 @@ class WineriesAdd(LoginRequiredMixin, CreateView):
         remaining_in_warehouse = float(peso)
 
         winerie = Winerie.objects.create(number=bodega, weight=peso, product=Product.objects.get(pk=producto), remaining_in_warehouse=remaining_in_warehouse)
+        winerie.save()
         trans = Transaction.objects.get(order_number=orden)
         trans.Wineries.add(winerie)
         trans.save()
+        print(trans.Wineries.all())
+        print(winerie.pk)
         query = Winerie.objects.get(pk=winerie.pk)
         producto = Product.objects.get(pk=query.product.pk)
         data = serialize('json', [query,producto])
@@ -275,6 +278,7 @@ class TransportAdd(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         trans = self.request.POST
+        print(trans['id_bodega_transport'])
         transaction = get_object_or_404(Transaction, pk=trans['transaction_id'])
         viaje = 1
         if transaction.transport.count() > 0:
