@@ -661,7 +661,10 @@ class PDFView1(View):
 
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
-    if((not transaction.order_type) or (not transaction.draft) or (not transaction.final_draft) or (not transaction.total_bls)):
+    if(transaction.order_type or transaction.draft or transaction.final_draft or transaction.total_bls):
+        return render(request, "errorFinish.html")
+    else:
+        
         transaction.state = 'Finalizado'
         transaction.final_date = datetime.datetime.now()
         transaction.save()
@@ -674,8 +677,7 @@ def FinishTransaction(request,pk):
             return redirect('transactions:order_list_load')
         else:
             return redirect('transactions:order_list_download')
-    else:
-        return render(request, "errorFinish.html")
+            
 
 
 def NominalTransAcepted(request, pk):
