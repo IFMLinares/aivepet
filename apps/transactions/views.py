@@ -661,7 +661,7 @@ class PDFView1(View):
 
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
-    if(transaction.order_type or transaction.draft or transaction.final_draft or transaction.total_bls):
+    if((not transaction.order_type) or (not transaction.draft) or (not transaction.final_draft) or (not transaction.total_bls)):
         transaction.state = 'Finalizado'
         transaction.final_date = datetime.datetime.now()
         transaction.save()
