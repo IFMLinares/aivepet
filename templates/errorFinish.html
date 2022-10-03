@@ -1,0 +1,222 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Dashboard
+{% endblock %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendors/select2-bootstrap-theme/select2-bootstrap.min.css' %}">
+{% endblock %}
+{% block content %}
+<div class="col-12 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="text-center">Registrar nueva orden de carga</h2>
+            <p class="card-description text-center">
+                Información de la operación:
+            </p>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="mb-xl-4" id="text-order-type">Ha ocurrido un error con la información:</h3>
+                    <h3 class="mb-xl-4 d-none" id="text-info">Por favor: verifique que toda la información haya sido proporcionada</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title w-100" id="exampleModalLabel">CONFIRMAR REGISTRO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modal-body" class="text-center"></h3>
+                <h4 class="text-center mt-3">¿Está usted seguro?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" style="color: white;">Cerrar</button>
+                <button type="button" class="btn btn-success mr-auto" id="sig-info">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'vendors/typeahead.js/typeahead.bundle.min.js' %}"></script>
+<script src="{% static 'vendors/select2/select2.min.js' %}"></script>
+
+<script src="{% static 'js/typeahead.js' %}"></script>
+<script src="{% static 'js/select2.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+    $('#id_receiving_customer').css('display', 'none')
+    $('#add_product_name').on('click', function () {
+        $(this).css('border-color', '')
+    })
+    $('#add_product_weight').on('click', function () {
+        $(this).css('border-color', '')
+    })
+    $('#add_product').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            $.ajax({
+                data: {
+                    'product': $("#add_product_name").val(),
+                    'weight': $("#add_product_weight").val(),
+                },
+                url: "{% url 'transactions:add_product' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    console.log(data);
+                    $('#add_product').val('');
+                    var val = data[0].pk;
+                    var name = data[1].fields.name;
+                    $('#id_product').append('<option selected value=' + val + '>' + name + '</option>');
+                },
+            });
+        }
+    })
+
+    $('#button_add_product').on('click', function () {
+        event.preventDefault();
+        if ($("#add_product_name").val() || $("#add_product_weight").val()) {
+            $.ajax({
+                data: {
+                    'product': $("#add_product_name").val(),
+                    'weight': $("#add_product_weight").val(),
+                },
+                url: "{% url 'transactions:add_product' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    console.log(data)
+                    $('#add_product_name').val('');
+                    $('#add_product_weight').val('');
+                    var val = data[0].pk;
+                    var name = data[1].fields.name;
+                    var tm = data[0].fields.weight;
+                    $('#id_product').append('<option selected value=' + val + '>' + name + ' Peso: ' + tm + 'TM</option>');
+                },
+            });
+        } else {
+            if (!$('#add_product_name').val()) {
+                $('#add_product_name').css('border-color', 'red')
+            }
+            if (!$('#add_product_weight').val()) {
+                $('#add_product_weight').css('border-color', 'red')
+            }
+        }
+    })
+    $('#cliente_recibidor_comprador').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#cliente_recibidor_empresa').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#cliente_recibidor_dni').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#cliente_recibidor_tipdoc').on('click', function(){
+        $(this).css('border-color', '')
+    })
+    $('#cliente_recibidor_button').on('click', function () {
+        event.preventDefault();
+        if(!$('#cliente_recibidor_comprador').val() || !$('#cliente_recibidor_empresa').val() || !$('#cliente_recibidor_dni').val()){
+            if(!$('#cliente_recibidor_comprador').val()){
+                $('#cliente_recibidor_comprador').css('border-color', 'red')
+            }
+            if(!$('#cliente_recibidor_empresa').val()){
+                    $('#cliente_recibidor_empresa').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_dni').val()){
+                    $('#cliente_recibidor_dni').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_tipdoc').val()){
+                    $('#cliente_recibidor_tipdoc').css('border-color', 'red')
+                }
+        }else{
+            $.ajax({
+                data: {
+                    'cliente': $('#cliente_recibidor_comprador').val(),
+                    'empresa': $('#cliente_recibidor_empresa').val(),
+                    'dni': $('#cliente_recibidor_dni').val(),
+                    'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
+                },
+                url: "{% url 'transactions:add_reciving_customers' %}",
+                type: 'post',
+                beforeSend: function () { },
+                success: function (data) {
+                    $('#cliente_recibidor_comprador').val('')
+                    $('#cliente_recibidor_empresa').val('')
+                    $('#cliente_recibidor_dni').val('')
+                    var val = data[0].pk
+                    var name = data[0].fields.name
+                    var company = data[0].fields.company_name
+                    var dni = data[0].fields.dni
+                    var tipdoc = data[0].fields.tipdoc
+                    $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                    $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
+                    $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                    $('#not_customer').css('display', 'none');
+                },
+            });
+        }
+    })
+
+    $('#cliente_recibidor_dni').keypress(function (e) {
+        if (e.keyCode == 13) {
+            event.preventDefault()
+            if(!$('#cliente_recibidor_comprador').val() || !$('#cliente_recibidor_empresa').val() || !$('#cliente_recibidor_dni').val()){
+            if(!$('#cliente_recibidor_comprador').val()){
+                $('#cliente_recibidor_comprador').css('border-color', 'red')
+            }
+            if(!$('#cliente_recibidor_empresa').val()){
+                    $('#cliente_recibidor_empresa').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_dni').val()){
+                    $('#cliente_recibidor_dni').css('border-color', 'red')
+                }
+            if(!$('#cliente_recibidor_tipdoc').val()){
+                    $('#cliente_recibidor_tipdoc').css('border-color', 'red')
+                }
+            }else{
+                $.ajax({
+                    data: {
+                        'cliente': $('#cliente_recibidor_comprador').val(),
+                        'empresa': $('#cliente_recibidor_empresa').val(),
+                        'dni': $('#cliente_recibidor_dni').val(),
+                        'tipodc': $('#cliente_recibidor_tipdoc option:selected').val()
+                    },
+                    url: "{% url 'transactions:add_reciving_customers' %}",
+                    type: 'post',
+                    beforeSend: function () { },
+                    success: function (data) {
+                        $('#cliente_recibidor_comprador').val('')
+                        $('#cliente_recibidor_empresa').val('')
+                        $('#cliente_recibidor_dni').val('')
+                        var val = data[0].pk
+                        var name = data[0].fields.name
+                        var company = data[0].fields.company_name
+                        var dni = data[0].fields.dni
+                        var tipdoc = data[0].fields.tipdoc
+                        $('#id_receiving_customer').append('<option selected value=' + val + '>' + name + ' </option>');
+                        $('#destiny_customer').append('<option value=' + val + '>' + name + ' </option>');
+                        $("#customer_list").append('<li> Empresa: '+ company + '<br> Responsable: ' + name + '<br> '+ tipdoc +': ' + dni + '</li>');
+                        $('#not_customer').css('display', 'none');
+                    },
+                });
+            }
+        }
+    })
+</script>
+
+
+{% endblock %}
