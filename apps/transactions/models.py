@@ -90,7 +90,7 @@ class Weight(models.Model):
 class Status(models.Model):
     state = models.CharField(max_length=150, verbose_name='Estado', blank=True, null=True)
     comment = models.TextField(verbose_name='comentario de estatus', blank=True, null=True)
-    fecha = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    fecha = models.DateTimeField(blank=True, null=True)
 
 class MultipleBL(models.Model):
     bl = models.FloatField(verbose_name='Bill of Lading del buque', blank=True, null=True)

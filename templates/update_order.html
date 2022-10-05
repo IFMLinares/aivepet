@@ -1459,6 +1459,8 @@ Dashboard
             type: 'post',
             beforeSend: function () { },
             success: function (data) {
+                console.log($('#status_date').val())
+                console.log(data)
                 var val = data[0].pk;
                 var date = data[0].fields.fecha;
                 var state = data[0].fields.state;
