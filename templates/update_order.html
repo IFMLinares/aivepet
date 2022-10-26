@@ -433,7 +433,7 @@ Dashboard
                                     <div class="col-sm-4">
                                         <select class="custom-select add-order mt-xl-2" id="destiny_customer">
                                             {% for customer in orden.receiving_customer.all %}
-                                            <option value="{{ customer.pk }}">{{ customer.company_name }} {% endif %}</option>
+                                            <option value="{{ customer.pk }}">{{ customer.company_name }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
