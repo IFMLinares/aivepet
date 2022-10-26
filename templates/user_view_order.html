@@ -228,6 +228,18 @@ Dashboard
                         </div>
                     </div>
                     {% endif %}
+                    
+                    <div class="col-md-6 pl-xl-5">
+                        <div class="form-group row">
+                            <li>
+                                <span>Total en bodegas: {{ orden.net_weight|floatformat:3|intcomma }}(TM)
+                                </span>
+                            </li>
+                        </div>
+                    </div>
+                    
+                    
+                    
                 </div>
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
