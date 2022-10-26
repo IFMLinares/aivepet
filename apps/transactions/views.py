@@ -10,7 +10,7 @@ from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView, View
-from django.contrib.auth.mixins import LoginRequiredMixinFinishTransaction
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
@@ -26,19 +26,16 @@ from apps.core.models import User
 # Create your views here.
 '''
 Resumen de las vistas usadas en el módulo de transacciones
-
 Vista para el modelo de transacciones:
     AddOrder: Vista para añadir las órdenes de carga/descarga
     OrderListLoad: Listado de todas las órdenes en gestión de carga
     OrderListDownload: Listado de todas las órdenes en gestión de descarga
     OrderUpdate: Vista utilizada para el monitoreo y actualización de cualquier orden no culminada
-
     Las siguientes vistas son solo para el guardado de datos enviados por ajax, no tienen ningún html visible:
         WineriesAdd: Guarda las bodegas con relacion ManyToMany
         ProductAdd: Guarda los productos con relacion ManyToMany
         DestinationAdd: Guarda los destinos con relacion ManyToMany
         ReceivingCustomerAdd: Guarda los clientes recibidores con relacion ManyToMany
-
 Vistas para el modelo de Transacciones nominales:
     AddOrderNominal: Nomina un nuevo barco Cuyo estatus por defecto es "En espera"
     NominalList: Lista de barcos nominados cuyo estatus sigue "En espera"
@@ -662,8 +659,9 @@ class PDFView1(View):
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
     # if(transaction.order_type or transaction.draft or transaction.final_draft or transaction.total_bls):
-    #   return render(request, "errorFinish.html")
-    #else:  
+    #     return render(request, "errorFinish.html")
+    # else:
+        
     transaction.state = 'Finalizado'
     transaction.final_date = datetime.datetime.now()
     transaction.save()
@@ -719,4 +717,3 @@ def NominalTransAcepted(request, pk):
     transaction.save()
     messages.success(request, 'Orden Aceptada exitosamente')
     return redirect('transactions:update_order', transaction.pk)
-
