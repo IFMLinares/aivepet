@@ -266,7 +266,7 @@ Dashboard
                                         
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong> {% if orden.order_type == 'descarga' %} Draft Inicial + Constante{% else %} Draft inicial (Constante) {% endif %}</strong></label>
+                                                <label class="col-md-4 col-form-label"> <strong> Draft Inicial{% if orden.order_type == 'descarga' %}  +  {% endif %}(Constante)</strong></label>
                                                 <div class="col-sm-5">
                                                     <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
                                                     <input type="text" class="form-control add-order mt-xl-2"
