@@ -175,7 +175,7 @@ Dashboard
                     <div class="col-md-12 pl-xl-5">
                         <div class="form-group row text-center">
                             <li>
-                                <span> <strong> BL Total: {{ orden.total_bls|floatformat:3|intcomma }}  (TM </strong> <br>
+                                <span> <strong> BL Total: {{ orden.total_bls|floatformat:3|intcomma }}  (TM) </strong> <br>
                                 </span>
                             </li>
                         </div>
@@ -452,9 +452,9 @@ Dashboard
                         <div class="form-group row">
                             <li class="col-md-12">
                                 <span>Remanente  {% if orden.order_type == 'carga' %}por cargar: {% else %} a bordo: {% endif %} 
-                                    </strong><span id="remanente">
-                                    </span>
-                                </strong>(TM)
+                                    <strong><span id="remanente">
+                                    </span>(TM)
+                                </strong>
                             </li>
                         </div>
                     </div>
@@ -462,7 +462,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Diferencia: <strong>{{ orden.difference|floatformat:3|intcomma }}</strong> (TM) 
+                                <span>Diferencia: <strong>{{ orden.difference|floatformat:3|intcomma }}(TM)</strong>
                             </li>
                         </div>
                     </div>
@@ -470,7 +470,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Total de la pesada: <strong>{{ orden.transport_heavy|floatformat:3|intcomma }} </strong></span> (TM) 
+                                <span>Total de la pesada: <strong>{{ orden.transport_heavy|floatformat:3|intcomma }} (TM)</strong></span> 
                             </li>
                         </div>
                     </div>
@@ -478,7 +478,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Cantidad cargada - Draft (Puerto de Carga): <strong>{{ f|floatformat:3|intcomma }} </strong></span> (TM) 
+                                <span>Cantidad cargada - Draft (Puerto de Carga): <strong>{{ f|floatformat:3|intcomma }} (TM)</strong></span>
                             </li>
                         </div>
                     </div>
@@ -488,28 +488,28 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>BL (Puerto de Carga): <strong>{{ a1|floatformat:3|intcomma }} </strong></span> (TM) 
+                                <span>BL (Puerto de Carga): <strong>{{ a1|floatformat:3|intcomma }} (TM)</strong></span> 
                             </li>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Draft (Puerto de Carga): <strong>{{ b|floatformat:3|intcomma }}</strong> </span> (TM) 
+                                <span>Draft (Puerto de Carga): <strong>{{ b|floatformat:3|intcomma }}(TM)</strong> </span>
                             </li>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>BL (Puerto de Descarga): <strong> {{ c|floatformat:3|intcomma }} </strong></span> (TM) 
+                                <span>BL (Puerto de Descarga): <strong> {{ c|floatformat:3|intcomma }}(TM) </strong></span>  
                             </li>
                         </div>
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Draft (Puerto de Descarga): <strong>{{ d|floatformat:3|intcomma }} </strong> </span> (TM) 
+                                <span>Draft (Puerto de Descarga): <strong>{{ d|floatformat:3|intcomma }}  (TM)</strong> </span> 
                             </li>
                         </div>
                     </div>
