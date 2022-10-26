@@ -286,14 +286,14 @@ class TransportAdd(LoginRequiredMixin, CreateView):
         id_freight_paid_by = trans['id_freight_paid_by']
         id_comment = trans['id_comment']
 
-        if(id_driver_name == '' or ' ' ):
-            id_driver_name = 'N/A'
+        #if(id_driver_name == '' or ' ' ):
+            #id_driver_name = 'N/A'
 
-        if(id_freight_paid_by == '' or ' ' ):
-            id_freight_paid_by = 'N/A'
+        #if(id_freight_paid_by == '' or ' ' ):
+            #id_freight_paid_by = 'N/A'
 
-        if(id_comment == '' or ' ' ):
-            id_comment = 'N/A'
+        #if(id_comment == '' or ' ' ):
+            #id_comment = 'N/A'
         customer = ReceivingCustomer.objects.get(pk=trans['id_transport_customer'])
         winerie = Winerie.objects.get(pk=trans['id_bodega_transport'])
         remaining_in_warehouse_transport = float(winerie.weight) - float(trans['id_net_weight'])
