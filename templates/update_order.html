@@ -665,7 +665,7 @@ Dashboard
                                                 <span style="font-size: 18px;"><strong> Draft Puerto de carga: <span id="load_port">{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
                                             </li>
                                                 <li>
-                                                    <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial + Constante: <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
+                                                    <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial {% if orden.order_type == 'descarga' %}  +  {% endif %} (Constante): <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
                                                 </li>
                                             <li>
                                                 <span style="font-size: 20px;" id="span-draft-final"><strong> Draft Final: <span id="final-draft-span">{% if orden.final_draft %} {{ orden.final_draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
