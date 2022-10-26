@@ -276,7 +276,7 @@ Dashboard
                                     Responsable: {{ customer.name }} <br>
                                     {{ customer.dni }} <br>
                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }} <br>
-                                    {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity|floatformat:3|intcomma }} (TM) 
+                                    {% if orden.order_type == 'carga' %} <strong>Cargado: {{ customer.quantity|floatformat:3|intcomma }} (TM) </strong>
                                                     {% else %}
                                                         Descargado: <strong>{{ customer.quantity|floatformat:3|intcomma }} (TM) </strong>
                                                     {% endif %}
