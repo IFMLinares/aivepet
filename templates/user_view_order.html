@@ -278,7 +278,7 @@ Dashboard
                                     Fecha de adición {{ customer.start_date|date:"d/m/Y g:i:a" }} <br>
                                     {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity|floatformat:3|intcomma }} (TM) 
                                                     {% else %}
-                                                        Descargado: {{ customer.quantity|floatformat:3|intcomma }} (TM) 
+                                                        Descargado: <strong>{{ customer.quantity|floatformat:3|intcomma }} (TM) </strong>
                                                     {% endif %}
                                 </span>
                             </li>
