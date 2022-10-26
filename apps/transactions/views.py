@@ -10,7 +10,7 @@ from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView, DetailView, View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixinFinishTransaction
 from django.template.loader import get_template
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
@@ -661,22 +661,21 @@ class PDFView1(View):
 
 def FinishTransaction(request,pk):
     transaction = Transaction.objects.get(pk=pk)
-    if(transaction.order_type or transaction.draft or transaction.final_draft or transaction.total_bls):
-        return render(request, "errorFinish.html")
+    # if(transaction.order_type or transaction.draft or transaction.final_draft or transaction.total_bls):
+    #   return render(request, "errorFinish.html")
+    #else:  
+    transaction.state = 'Finalizado'
+    transaction.final_date = datetime.datetime.now()
+    transaction.save()
+        
+    transaction_nominal = NominalTransaccion.objects.get(pk=transaction.nominal_id)
+    transaction_nominal.state = 'Finalizado'
+    transaction_nominal.save()
+    messages.success(request, 'Orden finalizada exitosamente')
+    if transaction.order_type == 'carga':
+        return redirect('transactions:order_list_load')
     else:
-        
-        transaction.state = 'Finalizado'
-        transaction.final_date = datetime.datetime.now()
-        transaction.save()
-        
-        transaction_nominal = NominalTransaccion.objects.get(pk=transaction.nominal_id)
-        transaction_nominal.state = 'Finalizado'
-        transaction_nominal.save()
-        messages.success(request, 'Orden finalizada exitosamente')
-        if transaction.order_type == 'carga':
-            return redirect('transactions:order_list_load')
-        else:
-            return redirect('transactions:order_list_download')
+        return redirect('transactions:order_list_download')
             
 
 
