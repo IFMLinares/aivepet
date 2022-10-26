@@ -392,7 +392,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Draft Inicial: {{ orden.draft|floatformat:3|intcomma }} (TM) </span>
+                                <span>Draft Inicial: <strong>{{ orden.draft|floatformat:3|intcomma }} (TM)</strong> </span>
                             </li>
                         </div>
                     </div>
@@ -417,7 +417,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Draft Final: {{ orden.final_draft|floatformat:3|intcomma }}</span> (TM) 
+                                <span>Draft Final: <strong>{{ orden.final_draft|floatformat:3|intcomma }}(TM) </strong></span> 
                             </li>
                         </div>
                     </div>
@@ -435,7 +435,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Draft en puerto de carga: {{ orden.cant_carg|floatformat:3|intcomma }}</span> (TM) 
+                                <span>Draft en puerto de carga: <strong>{{ orden.cant_carg|floatformat:3|intcomma }}(TM) </strong></span>
                             </li>
                         </div>
                     </div>
