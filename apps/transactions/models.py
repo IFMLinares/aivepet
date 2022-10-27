@@ -139,6 +139,7 @@ class Transaction(models.Model):
     updates = models.PositiveBigIntegerField(default=0, blank=True, null=True)
     history = HistoricalRecords(inherit=True)
     difference = models.FloatField(verbose_name='diferencia', blank=True, null=True)
+    new_qan = models.FloatField(verbose_name='cantidad cargada/descargada', blank=True, null=True, default=0)
 
     def save(self, *args, **kwargs):
         self.order_number = slugify('{}'.format(self.pk))
@@ -174,3 +175,6 @@ class NominalTransaccion(models.Model):
     # def save(self, *args, **kwargs):
     #     self.order_number = slugify('{}'.format(self.pk))
     #     super(NominalTransaccion, self).save(*args,**kwargs)
+
+class StatusTranssaction(models.Model):
+    status = models.CharField(max_length=150, verbose_name='estatus del buque', blank=True, null=True)

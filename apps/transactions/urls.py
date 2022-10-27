@@ -17,6 +17,7 @@ urlpatterns = [
     path('product-list', OrderListProducts.as_view(), name='product_list'),
     path('customers-list', OrderListCustomers.as_view(), name='customers_list'),
     path('add-transport', TransportAdd.as_view(), name='add_transport'),
+    path('add-status', StatusAdd.as_view(), name='add_status'),
     path('get-act', GetAct.as_view(), name='get_act'),
     path('client_transaction/<int:pk>', UserViewTransaction.as_view(), name='client_view'),
     path('finish_transaction/<int:pk>', FinishTransaction, name='finish_trans'),

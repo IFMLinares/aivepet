@@ -20,7 +20,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 import datetime
 from xhtml2pdf import pisa
 
-from .models import Product, ProductWeight, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport, Weight, Status, MultipleBL
+from .models import Product, ProductWeight, Transaction, Winerie, Destination, ReceivingCustomer, NominalTransaccion, Transport, Weight, Status, MultipleBL, StatusTranssaction
 from apps.core.models import User
 
 # Create your views here.
@@ -125,6 +125,16 @@ class OrderUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
             return reverse_lazy('transactions:order_list_load')
         else:
             return reverse_lazy('transactions:order_list_download')
+    
+    def get_context_data(self, **kwargs):
+        ctx = super(OrderUpdate, self).get_context_data(**kwargs)
+        # ctx['products'] = Product.objects.values('name', 'pk').distinct().order_by('name')
+        try:
+            ctx['status'] = StatusTranssaction.objects.all()
+        except:
+            pass
+        return ctx
+
 
 # Vista para añadir internamente las bodegas (no visible para el usuario, solo para registro de datos)
 class WineriesAdd(LoginRequiredMixin, CreateView):
@@ -224,26 +234,6 @@ class DestinationAdd(LoginRequiredMixin, CreateView):
         data = serialize('json', [query, user, product])
         return HttpResponse(data, 'application/json')
 
-class StatusAdd(LoginRequiredMixin, CreateView):
-    model = Status
-
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return self.model.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        status = self.model.objects.create(
-            state = self.request.POST['status_select'],
-            comment = self.request.POST['status_comment'],
-            fecha = self.request.POST['status_date']
-        )
-        query = self.model.objects.get(pk=status.pk)
-        data = serialize('json', [query])
-        return HttpResponse(data, 'application/json')
-
 class GetAct(LoginRequiredMixin, CreateView):
     model = Transaction
 
@@ -329,6 +319,27 @@ class TransportAdd(LoginRequiredMixin, CreateView):
         query = self.model.objects.get(pk=transport.pk)
         query.customer_name = customer
         data = serialize('json', [query, customer])
+        return HttpResponse(data, 'application/json')
+
+
+class StatusAdd(LoginRequiredMixin, CreateView):
+    model = StatusTranssaction
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        status = self.request.POST
+        statusqs = self.model.objects.create(
+            status= status['status'],
+            )
+        statusqs.save()
+        query = self.model.objects.get(pk=statusqs.pk)
+        data = serialize('json', [query])
         return HttpResponse(data, 'application/json')
 
 # Vista para añadir internamente los clientees recibidores (no visible para el usuario, solo para registro de datos)
@@ -534,7 +545,7 @@ class PDFView(View):
                     'orden': transaction,
                     'icon': '{}{}'.format(settings.STATIC_URL, 'images/logo.png'),
                     'total_w': total_w,
-                    'quantity_darft': quantity_darft,
+                    'quantity_darft': draft_pd,
                     'a': (float(cant_desp - bl_pc)),
                     '1p': (((cant_desp - bl_pc)/bl_pc)*100),
                     'b': (cant_desp - draft_pc),

@@ -187,6 +187,19 @@ Dashboard
                                 <h2 class="mt-xl-2 text-center mb-xl-4">Estatus del buque:</h2>
                                 <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                                 <div class="col-md-12">
+                                    
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label">Añadir nuevo estatus:</label>
+                                        <div class="col-sm-5">
+                                            <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
+                                            <input type="text" class="form-control add-order" id="status_new">
+                                        </div>
+                                        <div class="col-sm-3 mt-xl-1">
+                                            <button class="btn btn-sm btn-success mr-xl-4 mt-xl-1 {% if orden.bl %} disabled {% endif %}" type="button"
+                                                    id="status_Add">Añadir</button>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group row">
                                         <label class="col-md-4 col-form-label">Estado:</label>
                                         <div class="col-sm-7">
@@ -203,6 +216,9 @@ Dashboard
                                                 <option value="FINALIZA LA INSPECCIÓN FINAL">FINALIZA LA INSPECCIÓN FINAL</option>
                                                 <option value="FINALIZA CALCULOS">FINALIZA CÁLCULOS</option>
                                                 <option value="PAUSADO">PAUSADO</option>
+                                                {% for status in status.all %}
+                                                <option value="{{ status.status }}">{{ status.status }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                     </div>
@@ -302,6 +318,22 @@ Dashboard
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-md-12">
+                                        <div class="form-group row">
+                                            <label class="col-md-4 col-form-label"> <strong> {% if orden.order_type == 'carga' %}  Cantidad Cargada {% else %} Cantidad a bordo  {% endif %} </strong></label>
+                                            <div class="col-sm-5">
+                                                <!-- <input type="text" class="form-control add-order" placeholder="bodega del barco, de dónde procede el producto" name="Wineries" id="id_Wineries"> -->
+                                                <input type="text" class="form-control add-order mt-xl-2"
+                                                    placeholder="Draft del buque" name="new_qan1" id="id_new_qan1" readonly {% if orden.new_qan %} readonly value="{{ orden.new_qan|floatformat:3|intcomma }}" {% endif %}>
+                                                    <input type="text" class="form-control add-order mt-xl-2 d-none"
+                                                    placeholder="Draft del buque" name="new_qan" id="id_new_qan" readonly {% if orden.new_qan %} value="{{ orden.new_qan }}" {% endif %}>
+                                            </div>
+                                            <div class="col-sm-3 mt-xl-2">
+                                                 (TM) 
+                                            </div>
+                                        </div>
+                                    </div> 
                                     <hr>
                                     <h2 class="mt-xl-2 text-center mb-xl-4">Bill of Lading:</h2>
                                     <div class="form-group row">
@@ -939,6 +971,7 @@ Dashboard
 <script>
 
     var update = parseInt($('#id_updates').val());
+    let orderType = '{{ orden.order_type }}'
     update = update + 1
     $('#id_updates').val(update)
 
@@ -969,6 +1002,29 @@ Dashboard
             $('#id_trans_net_weight').val(pesoNeto1)
         }
     }
+
+    
+    function calculateNewQan(){
+        if($('#id_draft1').val() && $('#final_draft1').val()){
+            let draft_inicialC = $('#id_draft').val()
+            let draft_finalC = $('#final_draft').val()
+            let newqanC = 0
+            if(orderType == 'carga'){
+                newqanC = (parseFloat(draft_finalC) - parseFloat(draft_inicialC)).toFixed(3)
+            }else{
+                newqanC = (parseFloat(draft_inicialC - parseFloat(draft_finalC))).toFixed(3)
+            }
+            let newc = newqanC.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
+            $('#id_new_qan1').val(newc)
+        }
+    }
+
+    $('#id_draft1').on('change', function(){
+        calculateNewQan()
+    })
+    $('#final_draft1').on('change', function(){
+        calculateNewQan()
+    })
 
     $('#id_gross_weight').on('change', function(){
         calculate()
@@ -1409,6 +1465,28 @@ Dashboard
             },
         });
     })
+
+
+    $('#status_Add').on('click', function () {
+        event.preventDefault();
+        $.ajax({
+            data: {
+                'status' : $('#status_new').val(),
+            },
+            url: "{% url 'transactions:add_status' %}",
+            type: 'post',
+            beforeSend: function () { },
+            success: function (data) {
+                $('#status_new').val('')
+                console.log(data)
+                var val = data[0].fields.status
+                
+                $("#status_select").append('<option value=' + val + '> '+ val+ '</option>');
+            },
+        });
+    })
+
+
     let timeout
 
     // $('#id_tare_weight').on('keydown', function(){
@@ -1764,8 +1842,13 @@ function totalUnloaded(){
     let dratinicial = (parseFloat($('#id_draft').val()))
     let draftfinal = parseFloat($('#final_draft').val())
     if (dratinicial > 0 && draftfinal >0 ){
-
-        let totalUnloaded = ((dratinicial - draftfinal).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+        let totalUnloaded = 0
+        if(orderType == 'descarga'){
+            totalUnloaded = ((dratinicial - draftfinal).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+        }else{
+            totalUnloaded = ((draftfinal - dratinicial).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+        }
+        
         $('#total-unloaded').text(totalUnloaded)
     }
 }
