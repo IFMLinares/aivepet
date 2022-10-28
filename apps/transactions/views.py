@@ -321,8 +321,27 @@ class TransportAdd(LoginRequiredMixin, CreateView):
         data = serialize('json', [query, customer])
         return HttpResponse(data, 'application/json')
 
-
 class StatusAdd(LoginRequiredMixin, CreateView):
+    model = Status
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.model.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        status = self.model.objects.create(
+            state = self.request.POST['status_select'],
+            comment = self.request.POST['status_comment'],
+            fecha = self.request.POST['status_date']
+        )
+        query = self.model.objects.get(pk=status.pk)
+        data = serialize('json', [query])
+        return HttpResponse(data, 'application/json')
+
+class NewStatusAdd(LoginRequiredMixin, CreateView):
     model = StatusTranssaction
 
     @method_decorator(csrf_exempt)
