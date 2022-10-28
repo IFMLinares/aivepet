@@ -1533,7 +1533,7 @@ Dashboard
                 'status_date': $('#status_date').val(),
                 'status_comment': $('#status_comment').val(),
             },
-            url: "{% url 'transactions:status_add' %}",
+            url: "{% url 'transactions:add_status' %}",
             type: 'post',
             beforeSend: function () { },
             success: function (data) {

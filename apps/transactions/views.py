@@ -352,9 +352,10 @@ class NewStatusAdd(LoginRequiredMixin, CreateView):
         return self.model.objects.all()
 
     def post(self, request, *args, **kwargs):
-        status = self.request.POST
+        statusnew = self.request.POST
+        print(statusnew)
         statusqs = self.model.objects.create(
-            status= status['status'],
+            status = statusnew['status'],
             )
         statusqs.save()
         query = self.model.objects.get(pk=statusqs.pk)
