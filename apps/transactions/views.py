@@ -445,7 +445,7 @@ class UserViewTransaction(LoginRequiredMixin,DetailView):
                 ctx['d'] = 0
         else:
             try:
-                f = float(transaction.cant_carg) - float(transaction.total_product_weight)
+                f = float(transaction.final_draft) - float(transaction.draft)
                 ctx['f'] = f
             except:
                 ctx['f'] = 0

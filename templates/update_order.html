@@ -359,7 +359,7 @@ Dashboard
                                             
                                             <select class="custom-select add-order mt-xl-2" id="id_bl_customer">
                                                 {% for customer in orden.receiving_customer.all %}
-                                                <option value="{{ customer.pk }}">{{ customer.name }}- {{ customer.dni }} - {{ customer.company_name }}</option>
+                                                <option value="{{ customer.pk }}">{{ customer.company_name|title }}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
@@ -379,7 +379,7 @@ Dashboard
                         <hr>
                         <div class="border border-secondary rounded">
                             <div class="col-md-12">
-                                <h2 class="mt-xl-4 text-center mb-xl-4">Distribución de carga</h2>
+                                <h2 class="mt-xl-4 text-center mb-xl-4">Plan de carga</h2>
                                 <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                             </div>
                             <hr>
@@ -492,7 +492,7 @@ Dashboard
                                     <div class="col-sm-8">
                                         <select class="custom-select add-order mt-xl-2" id="id_transport_customer">
                                             {% for customer in orden.receiving_customer.all %}
-                                            <option value="{{ customer.pk }}">{{ customer.company_name }} {% if customer.dni == 'N/A' %}{% else %} - {{ customer.dni }} - {{ customer.company_name }}{% endif %}</option>
+                                            <option value="{{ customer.pk }}">{{ customer.company_name|title }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -722,7 +722,7 @@ Dashboard
                                                     </span>
 
                                             {% else %}
-                                                <span id="span-load-draft1"> Cantidad cargada: <span id="span-load-draft">{{ orden.cant_carg|floatformat:3|intcomma }}</span> TM</span>   
+                                                <span id="span-load-draft1"> Cantidad cargada: <span id="span-load-draft"></span> TM</span>   
                                             {% endif %}
                                             </li>
                                         </ul>
@@ -802,7 +802,7 @@ Dashboard
                                             {% if orden.destinations.all %}
                                             {% for destiny in orden.destinations.all %}
                                             <li class="col-md-12">
-                                                <span>Proveedor: {{ destiny.customer_name.company_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
+                                                <span>Recibidor: {{ destiny.customer_name.company_name|title }} <br> Destino: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|upper }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
                                             </li>
                                             <div class="col-md-12 mt-xl-3" style="margin-top: 0px;">
                                                 <hr>
@@ -1016,8 +1016,10 @@ Dashboard
             }
             let newc = newqanC.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             $('#id_new_qan1').val(newc)
+            $('#span-load-draft').text(newc)
         }
     }
+    calculateNewQan()
 
     $('#id_draft1').on('change', function(){
         calculateNewQan()
@@ -1473,7 +1475,7 @@ Dashboard
             data: {
                 'status' : $('#status_new').val(),
             },
-            url: "{% url 'transactions:add_status' %}",
+            url: "{% url 'transactions:status_add' %}",
             type: 'post',
             beforeSend: function () { },
             success: function (data) {

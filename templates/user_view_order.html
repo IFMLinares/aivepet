@@ -77,7 +77,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del Cliente:
-                                <b>{{ orden.customer_name.first_name }}</b>
+                                <b>{{ orden.customer_name.company_name }}</b>
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }} (TM) .</b>
+                                            <b>{{ product.product_id.name|title }} (TM) .</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -112,18 +112,24 @@ Dashboard
                             </div>
                         </div>
                     </div>
-                    
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label"> Cantidad total:
+                            <div class="col-sm-12 col-form-label">Cantidades:
                                 <ul>
+                                    {% for product in orden.product.all %}
                                         <li>
-                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                            <b>{{ product.weight|floatformat:3|intcomma }} (TM) .</b>
+                                            <br>
                                         </li>
+                                    {% endfor %}
+                                    <li>
+                                        <strong>Cantidad total: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Unidad de medida:
@@ -204,7 +210,7 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Bodegas:</h3>
+                        <h3 class="mb-xl-4 text-center">Plan de carga:</h3>
                     </div>
                     {% if orden.Wineries.all %}
                     {% for winerie in orden.Wineries.all %}
@@ -255,17 +261,13 @@ Dashboard
                                 <span>Responsable: {{ orden.name }}
                                 </span>
                             </li>
-                            <li class="ml-xl-4 mr-xl-4">
-                                <span> Nro de Identificación: {{ orden.dni }}
-                                </span>
-                            </li>
                         </div>
                     </div>
                 </div>
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Clientes compradores:</h3>
+                        <h3 class="mb-xl-4 text-center">Clientes compradores (Recibidores):</h3>
                     </div>
                     {% if orden.receiving_customer.all %}
                     {% for customer in orden.receiving_customer.all %}
@@ -298,14 +300,15 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Destinos:</h3>
+                        <h3 class="mb-xl-4 text-center">
+                            {% if orden.order_type == 'carga' %} Puertos Destinos {% else %} Destinos: {% endif %}</h3>
                     </div>
                     {% if orden.destinations.all %}
                     {% for destiny in orden.destinations.all %}
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Nombre del cliente: {{ destiny.customer_name|title }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|title }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
+                                <span>Nombre del cliente: {{ destiny.customer_name.company_name }} <br> Dirección: {{ destiny.destiny }} {% for product in destiny.product.all %} <br> Producto: {{ product.name|title }} {% endfor %} <br> Fecha de adición: {{ destiny.start_date|date:"d/m/Y g:i:a" }}</span>
                             </li>
                         </div>
                     </div>
@@ -386,7 +389,7 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Draft surveys: (TM) </h3>
+                        <h3 class="mb-xl-4 text-center">Draft surveys report: (TM) </h3>
                     </div>
                     {% if orden.draft %}
                     <div class="col-md-6 pl-xl-5">
@@ -422,7 +425,7 @@ Dashboard
                         </div>
                     </div>
                     {% endif %}
-                    
+<!--                     
                     {% if orden.cant_carg == '0' or  orden.cant_carg == ''  %}
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
@@ -439,7 +442,7 @@ Dashboard
                             </li>
                         </div>
                     </div>
-                    {% endif %}
+                    {% endif %} -->
                 </div>
                 
                 <hr>
@@ -448,7 +451,7 @@ Dashboard
                         <h3 class="mb-xl-4 text-center">Totales: (TM) </h3>
                     </div>
                     {% if orden.state == 'En operación' %}
-                    <div class="col-md-6 pl-xl-5">
+                    <!-- <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
                                 <span>Remanente  {% if orden.order_type == 'carga' %}por cargar: {% else %} a bordo: {% endif %} 
@@ -457,7 +460,7 @@ Dashboard
                                 </strong>
                             </li>
                         </div>
-                    </div>
+                    </div> -->
                     {% else %}
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
@@ -470,7 +473,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Total de la pesada: <strong>{{ orden.transport_heavy|floatformat:3|intcomma }} (TM)</strong></span> 
+                                <span>Total de la pesada según el terminal: <strong>{{ orden.transport_heavy|floatformat:3|intcomma }} (TM)</strong></span> 
                             </li>
                         </div>
                     </div>
@@ -478,7 +481,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Cantidad cargada - Draft (Puerto de Carga): <strong>{{ f|floatformat:3|intcomma }} (TM)</strong></span>
+                                <span>Cantidad cargada segun draft: <strong>{{ f|floatformat:3|intcomma }} (TM)</strong></span>
                             </li>
                         </div>
                     </div>
