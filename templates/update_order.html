@@ -79,7 +79,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Proveedor:
-                                <b>{{ orden.customer_name.first_name }} {{ orden.customer_name.last_name }}</b>
+                                <b>{{ orden.customer_name.company_name }}</b>
                             </div>
                         </div>
                     </div>
@@ -132,8 +132,7 @@ Dashboard
                                             <li> 
                                                 <span
                                                     >Empresa: {{ customer.company_name|title }} <br />
-                                                    Responsable: {{ customer.name|title }} <br />
-                                                    Nro de Identificación: {% if customer.dni %}: {{ customer.dni }}{% else %}  N/A  {% endif %}<br />
+                                                    Responsable: {{ customer.name|title }} {{ customer.last_name|title }} <br />
                                                     {% if orden.order_type == 'carga' %} Cargado: {{ customer.quantity|floatformat:3|intcomma }}  (TM) 
                                                     {% else %} Descargado: {{ customer.quantity|floatformat:3|intcomma }}  (TM) 
                                                     {% endif %}
@@ -151,7 +150,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }} (TM)  .</b>
+                                            <b>{{ product.product_id.name|title }} (TM) .</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -159,15 +158,19 @@ Dashboard
                             </div>
                         </div>
                     </div>
-                    
-                    
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label"> Cantidad total: 
+                            <div class="col-sm-12 col-form-label">Cantidades:
                                 <ul>
+                                    {% for product in orden.product.all %}
                                         <li>
-                                            <strong>{{ orden.total_product_weight|floatformat:3|intcomma }} (TM) .</strong>
+                                            <b>{{ product.weight|floatformat:3|intcomma }} (TM) .</b>
+                                            <br>
                                         </li>
+                                    {% endfor %}
+                                    <li>
+                                        <strong>Cantidad total: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
