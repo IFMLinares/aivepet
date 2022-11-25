@@ -388,7 +388,7 @@ Dashboard
                             <hr>
                             <div class="row ml-xl-3">
                                 <div class="col-md-12">
-                                    <h4 class="mb-xl-4 mt-xl-2">Añadir Bodegas:</h4>
+                                    <h4 class="mb-xl-4 mt-xl-2">Bodegas:</h4>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group row">
@@ -725,7 +725,7 @@ Dashboard
                                                     </span>
 
                                             {% else %}
-                                                <span id="span-load-draft1"> Cantidad cargada: <span id="span-load-draft"></span> TM</span>   
+                                                <span id="span-load-draft1" style="font-size: 20px"> Cantidad cargada: <span id="span-load-draft"></span> TM</span>   
                                             {% endif %}
                                             </li>
                                         </ul>
@@ -1008,7 +1008,7 @@ Dashboard
 
     
     function calculateNewQan(){
-        if($('#id_draft1').val() && $('#final_draft1').val()){
+        if($('#id_draft1').val() != '' && $('#final_draft1').val() != '' && $('#final_draft1').val()!='0,000' && $('#id_draft1').val() != '0,000' && $('#final_draft1').val()!='0.000' && $('#id_draft1').val() != '0.000'){
             let draft_inicialC = $('#id_draft').val()
             let draft_finalC = $('#final_draft').val()
             let newqanC = 0
@@ -1019,6 +1019,7 @@ Dashboard
             }
             let newc = newqanC.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ".");
             $('#id_new_qan1').val(newc)
+            $('#id_new_qan').val(newc)
             $('#span-load-draft').text(newc)
         }
     }

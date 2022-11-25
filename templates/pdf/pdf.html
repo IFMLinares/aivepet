@@ -81,10 +81,10 @@
       </div>
 
       <div class="p-lateral-izq">
-          <p>CLIENT: {{ orden.customer_name.first_name|title }} {{ orden.customer_name.last_name|title }}. {{ orden.customer_name.company_name|title }}</p>
-          <p>DATE: {{ orden.start_date|date:"d/m/Y"  }}</p>
+          <p>CLIENT: {{ orden.customer_name.company_name|title }}</p>
+          <p>DATE: {{ orden.final_date|date:"d/m/Y"  }}</p>
           <p>REF AIVEPET: {{ orden.number_invoice_aivepet }}</p>
-        <p>INSPECTION RESULTS (UNLOADING)</p>
+        <p>INSPECTION RESULTS ({% if orden.order_type == 'carga' %} LOADING {% else %}UNLOADING {% endif %})</p>
       </div>
 
       
