@@ -74,7 +74,7 @@
           <th style="text-align: center;">{{ transport.start_date|date:"d-m-Y G:i:s" }}</th>
           <th style="text-align: center;">{{ forloop.counter }}</th>
           <th style="text-align: center;">{{ transport.license_plate }}</th>
-          <th style="text-align: center;">{{ transport.tank_plate }}</th>
+          <th style="text-align: center;">{% if transport.tank_plate == '' %} N/A{% else %}{{ transport.tank_plate }}{% endif %}</th>
           <th style="text-align: center;">{{ transport.ficha }}</th>
           <th style="text-align: center;">{{ transport.net_weight|floatformat:3|intcomma }}</th>
           <th style="text-align: center;">{{ transport.acumulado_total|floatformat:3|intcomma }}</th>
