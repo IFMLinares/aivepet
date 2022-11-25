@@ -62,7 +62,7 @@
           <th style="text-align: center;width: 100px;">DATE</th>
           <th style="text-align: center;width: 65px;">VOYAGER</th>
           <th style="text-align: center;">TRUCK ID PLATE</th>
-          <th style="text-align: center;">DUMP ID PLATE</th>
+          <th style="text-align: center; width: 65px;">DUMP ID PLATE</th>
           <th style="text-align: center; width: 120 px;">INVOICE</th>
           <th style="text-align: center; width: 100px;">METRIC TONS</th>
           <th style="text-align: center;width: 100px;">ACC</th>
@@ -75,7 +75,7 @@
           <th style="text-align: center;">{{ forloop.counter }}</th>
           <th style="text-align: center;">{{ transport.license_plate }}</th>
           <th style="text-align: center;">{{ transport.tank_plate }}</th>
-          <th style="text-align: center;">{{ orden.number_invoice_client }}</th>
+          <th style="text-align: center;">{{ orden.ficha }}</th>
           <th style="text-align: center;">{{ transport.net_weight|floatformat:3|intcomma }}</th>
           <th style="text-align: center;">{{ transport.acumulado_total|floatformat:3|intcomma }}</th>
           <th style="text-align: center;">{{ transport.customer_name.company_name }}</th>
