@@ -1017,8 +1017,8 @@ Dashboard
             $('#id_draft1').val() != '0,000' && 
             $('#final_draft1').val()!='0.000' && 
             $('#id_draft1').val() != '0.000'){
-            let draft_inicialC = $('#id_draft').val()
-            let draft_finalC = $('#final_draft').val()
+            let draft_inicialC = parseFloat($('#id_draft1').val().replace('.','').replace(',','.'))
+            let draft_finalC = parseFloat($('#final_draft1').val().replace('.','').replace(',','.'))
             if(orderType == 'carga'){
                 newqanC = (parseFloat(draft_finalC) - parseFloat(draft_inicialC)).toFixed(3)
             }else{
