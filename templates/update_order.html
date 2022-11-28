@@ -1007,11 +1007,18 @@ Dashboard
     }
 
     
+    let newqanC = 0
     function calculateNewQan(){
-        if($('#id_draft1').val() != '' && $('#final_draft1').val() != '' && $('#final_draft1').val()!='0,000' && $('#id_draft1').val() != '0,000' && $('#final_draft1').val()!='0.000' && $('#id_draft1').val() != '0.000'){
+        newqanC = 0
+        if(
+            $('#id_draft1').val() != '' && 
+            $('#final_draft1').val() != '' && 
+            $('#final_draft1').val()!='0,000' && 
+            $('#id_draft1').val() != '0,000' && 
+            $('#final_draft1').val()!='0.000' && 
+            $('#id_draft1').val() != '0.000'){
             let draft_inicialC = $('#id_draft').val()
             let draft_finalC = $('#final_draft').val()
-            let newqanC = 0
             if(orderType == 'carga'){
                 newqanC = (parseFloat(draft_finalC) - parseFloat(draft_inicialC)).toFixed(3)
             }else{
@@ -1854,7 +1861,6 @@ function totalUnloaded(){
         }else{
             totalUnloaded = ((draftfinal - dratinicial).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
         }
-        
         $('#total-unloaded').text(totalUnloaded)
     }
 }
