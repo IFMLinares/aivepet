@@ -551,8 +551,11 @@ class PDFView(View):
             for receiving_customer in receiving_customers:
                 receiving_customer.total = acumulado[receiving_customer.company_name]
                 receiving_customer.total_viajes = viajes[receiving_customer.company_name]
+                print(viajes[receiving_customer.company_name])
                 receiving_customer.save()
-                
+            
+            print(receiving_customer.total_viajes)
+            print(viajes)
             quantity_darft = float(transaction.final_draft) - float(transaction.draft)
             transaction.difference = float(transaction.total_bls) - float(quantity_darft)
             transaction.save()
@@ -578,8 +581,7 @@ class PDFView(View):
                     'bl_pc': bl_pc,
 
                     }
-                
-                print(context)
+
             else:
                 f = float(transaction.total_bls) -  float(transaction.cant_carg) 
                 fp = (f /float(transaction.cant_carg) )*100

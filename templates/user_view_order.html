@@ -210,7 +210,7 @@ Dashboard
                 <hr>
                 <div class="row rounded border border-secondary ml-xl-1 mr-xl-1" style="background-color: #F5F7FF;">
                     <div class="col-md-12 mt-xl-3">
-                        <h3 class="mb-xl-4 text-center">Plan de carga:</h3>
+                        <h3 class="mb-xl-4 text-center">Plan de {% if orden.order_type == 'descarga' %} descarga{% else %} carga {% endif %}:</h3>
                     </div>
                     {% if orden.Wineries.all %}
                     {% for winerie in orden.Wineries.all %}
@@ -491,7 +491,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Total descargado: <strong> <span id="total_unloaded"></span> (TM)</strong></span> 
+                                <span>Cantidad descargada segun draft: <strong> <span id="total_unloaded"></span> (TM)</strong></span> 
                             </li>
                         </div>
                     </div>

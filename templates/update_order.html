@@ -267,7 +267,7 @@ Dashboard
                                         </div> -->
                                         <div class="col-md-12">
                                             <div class="form-group row">
-                                                <label class="col-md-4 col-form-label"> <strong>Cantidad nominada:</strong></label>
+                                                <label class="col-md-4 col-form-label"> <strong>{% if orden.order_type == 'descarga' %} Draft puerto de carga{% else %} Cantidad nominada: {% endif %}</strong></label>
                                                 <div class="col-sm-5">
                                                     <input type="text" class="form-control add-order" id="cant_carg1" name="cant_carg1" placeholder="Monto del draft final" value="{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}" {% if orden.cant_carg == 0 %} {% else %}disabled {% endif %}>
                                                     <input type="text" class="form-control add-order d-none" id="cant_carg" name="cant_carg" placeholder="Monto del puerto de carga" value="{{ orden.cant_carg }}"  {% if orden.cant_carg and orden.cant_carg == 0 %}{% else %}readonly {% endif %}>
@@ -382,7 +382,7 @@ Dashboard
                         <hr>
                         <div class="border border-secondary rounded">
                             <div class="col-md-12">
-                                <h2 class="mt-xl-4 text-center mb-xl-4">Plan de carga</h2>
+                                <h2 class="mt-xl-4 text-center mb-xl-4">Plan de {% if orden.order_type == 'descarga' %} descarga{% else %} carga {% endif %}:</h2>
                                 <!-- <h3 class="mb-xl-4">Pesada: </h3> -->
                             </div>
                             <hr>

@@ -133,7 +133,7 @@
         {% else %}
         <tr style="background-color: #dddddd">
           <td>DRAFT EN PUERTO DE CARGA</td>
-          <td>{{ orden.total_product_weight|floatformat:3|intcomma }} TM</td>
+          <td>{{ orden.cant_carg|floatformat:3|intcomma }} TM</td>
         </tr>
         {% endif %}
         <tr style="background-color: #dddddd">
@@ -186,7 +186,7 @@
         </table>
         {% for customer in orden.receiving_customer.all %}
         <p>{% if orden.order_type == 'carga' %} LOADING {% else %}UNLOADING {% endif %} ({{customer.company_name}})</p>
-        <table>
+        <table class="tp-comun">
           <tr style="background-color: #dddddd">
             <th>FECHA</th>
             <th>M/T</th>
@@ -207,7 +207,7 @@
             <th>TOTAL</th>
             <th>{{ customer.total|floatformat:3|intcomma }}</th>
             <th></th>
-            <th>{{ customer.total_viajes }}</th>
+            <th></th>
           </tr>
           <tr style="background-color: #dddddd">
             <th>ROB</th>
