@@ -491,28 +491,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <li class="col-md-12">
-                                <span>Total de la pesada <strong>{{ orden.transport_heavy|floatformat:3|intcomma }} (TM)</strong></span> 
-                            </li>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
-                            <li class="col-md-12">
-                                <span>Draft (Puerto de Carga): <strong>{{ b|floatformat:3|intcomma }}(TM)</strong> </span>
-                            </li>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
-                            <li class="col-md-12">
-                                <span>BL (Puerto de Descarga): <strong> {{ c|floatformat:3|intcomma }}(TM) </strong></span>  
-                            </li>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-xl-5">
-                        <div class="form-group row">
-                            <li class="col-md-12">
-                                <span>Draft (Puerto de Descarga): <strong>{{ d|floatformat:3|intcomma }}  (TM)</strong> </span> 
+                                <span>Total descargado: <strong> <span id="total_unloaded"></span> (TM)</strong></span> 
                             </li>
                         </div>
                     </div>
@@ -533,6 +512,19 @@ Dashboard
     console.log(pesada)
     remanente = (parseFloat(draft) - parseFloat(pesada)).toFixed(2)
     $('#remanente').text(remanente.replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1,$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, "."))
+
+    function totalUnloaded(){
+    let dratinicial = parseFloat('{{ orden.draft|floatformat:3|intcomma }}')
+    let draftfinal = parseFloat('{{ orden.final_draft|floatformat:3|intcomma }}')
+    if (dratinicial > 0 && draftfinal >0 ){
+        let totalUnloaded = 0
+        if(orderType == 'descarga'){
+            totalUnloaded = ((dratinicial - draftfinal).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+        }
+        $('#total_unloaded').text(totalUnloaded)
+    }
+}
+totalUnloaded()
 </script>
 {% endblock %}
 
