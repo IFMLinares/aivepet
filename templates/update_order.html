@@ -1854,6 +1854,8 @@ deleteTransport
 function totalUnloaded(){
     let dratinicial = (parseFloat($('#id_draft').val()))
     let draftfinal = parseFloat($('#final_draft').val())
+    console.log(dratinicial)
+    console.log(draftfinal)
     if (dratinicial > 0 && draftfinal >0 ){
         let totalUnloaded = 0
         if(orderType == 'descarga'){
