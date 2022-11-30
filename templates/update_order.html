@@ -697,7 +697,7 @@ Dashboard
                                     <div class="col-sm-12 ml-xl-3">
                                         <ul id="" style="margin-bottom: 0px;">
                                             <li>
-                                                <span style="font-size: 18px;"><strong> Draft Puerto de carga: <span id="load_port">{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
+                                                <span style="font-size: 18px;"><strong> Cantidad nominada: <span id="load_port">{% if orden.order_type == 'descarga' %} {{ orden.total_product_weight|floatformat:3|intcomma }} {% else %} {{ orden.cant_carg|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span>
                                             </li>
                                                 <li>
                                                     <span style="font-size: 20px;" id="draft-span1"><strong> Draft Inicial {% if orden.order_type == 'descarga' %}  +  {% endif %} (Constante): <span id="draft-span">{% if orden.draft > 0 %} {{ orden.draft|floatformat:3|intcomma }} {% endif %}</span>   (TM) </strong></span><span id="button-draft_span"></span>
