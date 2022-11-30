@@ -1854,15 +1854,14 @@ deleteTransport
 function totalUnloaded(){
     let dratinicial = (parseFloat($('#id_draft').val()))
     let draftfinal = parseFloat($('#final_draft').val())
-    console.log(dratinicial)
-    console.log(draftfinal)
-    console.log(draftfinal - dratinicial)
     if (dratinicial > 0 && draftfinal >0 ){
         let totalUnloaded = 0
         if(orderType == 'descarga'){
             totalUnloaded = ((dratinicial - draftfinal).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+            console.log(totalUnloaded)
         }else{
             totalUnloaded = ((draftfinal - dratinicial).toFixed(3)).toString().replace(/\D/g, "").replace(/([0-9])([0-9]{3})$/, '$1.$2').replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",")
+            console.log(totalUnloaded)
         }
         $('#total-unloaded').text(totalUnloaded)
     }
