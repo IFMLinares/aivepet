@@ -151,7 +151,7 @@ Dashboard
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
-                                            <b>{{ product.product_id.name|title }} {{ product.weight|floatformat:3|intcomma }} (TM)  .</b>
+                                            <b>{{ product.product_id.name|title }}</b>
                                             <br>
                                         </li>
                                     {% endfor %}
@@ -162,12 +162,25 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label"> Cantidad total:
+                            <div class="col-sm-12 col-form-label"> Cantidades:
+                                
                                 <ul>
+                                    {% for product in orden.product.all %}
+                                        <li>
+                                            <b>{{ product.weight|floatformat:3|intcomma }} (TM) .</b>
+                                            <br>
+                                        </li>
+                                    {% endfor %}
+                                    <li>
+                                        <strong>Cantidad nominada: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                    </li>
+                                </ul>
+
+                                <!-- <ul>
                                         <li>
                                             <strong>{{ orden.total_product_weight|floatformat:3|intcomma }} (TM) .</strong>
                                         </li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                     </div>
