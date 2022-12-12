@@ -77,7 +77,7 @@ Dashboard
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
                             <div class="col-sm-12 col-form-label">Nombre del Cliente:
-                                <b>{{ orden.customer_name.first_name|title }}</b>
+                                <b>{{ orden.customer_name.company_name|title }}</b>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ Dashboard
                     
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label"> Cantidades:
+                            <div class="col-sm-12 col-form-label"> Cantidad nominada:
                                 
                                 <ul>
                                     {% for product in orden.product.all %}
@@ -172,7 +172,7 @@ Dashboard
                                         </li>
                                     {% endfor %}
                                     <li>
-                                        <strong>Cantidad nominada: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                        <strong>Total nominado: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
                                     </li>
                                 </ul>
 

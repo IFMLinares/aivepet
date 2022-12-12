@@ -125,6 +125,10 @@
           <th>Draft</th>
           <th>QUANTITY</th>
         </tr>
+        <tr style="background-color: #dddddd">
+          <td>Cantidad nominada</td>
+          <td>{{ orden.total_product_weight|floatformat:3|intcomma }} TM</td>
+        </tr>
         {% if orden.order_type == 'carga' %} 
         <tr style="background-color: #dddddd">
           <td>TOTAL CARGADO</td>

@@ -114,7 +114,7 @@ Dashboard
                     </div>
                     <div class="col-md-6 pl-xl-5">
                         <div class="form-group row">
-                            <div class="col-sm-12 col-form-label">Cantidades:
+                            <div class="col-sm-12 col-form-label">Cantidad nominada:
                                 <ul>
                                     {% for product in orden.product.all %}
                                         <li>
@@ -123,7 +123,7 @@ Dashboard
                                         </li>
                                     {% endfor %}
                                     <li>
-                                        <strong>Cantidad nominada: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
+                                        <strong>Total nominado: {{ orden.total_product_weight|floatformat:3|intcomma }}  (TM) .</strong>
                                     </li>
                                 </ul>
                             </div>

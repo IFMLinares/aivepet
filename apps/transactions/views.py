@@ -583,7 +583,7 @@ class PDFView(View):
                     }
 
             else:
-                f = float(transaction.total_bls) -  float(transaction.cant_carg) 
+                f = float(transaction.total_bls) -  float(transaction.final_draft) 
                 fp = (f /float(transaction.cant_carg) )*100
                 context = {
                     'orden': transaction,
